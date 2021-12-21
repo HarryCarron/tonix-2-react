@@ -1,0 +1,8 @@
+.rotating-component {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.knob-input-container {
+    height: 20px;
+}
