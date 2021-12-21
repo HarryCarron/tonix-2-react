@@ -1,0 +1,36 @@
+.settings {
+    /* font-family: 'Roboto Mono', monospace; */
+    color: rgb(129, 129, 129);
+    padding: 10px;
+}
+
+.selected-setting {
+    font-weight: 700;
+    color: white;
+}
+
+.settings-rack {
+    background-color: rgb(32 32 32);
+    border-radius: 20px;
+    margin: 20px;
+    border: 1px solid #2e2e2e;
+    overflow: hidden;
+}
+
+.setting-area {
+    height: 100px;
+    border-radius: 10px;
+}
+
+.tab-seperator {
+    border-right: 1px solid #2e2e2e;
+}
+
+.header {
+    border-bottom: 1px solid #2e2e2e;
+    padding: 5px;
+}
+
+.setting-tab {
+    padding: 0 10px;
+}

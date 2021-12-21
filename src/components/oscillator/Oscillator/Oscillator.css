@@ -1,20 +1,15 @@
 .oscillator {
-    width: 350px;
     height: 90px;
     margin: 20px;
     border-radius: 20px;
     overflow: hidden;
     background-color: #303545;
     opacity: 1;
+    transition: 0.5s;
 }
 
 .selected-osc {
-    /* background: rgb(125, 72, 195); */
-    background: linear-gradient(104deg, rgba(125,72,195,1) 0%, rgba(72,84,129,1) 100%);
-    border-bottom: 1px solid #ca68ef;
-
-    -webkit-box-shadow: 0px 4px 20px 5px rgba(125,72,195,0.52); 
-    box-shadow: 0px 4px 6px 2px rgb(125 72 195 / 52%);
+    background-color: rgb(82 85 233);
 }
 
 .hide-osc {
@@ -26,14 +21,18 @@
 }
 
 .header-item {
-    height: 30px;
+    height: 30%;
     color: white;
     font-weight: 700;
 }
 
+.control-item {
+    height: 70%;
+}
+
 .id-container {
     font-weight: 800;
-    font-size: 1.3em;
+    font-size: 2.3em;
     color: white;
 }
 
