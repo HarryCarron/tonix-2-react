@@ -12,7 +12,7 @@ function DetuneSelector({detune, onChangeDetune}) {
     return (
         <>
             <div className="flex-1 d-flex center-child-xy">
-                <input step="0.01" type="number" value={detune} onChange={detuneChanged} className="selector"/>
+                <input step="0.01" type="number" value={detune} onChange={detuneChanged} className="detune selector"/>
             </div>
         </>
     )

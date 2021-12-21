@@ -3,77 +3,81 @@ import LED from './../../LED/LED';
 import React from 'react';
 import WaveformSelector from './WaveformSelector/WaveformSelector';
 import DetuneSelector from './DetuneSelector/DetuneSelector';
-
-// 1 sine
-// 2 saw
-// 3 square 
+import Knob from './../../Knob/Knob';
 
 class Oscillator extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOn: false,
-      selected: false,
-      waveForm: 1,
-      detune: 0
-    };
-  }
+  setWaveform = (waveForm) => this.props.onUpdateOscData({...this.props.data, waveForm});
 
-  toggleOnState() {
-    this.setState((state, props) =>  ({isOn: !state.isOn}));
-  }
+  toggleOnState = () => this.props.onUpdateOscData({...this.props.data, isOn: !this.props.data.isOn});
 
-  setWaveform(waveForm) {
-    this.setState({waveForm});
-  }
-
-  setDetune(detune) {
-    this.setState({detune});
-  }
-
-  selectOscillator() {
-    this.props.onSelectOscillator(this.props.id);
-  }
-
+  setDetune = detune => this.props.onUpdateOscData({...this.props.data, detune});
+  
+  selectOscillator = () => this.props.onUpdateOscData({...this.props.data, selected: !this.props.data.selected});
+  
   render() {
 
     let classes = 'oscillator d-flex';
 
-    if (this.props.selected) {
+    if (this.props.isSelected) {
       classes += ' selected-osc';
     }
 
-    if (!this.state.isOn) {
+    if (!this.props.data.isOn) {
       classes += ' hide-osc';
     }
 
     return (
-      <div className={classes} onClick={() => this.selectOscillator()}>
+      <div className={classes} onMouseDown={ this.props.onSelectOscillator }>
         <div className="d-flex-col container-1">
           <div className="d-flex center-child-xy header-item">
-            <LED isOn={this.state.isOn} onToggleOnState={() => this.toggleOnState()}/>
+            <LED isOn={this.props.data.isOn} onToggleOnState={this.toggleOnState}/>
           </div>
           <div className="flex-1 d-flex center-child-xy id-container">
             {
-              this.props.id
+              this.props.data.number
             }
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 d-flex-col h-100">
           <div className="d-flex center-child-xy header-item">
-              Waveform
+            Waveform
           </div>
-          <WaveformSelector onChangeWaveForm={(waveform) => this.setWaveform(waveform)}/>
+          <div className="control-item d-flex center-child-xy">
+            <WaveformSelector onChangeWaveForm={this.setWaveform}/>
+          </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 d-flex-col h-100">
           <div className="d-flex center-child-xy header-item">
             Detune
           </div>
-          <DetuneSelector detune={this.state.detune} onChangeDetune={(detune) => this.setDetune(detune)}/>
+          <div className="control-item d-flex center-child-xy">
+            <DetuneSelector detune={this.props.data.detune} onChangeDetune={this.setDetune}/>
+          </div>
         </div>
-        <div className="flex-1">
-
+        <div className="flex-1 d-flex-col h-100">
+          <div className="d-flex center-child-xy header-item">
+            Phase
+          </div>
+          <div className="control-item">
+            <Knob toggleOnState={this.toggleOnState}/>
+          </div>
+        </div>
+        <div className="flex-1 d-flex-col h-100">
+          <div className="d-flex center-child-xy header-item">
+            Gain
+          </div>
+          <div className="control-item">
+            <Knob/>
+          </div>
+        </div>
+        <div className="flex-1 d-flex-col h-100">
+          <div className="d-flex center-child-xy header-item">
+            Pan
+          </div>
+          <div className="control-item">
+            <Knob/>
+          </div>
         </div>
       </div>
     );

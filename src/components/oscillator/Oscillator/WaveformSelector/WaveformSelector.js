@@ -9,7 +9,7 @@ function WaveformSelector({onChangeWaveForm}) {
 
     return (
         <>
-            <div className="flex-1 d-flex center-child-xy">
+            <div>
                 <select onChange={waveFormChanged} className="selector">
                     {
                         ['Sine', 'Saw', 'Square'].map((wave, i) => (<option key={i} value={i}> {wave} </option>))
