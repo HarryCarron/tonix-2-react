@@ -42,7 +42,7 @@ class CanvasUtilities {
                 case 'lineDash': this.ctx.setLineDash(value); break;
                 case 'font': this.ctx.font = value; break;
                 case 'textAlign': this.ctx.textAlign = value; break;
-                case 'fillStyle': this.ctx.fillStyle = value;
+                case 'fillStyle': this.ctx.fillStyle = value; break;
                 default:
             };
         })
