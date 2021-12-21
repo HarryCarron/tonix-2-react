@@ -1,11 +1,12 @@
 .oscillator {
+    padding: 5px;
     height: 90px;
     margin: 20px;
     border-radius: 20px;
     overflow: hidden;
     background-color: #303545;
     opacity: 1;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 .selected-osc {

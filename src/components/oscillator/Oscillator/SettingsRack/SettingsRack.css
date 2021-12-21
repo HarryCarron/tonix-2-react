@@ -1,24 +1,22 @@
 .settings {
     /* font-family: 'Roboto Mono', monospace; */
     color: rgb(129, 129, 129);
-    padding: 10px;
 }
 
 .selected-setting {
     font-weight: 700;
-    color: white;
+    color: #E65579;
 }
 
 .settings-rack {
-    background-color: rgb(32 32 32);
+    background-color: rgb(28 28 28);
     border-radius: 20px;
     margin: 20px;
-    border: 1px solid #2e2e2e;
     overflow: hidden;
+    height: 120px;
 }
 
 .setting-area {
-    height: 100px;
     border-radius: 10px;
 }
 

@@ -41,8 +41,8 @@ class App extends React.Component {
         detune: 0,
         amp: {
           attack: 0.2,
-          decay: 0.4,
-          sustain: 0.7,
+          decay: 0.1,
+          sustain: 0.2,
           sustainWidth: 0.2,
           release: 0.1,
         }

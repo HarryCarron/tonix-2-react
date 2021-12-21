@@ -1,7 +1,7 @@
 
 import React from 'react';
 import CanvasUtilities from './../../../../../Utilities/CanvasUtilities';
-
+import GlobalEventHandlers from './../../../../../Utilities/GlobalEventHandlers';
 
 class Amp extends React.Component {
 
@@ -9,9 +9,11 @@ class Amp extends React.Component {
     canvas;
 
     xPad = 20;
-    yPad = 20;
+    yPad = 30;
 
     xTravelUnit = 0;
+
+    globalMouseMove
 
     containerWidth = 0;
 
@@ -34,6 +36,9 @@ class Amp extends React.Component {
     }
 
     componentDidMount() {
+
+        this.globalMouseMove = new GlobalEventHandlers();
+
         this.setState({
             containerWidth: this.container.current.offsetWidth,
             containerHeight: this.container.current.offsetHeight
@@ -90,30 +95,25 @@ class Amp extends React.Component {
             this.props.amp.sustainWidth,
             this.props.amp.release
         ].map((_, i, o) => 
-            (o.slice(0, i + 1).reduce((a, b) => a + b)) * this.xTravelUnit
+            (o.slice(0, i + 1).reduce((a, b) => a + b)) * this.containerWidth + (this.xPad * 2)
         );
     }
 
     drawAmp() {
 
+        const floor = (this.containerHeight - this.yPad);
+
         const [attackX, decayX, sustainWidthX, releaseX] = this.getXpositions();
+
+        const sustainHeight = floor - (this.props.amp.sustain * (this.containerHeight - (this.yPad * 2)));
 
         this.canvasUtil
         .clear()
-        .styleProfile('baseLine')
-        .line(
-            this.xPad,
-            this.containerHeight - this.yPad,
-            this.containerWidth - this.xPad,
-            this.containerHeight - this.yPad,
-        )
-
-
         // attack line
         .styleProfile('ampLine')
         .line(
             this.xPad,
-            this.containerHeight - this.yPad,
+            floor,
             attackX,
             this.yPad
         )
@@ -123,14 +123,14 @@ class Amp extends React.Component {
             attackX,
             this.yPad,
             attackX,
-            this.containerHeight - this.yPad
+            floor
         )
         
         .styleProfile('ampHandle')
         .circle(attackX, this.yPad, 3)
 
         .styleProfile('valueText')
-        .text(this.props.amp.attack, attackX, this.containerHeight - this.yPad + 12)
+        .text(this.props.amp.attack, attackX, floor + 12)
 
         // decay line
         .styleProfile('ampLine')
@@ -138,18 +138,18 @@ class Amp extends React.Component {
             attackX,
             this.yPad,
             decayX,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
         )
                 
         .styleProfile('valueGuideLine')
         .line(
             decayX,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
             decayX,
             this.containerHeight - this.yPad
         )
         .styleProfile('ampHandle')
-        .circle(decayX, this.props.amp.sustain * this.yTravelUnit, 3)
+        .circle(decayX, sustainHeight, 3)
 
         .styleProfile('valueText')
         .text(this.props.amp.decay, decayX, this.containerHeight - this.yPad + 12)
@@ -159,52 +159,86 @@ class Amp extends React.Component {
         .styleProfile('ampLine')
         .line(
             decayX,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
             sustainWidthX,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
         )
 
         .styleProfile('valueGuideLine')
         .line(
             this.yPad,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
             decayX,
-            this.props.amp.sustain * this.yTravelUnit
+            sustainHeight
         )
 
         .styleProfile('ampHandle')
-        .circle(sustainWidthX, this.props.amp.sustain * this.yTravelUnit, 3)
+        .circle(sustainWidthX, sustainHeight, 3)
 
         .styleProfile('valueText')
-        .text(this.props.amp.sustain, this.xPad - 10, this.props.amp.sustain * this.yTravelUnit)
+        .text(this.props.amp.sustain, this.xPad - 10, sustainHeight)
 
 
         // release line
         .styleProfile('ampLine')
         .line(
             sustainWidthX,
-            this.props.amp.sustain * this.yTravelUnit,
+            sustainHeight,
             releaseX,
-            this.containerHeight - this.yPad,
+            floor,
         )
         .styleProfile('ampHandle')
-        .circle(releaseX, this.containerHeight - this.yPad, 3)
+        .circle(releaseX, floor, 3)
+
+        .styleProfile('valueText')
+        .text('-', sustainWidthX, sustainHeight)
+
+
+
+        
+        .styleProfile('baseLine')
+        .line(
+            this.xPad,
+            floor,
+            this.containerWidth - this.xPad,
+            floor,
+        )
 
         .styleProfile('baseLine')
         .line(
             this.xPad,
-            this.containerHeight - this.yPad,
+            floor,
             this.xPad,
             this.yPad,
         )
 
     }
 
+    handleClick({clientX, clientY}) {
+        const canvasBB = this.canvas.current.getBoundingClientRect();
+        const canvasTop = canvasBB.top;
+        const canvasLeft = canvasBB.left;
+        const relativeY = Math.floor((this.containerHeight - (this.yPad * 2)) - ((clientY - canvasTop) - this.yPad));
+        const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
+
+        let x = relativeX > 0 ? relativeX : 0;
+        let y = relativeY > 0 ? relativeY : 0;
+        
+        console.log(x, y);
+    }
+
+    onCanvasClick() {
+        this.globalMouseMove.initiate(
+            e => this.handleClick(e),
+
+        )
+    }
+
 
     render() {
         return (
             <div className="w-100 h-100" ref={ this.container }>
-                <canvas  ref={ this.canvas }></canvas>
+                <canvas onMouseDown={ (e) => this.onCanvasClick(e)} ref={ this.canvas }></canvas>
             </div>
         );
     }

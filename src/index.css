@@ -32,7 +32,10 @@ code {
   display: flex;           /* establish flex container */
   justify-content: center; /* center items vertically, in this case */
   align-items: center;     /* center items horizontally, in this case */
+}
 
+.center-child-y {
+  align-items: center;     /* center items horizontally, in this case */
 }
 .center-child-x {
   display: flex;           /* establish flex container */

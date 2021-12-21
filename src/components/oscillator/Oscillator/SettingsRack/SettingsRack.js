@@ -8,7 +8,7 @@ import Overview from './Overview/Overview';
 
 function SettingRackTab(props) {
 
-    let classes = 'setting-tab flex-1 d-flex center-child-xy';
+    let classes = 'setting-tab flex-1 d-flex center-child-y';
 
     if (props.selected) {
         classes += ' selected-setting';
@@ -61,7 +61,7 @@ class SettingsRack extends React.PureComponent {
                     HellO!
                 </div> */}
 
-                <div className="d-flex">
+                <div className="d-flex h-100">
                     <div className="d-flex-col tab-seperator">
                         { 
                             this.settings.map(
@@ -78,7 +78,7 @@ class SettingsRack extends React.PureComponent {
                     </div>
 
 
-                    <div className="setting-area">
+                    <div className="setting-area h-100">
                         {
                             this.state.activeSetting === 0 && <Overview></Overview>
                         }
