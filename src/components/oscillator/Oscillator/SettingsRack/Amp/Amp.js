@@ -8,16 +8,17 @@ class Amp extends React.Component {
     container;
     canvas;
 
-    xPad = 20;
+    xPad = 30;
     yPad = 30;
-
-    xTravelUnit = 0;
 
     globalMouseMove
 
     containerWidth = 0;
 
     canvasUtil;
+
+    totalXTravel;
+    totalYTravel;
 
     constructor(props) {
         super(props);
@@ -62,9 +63,9 @@ class Amp extends React.Component {
             font: '8px Helvetica'
         })
         .setStyleProfiles({
-            ampLine: {lineWidth: 2, strokeColor: '#E65579', lineDash:[0]},
-            ampHandle: {lineWidth: 2, strokeColor: '#FFFD47', lineDash:[]},
-            baseLine: {lineWidth: 1, strokeColor: 'white', lineDash:[0]},
+            ampLine: {lineWidth: 3, strokeColor: '#E65579', lineDash:[0]},
+            ampHandle: {lineWidth: 3, strokeColor: '#FFFD47', lineDash:[]},
+            baseLine: {lineWidth: 2, strokeColor: 'white', lineDash:[0]},
             valueGuideLine: {lineWidth: 1, strokeColor: '#707070', lineDash:[1, 3]},
             valueText: { fillStyle: 'white' }
         })
@@ -72,14 +73,15 @@ class Amp extends React.Component {
 
     initCanvas(width, height) {
 
-        this.xTravelUnit = width - (this.xPad * 2) / 100;
-        this.yTravelUnit = height - (this.yPad * 2) / 100;
-
         this.canvas.current.width = width * 3;
         this.canvas.current.height = height * 3;
 
         this.canvas.current.style.width = `${width}px`;
         this.canvas.current.style.height = `${height}px`;
+
+        this.totalXTravel = (this.containerWidth - (this.xPad * 2));
+        this.totalYTravel = (this.containerHeight - (this.yPad * 2));
+
 
         this.ctx = this.canvas.current.getContext('2d');
 
@@ -94,8 +96,11 @@ class Amp extends React.Component {
             this.props.amp.decay,
             this.props.amp.sustainWidth,
             this.props.amp.release
-        ].map((_, i, o) => 
-            (o.slice(0, i + 1).reduce((a, b) => a + b)) * this.containerWidth + (this.xPad * 2)
+        ].map((_, i, o) => {
+            const a = o.slice(0, i + 1);
+            const v = a.reduce((a, b) => a + b);
+            return this.xPad + (this.totalXTravel * v);
+        }
         );
     }
 
@@ -117,7 +122,6 @@ class Amp extends React.Component {
             attackX,
             this.yPad
         )
-        
         .styleProfile('valueGuideLine')
         .line(
             attackX,
@@ -178,24 +182,6 @@ class Amp extends React.Component {
         .styleProfile('valueText')
         .text(this.props.amp.sustain, this.xPad - 10, sustainHeight)
 
-
-        // release line
-        .styleProfile('ampLine')
-        .line(
-            sustainWidthX,
-            sustainHeight,
-            releaseX,
-            floor,
-        )
-        .styleProfile('ampHandle')
-        .circle(releaseX, floor, 3)
-
-        .styleProfile('valueText')
-        .text('-', sustainWidthX, sustainHeight)
-
-
-
-        
         .styleProfile('baseLine')
         .line(
             this.xPad,
@@ -211,34 +197,64 @@ class Amp extends React.Component {
             this.xPad,
             this.yPad,
         )
+        // release line
+        .styleProfile('ampLine')
+        .line(
+            sustainWidthX,
+            sustainHeight,
+            releaseX,
+            floor,
+        )
+        .styleProfile('ampHandle')
+        .circle(releaseX, floor, 3)
+
+        .styleProfile('valueText')
+        .text('-', sustainWidthX, sustainHeight)
+        
 
     }
 
-    handleClick({clientX, clientY}) {
+    validateValue(v) {
+        if (v >= 1) {
+            return 1;
+        }
+        if (v <= 0) {
+            return 0;
+        }
+        return v;
+    }
+
+    getTrueCoordinates(clientX, clientY) {
         const canvasBB = this.canvas.current.getBoundingClientRect();
         const canvasTop = canvasBB.top;
         const canvasLeft = canvasBB.left;
-        const relativeY = Math.floor((this.containerHeight - (this.yPad * 2)) - ((clientY - canvasTop) - this.yPad));
+        const relativeY = Math.floor(this.totalYTravel - ((clientY - canvasTop) - this.yPad));
         const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
 
-        let x = relativeX > 0 ? relativeX : 0;
-        let y = relativeY > 0 ? relativeY : 0;
-        
+        const mappedX = relativeX / this.totalXTravel
+        const mappedY = relativeY / this.totalYTravel
+
+        return [
+            this.validateValue(mappedX),
+            this.validateValue(mappedY),
+        ];
+    }
+
+    handleClick({clientX, clientY}) {
+        const [x, y] = this.getTrueCoordinates(clientX, clientY);
         console.log(x, y);
+
     }
 
-    onCanvasClick() {
-        this.globalMouseMove.initiate(
-            e => this.handleClick(e),
-
-        )
+    onCanvasClick = e => {
+        this.handleClick(e)
+        this.globalMouseMove.initiate(e => this.handleClick(e));
     }
-
 
     render() {
         return (
             <div className="w-100 h-100" ref={ this.container }>
-                <canvas onMouseDown={ (e) => this.onCanvasClick(e)} ref={ this.canvas }></canvas>
+                <canvas onMouseDown={this.onCanvasClick} ref={ this.canvas }></canvas>
             </div>
         );
     }

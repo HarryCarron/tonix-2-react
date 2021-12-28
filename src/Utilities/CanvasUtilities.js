@@ -62,7 +62,6 @@ class CanvasUtilities {
 
     line(x1, y1, x2, y2) {
 
-
         this.ctx.beginPath();
 
         if (this.relativeXPositioning) {

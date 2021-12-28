@@ -1,19 +1,22 @@
 .settings {
     /* font-family: 'Roboto Mono', monospace; */
-    color: rgb(129, 129, 129);
+    color: rgb(207 207 207);
 }
 
 .selected-setting {
     font-weight: 700;
-    color: #E65579;
+    color: #ffffff;
+    background-color: #141414;
 }
 
 .settings-rack {
     background-color: rgb(28 28 28);
     border-radius: 20px;
-    margin: 20px;
+    margin: 15px;
     overflow: hidden;
     height: 120px;
+    box-shadow: rgb(255 255 255 / 14%) 0px 2px 4px 0px inset;
+    border: 1px solid #141414;
 }
 
 .setting-area {
@@ -21,7 +24,11 @@
 }
 
 .tab-seperator {
-    border-right: 1px solid #2e2e2e;
+    border-right: 1px solid #121212;
+}
+
+.tab-seperator > .setting-tab:not(:last-child) {
+    border-bottom: 1px solid #121212;
 }
 
 .header {
