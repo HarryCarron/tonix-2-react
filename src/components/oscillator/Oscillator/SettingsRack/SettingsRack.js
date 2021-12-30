@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import './SettingsRack.css';
 import Amp from './Amp/Amp';
 import Additive from './Additive/Additive';
@@ -23,19 +23,10 @@ function SettingRackTab(props) {
     );
 }
 
-class SettingsRack extends React.PureComponent {
+function SettingsRack(props) {
+    const [activeTab, setActiveTab] = useState(1);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            activeSetting: props.activeSetting
-        };
-    }
-
-    componentDidUpdate() {
-    }
-
-    settings = [
+    const settings = [
         {
             label: 'Overview',
             id: 0,
@@ -50,52 +41,45 @@ class SettingsRack extends React.PureComponent {
         },
     ];
 
-    onChangeTab = (activeSetting) => this.setState({ activeSetting });
-
-    render() {
-
-        return (
-            <div className="settings-rack settings">
-
-                {/* <div className="header">
-                    HellO!
-                </div> */}
-
-                <div className="d-flex h-100">
-                    <div className="d-flex-col tab-seperator">
-                        { 
-                            this.settings.map(
-                                setting =>
-                                        <SettingRackTab
-                                            key={setting.id}
-                                            id={setting.id}
-                                            onChangeTab={this.onChangeTab}
-                                            selected={this.state.activeSetting === setting.id}
-                                            label={setting.label}
-                                        />
-                            )
-                        }
-                    </div>
-
-
-                    <div className="setting-area h-100">
-                        {
-                            this.state.activeSetting === 0 && <Overview></Overview>
-                        }
-                        {
-                            this.state.activeSetting === 1 && <Amp amp={this.props.activeOscillator.amp}></Amp>
-                        }
-                        {
-                            this.state.activeSetting === 2 && <Additive></Additive>
-                        }
-                    </div>
+    return (
+        <div className="settings-rack settings">
+            <div className="d-flex h-100">
+                <div className="d-flex-col tab-seperator">
+                    { 
+                        settings.map(
+                            setting =>
+                                    <SettingRackTab
+                                        key={setting.id}
+                                        id={setting.id}
+                                        onChangeTab={setActiveTab}
+                                        selected={activeTab === setting.id}
+                                        label={setting.label}
+                                    />
+                        )
+                    }
                 </div>
 
+
+                <div className="setting-area h-100">
+                    {
+                        activeTab === 0 && <Overview></Overview>
+                    }
+                    {
+                        activeTab === 1 && <Amp amp={props.activeOscillator.amp}></Amp>
+                    }
+                    {
+                        activeTab === 2 && <Additive></Additive>
+                    }
+                </div>
             </div>
-        );
-    }
 
-
+        </div>
+    );
 }
 
-export default SettingsRack;
+
+export default React.memo(SettingsRack,
+    (prevProps, nextProps) => {
+        console.log(prevProps.activeOscillator === nextProps.activeOscillator);
+        return prevProps.activeOscillator === nextProps.activeOscillator
+    });
