@@ -100,7 +100,7 @@ class Amp extends React.Component {
         ].map((_, i, o) => {
             const a = o.slice(0, i + 1);
             const v = a.reduce((a, b) => a + b);
-            return this.xPad + (this.totalXTravel * v);
+            return this.xPad + ((this.totalXTravel || 1) * v);
         }
         );
     }
@@ -340,27 +340,31 @@ class Amp extends React.Component {
         this.props.updateOscData({amp: this.props.amp})
     }
 
-    interactionSectionLayer(i, pos) {
-        return <div className="interaction-section" onClick={ () => this.ampClicked(i) } style={{width: (pos * 100) + '%' }}></div>;
-    }
 
     render() {
         return (
             <div className="w-100 h-100 canvas-layer" ref={ this.container }>
                 <canvas onMouseDown={this.onCanvasClick} ref={ this.canvas }></canvas>
                 <div className="h-100 w-100 interaction-layer d-flex">
-                    <div style={{width: this.xPad}}></div>
-                    <div className="flex-1 d-flex">
+                    <svg height={ this.containerHeight } width={ this.containerWidth }>
                         {
                             [
                                 this.props.amp.attack,
                                 this.props.amp.decay,
                                 this.props.amp.sustainWidth,
                                 this.props.amp.release
-                            ].map((pos, i) => this.interactionSectionLayer(i, pos))
+                            ].map((val, i, o) => 
+                                    <rect
+                                        onClick={() => this.ampClicked(i)}
+                                        x={ this.xPad + (o.slice(0, i).reduce((a, b) => a + b, 0)) * this.totalXTravel }
+                                        y="0"
+                                        width={ val * this.totalXTravel }
+                                        fill-opacity="0"
+                                        height="100%"
+                                    />
+                            )
                         }
-                    </div>
-                    <div style={{width: this.xPad}}></div>
+                    </svg>
                 </div>
             </div>
         );
