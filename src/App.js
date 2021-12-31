@@ -45,7 +45,7 @@ function App() {
     setOsc({...osc, ...toUpdate});
   }
 
-  const [activeOsc, _] = getContext(selectedOsc);
+  const [activeOsc] = getContext(selectedOsc);
 
   
 

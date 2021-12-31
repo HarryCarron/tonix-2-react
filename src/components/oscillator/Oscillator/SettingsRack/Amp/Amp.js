@@ -313,7 +313,7 @@ class Amp extends React.Component {
         if (!(clientX && clientY)) {
             return 
         }
-        const [x, y] = this.getTrueCoordinates(clientX, clientY);
+        const [x] = this.getTrueCoordinates(clientX, clientY);
         
         const curveDetails = this.getCurveDetails(i);
         curveDetails[3](x);
