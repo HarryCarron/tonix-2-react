@@ -12,14 +12,18 @@ class Amp extends React.Component {
     xPad = 20;
     yPad = 30;
 
-    globalMouseMove
+    globalMouseMove;
+    
+    floor = 0;
+
+    sustainHeight = 0;
 
     containerWidth = 0;
 
     canvasUtil;
 
-    totalXTravel;
-    totalYTravel;
+    totalXTravel = 0;
+    totalYTravel = 0;
 
     constructor(props) {
         super(props);
@@ -83,6 +87,9 @@ class Amp extends React.Component {
         this.totalXTravel = (this.containerWidth - (this.xPad * 2));
         this.totalYTravel = (this.containerHeight - (this.yPad * 2));
 
+        this.floor = (this.containerHeight - this.yPad);
+
+        this.sustainHeight = this.floor - (this.props.amp.sustain * (this.containerHeight - (this.yPad * 2)));
 
         this.ctx = this.canvas.current.getContext('2d');
 
@@ -107,11 +114,9 @@ class Amp extends React.Component {
 
     drawAmp() {
 
-        const floor = (this.containerHeight - this.yPad);
 
         const [attackX, decayX, sustainWidthX, releaseX] = this.getXpositions();
 
-        const sustainHeight = floor - (this.props.amp.sustain * (this.containerHeight - (this.yPad * 2)));
 
         this.canvasUtil
         .clear()
@@ -121,25 +126,25 @@ class Amp extends React.Component {
         if (this.props.amp.attackCurve === 0) {
             this.canvasUtil.line(
                 this.xPad,
-                floor,
+                this.floor,
                 attackX,
                 this.yPad
             )
         } else if (this.props.amp.attackCurve === 1) {
             this.canvasUtil.curve(
                 this.xPad,
-                floor,
+                this.floor,
                 attackX,
-                floor,
+                this.floor,
                 attackX,
                 this.yPad,
             )
         } else if (this.props.amp.attackCurve === 2) {
             this.canvasUtil.curve(
                 this.xPad,
-                floor,
-                this.yPad,
+                this.floor,
                 this.xPad,
+                this.yPad,
                 attackX,
                 this.yPad,
             )
@@ -150,14 +155,14 @@ class Amp extends React.Component {
             attackX,
             this.yPad,
             attackX,
-            floor
+            this.floor
         )
         
         .styleProfile('ampHandle')
         .circle(attackX, this.yPad, 3)
 
         .styleProfile('valueText')
-        .text(this.props.amp.attack, attackX, floor + 12)
+        .text('A ' + this.props.amp.attack.toFixed(2), attackX, this.floor + 12)
 
         // decay line
         .styleProfile('ampLine');
@@ -169,16 +174,16 @@ class Amp extends React.Component {
                 attackX,
                 this.yPad,
                 decayX,
-                sustainHeight
+                this.sustainHeight
             )
         } else if (this.props.amp.decayCurve === 1) {
             this.canvasUtil.curve(
                 attackX,
                 this.yPad,
                 attackX,
-                sustainHeight,
+                this.sustainHeight,
                 decayX,
-                sustainHeight
+                this.sustainHeight
             )
         } else if (this.props.amp.decayCurve === 2) {
             this.canvasUtil.curve(
@@ -187,54 +192,54 @@ class Amp extends React.Component {
                 decayX,
                 this.yPad,
                 decayX,
-                sustainHeight
+                this.sustainHeight
             )
         }
 
         this.canvasUtil.styleProfile('valueGuideLine')
 
         .styleProfile('ampHandle')
-        .circle(decayX, sustainHeight, 3)
+        .circle(decayX, this.sustainHeight, 3)
 
         .styleProfile('valueText')
-        .text(this.props.amp.decay, decayX, this.containerHeight - this.yPad + 12)
+        .text('D ' + this.props.amp.decay.toFixed(2), decayX, this.containerHeight - this.yPad + 12)
 
 
         // sustain line
         .styleProfile('ampLine')
         .line(
             decayX,
-            sustainHeight,
+            this.sustainHeight,
             sustainWidthX,
-            sustainHeight,
+            this.sustainHeight,
         )
 
         .styleProfile('valueGuideLine')
         .line(
-            this.yPad,
-            sustainHeight,
+            this.xPad,
+            this.sustainHeight,
             decayX,
-            sustainHeight
+            this.sustainHeight
         )
 
         .styleProfile('ampHandle')
-        .circle(sustainWidthX, sustainHeight, 3)
+        .circle(sustainWidthX, this.sustainHeight, 3)
 
         .styleProfile('valueText')
-        .text(this.props.amp.sustain, this.xPad - 10, sustainHeight)
+        .text(this.props.amp.sustain, this.xPad - 10, this.sustainHeight)
 
         .styleProfile('baseLine')
         .line(
             this.xPad,
-            floor,
+            this.floor,
             this.containerWidth - this.xPad,
-            floor,
+            this.floor,
         )
 
         .styleProfile('baseLine')
         .line(
             this.xPad,
-            floor,
+            this.floor,
             this.xPad,
             this.yPad,
         )
@@ -244,36 +249,36 @@ class Amp extends React.Component {
         if (this.props.amp.releaseCurve === 0) {
             this.canvasUtil.line(
                 sustainWidthX,
-                sustainHeight,
+                this.sustainHeight,
                 releaseX,
-                floor,
+                this.floor,
             )
         } else if (this.props.amp.releaseCurve === 1) {
             this.canvasUtil.curve(
                 sustainWidthX,
-                sustainHeight,
+                this.sustainHeight,
                 sustainWidthX,
-                floor,
+                this.floor,
                 releaseX,
-                floor,
+                this.floor,
             )
         } else if (this.props.amp.releaseCurve === 2) {
             this.canvasUtil.curve(
                 sustainWidthX,
-                sustainHeight,
+                this.sustainHeight,
                 releaseX,
-                sustainHeight,
+                this.sustainHeight,
                 releaseX,
-                floor,
+                this.floor,
             )
         }
 
 
         this.canvasUtil.styleProfile('ampHandle')
-        .circle(releaseX, floor, 3)
+        .circle(releaseX, this.floor, 3)
 
         .styleProfile('valueText')
-        .text('-', sustainWidthX, sustainHeight)
+        .text('-', sustainWidthX, this.sustainHeight)
         
 
     }
@@ -304,26 +309,31 @@ class Amp extends React.Component {
         ];
     }
 
-    handleClick({clientX, clientY}) {
+    handleClick({clientX, clientY}, i) {
+        if (!(clientX && clientY)) {
+            return 
+        }
         const [x, y] = this.getTrueCoordinates(clientX, clientY);
-        console.log(x, y);
-
+        
+        const curveDetails = this.getCurveDetails(i);
+        curveDetails[3](x);
+        this.props.updateOscData({amp: this.props.amp})
     }
 
-    onCanvasClick = e => {
-        this.handleClick(e)
-        this.globalMouseMove.initiate(e => this.handleClick(e));
+    onHandleDrag = (e, i) => {
+        this.handleClick(e, i)
+        this.globalMouseMove.initiate(e => this.handleClick(e, i));
     }
 
 
 
     getCurveDetails(i) {
         if (i === 0) {
-            return [this.props.amp.attack, this.props.amp.attackCurve, v => this.props.amp.attackCurve = v];
+            return [this.props.amp.attack, this.props.amp.attackCurve, v => this.props.amp.attackCurve = v, v => this.props.amp.attack = v];
         } else if (i === 1) {
-            return [this.props.amp.decay, this.props.amp.decayCurve, v => this.props.amp.decayCurve = v];
+            return [this.props.amp.decay, this.props.amp.decayCurve, v => this.props.amp.decayCurve = v, v => this.props.amp.decay = v];
         } else if (i === 3) {
-            return [this.props.amp.release, this.props.amp.releaseCurve, v => this.props.amp.releaseCurve = v];
+            return [this.props.amp.release, this.props.amp.releaseCurve, v => this.props.amp.releaseCurve = v, v => this.props.amp.release = v];
         }
     }
 
@@ -340,31 +350,23 @@ class Amp extends React.Component {
         this.props.updateOscData({amp: this.props.amp})
     }
 
-
+    
     render() {
         return (
-            <div className="w-100 h-100 canvas-layer" ref={ this.container }>
-                <canvas onMouseDown={this.onCanvasClick} ref={ this.canvas }></canvas>
-                <div className="h-100 w-100 interaction-layer d-flex">
-                    <svg height={ this.containerHeight } width={ this.containerWidth }>
-                        {
-                            [
-                                this.props.amp.attack,
-                                this.props.amp.decay,
-                                this.props.amp.sustainWidth,
-                                this.props.amp.release
-                            ].map((val, i, o) => 
-                                    <rect
-                                        onClick={() => this.ampClicked(i)}
-                                        x={ this.xPad + (o.slice(0, i).reduce((a, b) => a + b, 0)) * this.totalXTravel }
-                                        y="0"
-                                        width={ val * this.totalXTravel }
-                                        fill-opacity="0"
-                                        height="100%"
-                                    />
-                            )
-                        }
-                    </svg>
+            <div className="w-100 h-100 d-flex-col canvas-layer" ref={ this.container }>
+                <div className="flex-1">
+                    <canvas onMouseDown={this.onHandleDrag} ref={ this.canvas }></canvas>
+                    <div className="flex-1 interaction-layer d-flex">
+                        <svg height={ this.containerHeight } width={ this.containerWidth }>
+                            <rect className="cursor-pointer" onClick={() => this.ampClicked(0)} x={ this.xPad } y="0" width={ this.props.amp.attack * this.totalXTravel } fillOpacity="0" height="100%" />
+                            <rect className="cursor-pointer"  onClick={() => this.ampClicked(1)} x={ this.xPad + this.props.amp.attack * this.totalXTravel } y="0" width={ this.props.amp.attack + this.props.amp.decay * this.totalXTravel } fillOpacity="0" height="100%" />
+                            <rect className="cursor-pointer" onClick={() => this.ampClicked(2)} x={ this.xPad + ((this.props.amp.attack + this.props.amp.decay) * this.totalXTravel) } y="0" width={ this.props.amp.sustainWidth * this.totalXTravel } fillOpacity="0" height="100%" />
+                            <rect className="cursor-pointer"  onClick={() => this.ampClicked(3)} x={ this.xPad + (this.props.amp.attack + this.props.amp.decay + this.props.amp.sustainWidth) * this.totalXTravel } y="0" width={ this.props.amp.release * this.totalXTravel } fillOpacity="0" height="100%" />
+                            
+                            <circle className="cursor-grab" onMouseDown={($event) => this.onHandleDrag($event, 0)} cx={ this.xPad + this.props.amp.attack * this.totalXTravel } cy={this.yPad} r="5" fillOpacity="0" height="100%" />
+                            <circle className="cursor-grab" onMouseDown={($event) => this.onHandleDrag($event, 1)} cx={ this.xPad + (this.props.amp.attack + this.props.amp.decay) * this.totalXTravel } cy={this.sustainHeight} r="5" fillOpacity="0" height="100%" />
+                        </svg>
+                    </div>
                 </div>
             </div>
         );
