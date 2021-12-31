@@ -1,7 +1,7 @@
 .oscillator {
     padding: 5px;
     height: 90px;
-    margin: 20px;
+    margin: 15px;
     border-radius: 20px;
     background-color: #303545;
     opacity: 1;
@@ -10,7 +10,6 @@
 
 .selected-osc {
     background-color: rgb(82 85 233);
-    box-shadow: rgb(255 255 255 / 22%) 0px 2px 4px 0px inset;
 }
 
 .hide-osc {

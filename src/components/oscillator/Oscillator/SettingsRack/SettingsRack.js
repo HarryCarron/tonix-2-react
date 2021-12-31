@@ -65,7 +65,7 @@ function SettingsRack(props) {
                         activeTab === 0 && <Overview></Overview>
                     }
                     {
-                        activeTab === 1 && <Amp amp={props.activeOscillator.amp}></Amp>
+                        activeTab === 1 && <Amp amp={props.activeOscillator.amp} updateOscData={props.updateOscData}></Amp>
                     }
                     {
                         activeTab === 2 && <Additive></Additive>

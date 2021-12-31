@@ -2,13 +2,14 @@
 import React from 'react';
 import CanvasUtilities from './../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from './../../../../../Utilities/GlobalEventHandlers';
+import './Amp.css'
 
 class Amp extends React.Component {
 
     container;
     canvas;
 
-    xPad = 30;
+    xPad = 20;
     yPad = 30;
 
     globalMouseMove
@@ -115,14 +116,36 @@ class Amp extends React.Component {
         this.canvasUtil
         .clear()
         // attack line
-        .styleProfile('ampLine')
-        .line(
-            this.xPad,
-            floor,
-            attackX,
-            this.yPad
-        )
-        .styleProfile('valueGuideLine')
+        .styleProfile('ampLine');
+
+        if (this.props.amp.attackCurve === 0) {
+            this.canvasUtil.line(
+                this.xPad,
+                floor,
+                attackX,
+                this.yPad
+            )
+        } else if (this.props.amp.attackCurve === 1) {
+            this.canvasUtil.curve(
+                this.xPad,
+                floor,
+                attackX,
+                floor,
+                attackX,
+                this.yPad,
+            )
+        } else if (this.props.amp.attackCurve === 2) {
+            this.canvasUtil.curve(
+                this.xPad,
+                floor,
+                this.yPad,
+                this.xPad,
+                attackX,
+                this.yPad,
+            )
+        }
+        
+        this.canvasUtil.styleProfile('valueGuideLine')
         .line(
             attackX,
             this.yPad,
@@ -137,21 +160,39 @@ class Amp extends React.Component {
         .text(this.props.amp.attack, attackX, floor + 12)
 
         // decay line
-        .styleProfile('ampLine')
-        .line(
-            attackX,
-            this.yPad,
-            decayX,
-            sustainHeight,
-        )
-                
-        .styleProfile('valueGuideLine')
-        .line(
-            decayX,
-            sustainHeight,
-            decayX,
-            this.containerHeight - this.yPad
-        )
+        .styleProfile('ampLine');
+
+
+
+        if (this.props.amp.decayCurve === 0) {
+            this.canvasUtil.line(
+                attackX,
+                this.yPad,
+                decayX,
+                sustainHeight
+            )
+        } else if (this.props.amp.decayCurve === 1) {
+            this.canvasUtil.curve(
+                attackX,
+                this.yPad,
+                attackX,
+                sustainHeight,
+                decayX,
+                sustainHeight
+            )
+        } else if (this.props.amp.decayCurve === 2) {
+            this.canvasUtil.curve(
+                attackX,
+                this.yPad,
+                decayX,
+                this.yPad,
+                decayX,
+                sustainHeight
+            )
+        }
+
+        this.canvasUtil.styleProfile('valueGuideLine')
+
         .styleProfile('ampHandle')
         .circle(decayX, sustainHeight, 3)
 
@@ -198,14 +239,37 @@ class Amp extends React.Component {
             this.yPad,
         )
         // release line
-        .styleProfile('ampLine')
-        .line(
-            sustainWidthX,
-            sustainHeight,
-            releaseX,
-            floor,
-        )
-        .styleProfile('ampHandle')
+        .styleProfile('ampLine');
+
+        if (this.props.amp.releaseCurve === 0) {
+            this.canvasUtil.line(
+                sustainWidthX,
+                sustainHeight,
+                releaseX,
+                floor,
+            )
+        } else if (this.props.amp.releaseCurve === 1) {
+            this.canvasUtil.curve(
+                sustainWidthX,
+                sustainHeight,
+                sustainWidthX,
+                floor,
+                releaseX,
+                floor,
+            )
+        } else if (this.props.amp.releaseCurve === 2) {
+            this.canvasUtil.curve(
+                sustainWidthX,
+                sustainHeight,
+                releaseX,
+                sustainHeight,
+                releaseX,
+                floor,
+            )
+        }
+
+
+        this.canvasUtil.styleProfile('ampHandle')
         .circle(releaseX, floor, 3)
 
         .styleProfile('valueText')
@@ -251,13 +315,57 @@ class Amp extends React.Component {
         this.globalMouseMove.initiate(e => this.handleClick(e));
     }
 
+
+
+    getCurveDetails(i) {
+        if (i === 0) {
+            return [this.props.amp.attack, this.props.amp.attackCurve, v => this.props.amp.attackCurve = v];
+        } else if (i === 1) {
+            return [this.props.amp.decay, this.props.amp.decayCurve, v => this.props.amp.decayCurve = v];
+        } else if (i === 3) {
+            return [this.props.amp.release, this.props.amp.releaseCurve, v => this.props.amp.releaseCurve = v];
+        }
+    }
+
+    ampClicked(i) {
+        const curveDetails = this.getCurveDetails(i);
+        const curve = curveDetails[1];
+        let newCurve;
+        if (curve === 2) {
+            newCurve = 0;
+        } else {
+            newCurve = curve + 1;
+        }
+        curveDetails[2](newCurve);
+        this.props.updateOscData({amp: this.props.amp})
+    }
+
+    interactionSectionLayer(i, pos) {
+        return <div className="interaction-section" onClick={ () => this.ampClicked(i) } style={{width: (pos * 100) + '%' }}></div>;
+    }
+
     render() {
         return (
-            <div className="w-100 h-100" ref={ this.container }>
+            <div className="w-100 h-100 canvas-layer" ref={ this.container }>
                 <canvas onMouseDown={this.onCanvasClick} ref={ this.canvas }></canvas>
+                <div className="h-100 w-100 interaction-layer d-flex">
+                    <div style={{width: this.xPad}}></div>
+                    <div className="flex-1 d-flex">
+                        {
+                            [
+                                this.props.amp.attack,
+                                this.props.amp.decay,
+                                this.props.amp.sustainWidth,
+                                this.props.amp.release
+                            ].map((pos, i) => this.interactionSectionLayer(i, pos))
+                        }
+                    </div>
+                    <div style={{width: this.xPad}}></div>
+                </div>
             </div>
         );
     }
 }
 
 export default Amp;
+

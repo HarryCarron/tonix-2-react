@@ -15,17 +15,20 @@ function App() {
     detune: 0,
     amp: {
       attack: 0.1,
+      attackCurve: 1,
       decay: 0.2,
+      decayCurve: 1,
       sustain: 0.5,
       sustainWidth: 0.2,
       release: 0.3,
+      releaseCurve: 1,
     }
   };
 
-  const getContext = id => {
-    if (id === 0) {
+  const getContext = () => {
+    if (selectedOsc === 0) {
       return [osc0, setOsc0];
-    } else if (id === 1) {
+    } else if (selectedOsc === 1) {
       return [osc1, setOsc1];
     } else {
       return [osc2, setOsc2];
@@ -33,24 +36,26 @@ function App() {
   }
 
   const [selectedOsc, setSelectedOsc] = useState(0);
-  const [osc0, setOsc0] = useState({...base});
-  const [osc1, setOsc1] = useState({...base});
-  const [osc2, setOsc2] = useState({...base});
+  const [osc0, setOsc0] = useState({...base, amp: {...base.amp}});
+  const [osc1, setOsc1] = useState({...base, amp: {...base.amp}});
+  const [osc2, setOsc2] = useState({...base, amp: {...base.amp}});
 
-  const updateOsc = (toUpdate, oscID) => {
-    const [osc, setOsc] = getContext(oscID);
+  const updateOsc = (toUpdate) => {
+    const [osc, setOsc] = getContext();
     setOsc({...osc, ...toUpdate});
   }
 
   const [activeOsc, _] = getContext(selectedOsc);
 
+  
+
   return (
     <div className="main-container d-flex center-child-xy">
       <div className="synth">
-        <OscillatorContainer data={ osc0 } onSelectOscillator={() => setSelectedOsc(0)} isSelected={ selectedOsc === 0 } updateOscData={ data => updateOsc(data, 0) }/>
-        <OscillatorContainer data={ osc1 } onSelectOscillator={() => setSelectedOsc(1)} isSelected={ selectedOsc === 1 } updateOscData={ data => updateOsc(data, 1) }/>
-        <OscillatorContainer data={ osc2 } onSelectOscillator={() => setSelectedOsc(2)} isSelected={ selectedOsc === 2 } updateOscData={ data => updateOsc(data, 2) }/>
-        <SettingsRack activeOscillator={ activeOsc }></SettingsRack>
+        <OscillatorContainer data={ osc0 } onSelectOscillator={() => setSelectedOsc(0)} isSelected={ selectedOsc === 0 } updateOscData={ data => updateOsc(data) }/>
+        <OscillatorContainer data={ osc1 } onSelectOscillator={() => setSelectedOsc(1)} isSelected={ selectedOsc === 1 } updateOscData={ data => updateOsc(data) }/>
+        <OscillatorContainer data={ osc2 } onSelectOscillator={() => setSelectedOsc(2)} isSelected={ selectedOsc === 2 } updateOscData={ data => updateOsc(data) }/>
+        <SettingsRack activeOscillator={ activeOsc } updateOscData={amp => updateOsc(amp)}></SettingsRack>
       </div>
     </div>
   );

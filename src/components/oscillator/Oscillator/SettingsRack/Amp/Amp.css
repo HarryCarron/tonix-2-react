@@ -1,0 +1,16 @@
+.interaction-layer {
+    position: absolute;
+    /* background-color: red; */
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+}
+
+.canvas-layer {
+    position: relative;
+}
+
+.interaction-layer > div > .interaction-section {
+    height: 100%;
+    cursor: pointer;
+}

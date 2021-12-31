@@ -77,6 +77,21 @@ class CanvasUtilities {
         return this;
     }
 
+
+    curve(startX, startY, cpX, cpY, endX, endY) {
+
+        this.ctx.beginPath();
+
+
+        this.ctx.moveTo(startX, startY);
+        this.ctx.lineTo(startX, startY);
+        this.ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+
+        this.ctx.stroke();
+
+        return this;
+    }
+
     circle(x, y, r) {
 
         if (this.relativeXPositioning) {
