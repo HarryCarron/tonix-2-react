@@ -71,7 +71,7 @@ class Amp extends React.Component {
         .setStyleProfiles({
             ampLine: {lineWidth: 3, strokeColor: '#E65579', lineDash:[0]},
             ampHandle: {lineWidth: 3, strokeColor: '#FFFD47', lineDash:[]},
-            baseLine: {lineWidth: 2, strokeColor: '#C3C3CE', lineDash:[0]},
+            baseLine: {lineWidth: 3, strokeColor: '#C3C3CE', lineDash:[0]},
             valueGuideLine: {lineWidth: 1, strokeColor: '#707070', lineDash:[2, 3]},
             valueText: { fillStyle: '#C3C3CE' }
         })
@@ -142,6 +142,21 @@ class Amp extends React.Component {
 
         this.canvasUtil
         .clear()
+        .styleProfile('baseLine')
+        .line(
+            this.xPad,
+            this.floor,
+            this.containerWidth - this.xPad,
+            this.floor,
+        )
+
+        .styleProfile('baseLine')
+        .line(
+            this.xPad,
+            this.floor,
+            this.xPad,
+            this.yPad,
+        )
         // attack line
         .styleProfile('ampLine');
 
@@ -298,23 +313,7 @@ class Amp extends React.Component {
         .circle(releaseX, this.floor, 3)
 
         .styleProfile('valueText')
-        .text('-', sustainWidthX, this.sustainHeight)
-
-        .styleProfile('baseLine')
-        .line(
-            this.xPad,
-            this.floor,
-            this.containerWidth - this.xPad,
-            this.floor,
-        )
-
-        .styleProfile('baseLine')
-        .line(
-            this.xPad,
-            this.floor,
-            this.xPad,
-            this.yPad,
-        );
+        .text('-', sustainWidthX, this.sustainHeight);
         
 
     }
