@@ -127,7 +127,7 @@ class Amp extends React.Component {
                 return 'LIN';
             } else if (curve === 1) {
                 return 'EXP';
-            } else if (curve === 2) {
+            } else {
                 return 'COS';
             }
         })
