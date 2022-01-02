@@ -71,8 +71,8 @@ class Amp extends React.Component {
         .setStyleProfiles({
             ampLine: {lineWidth: 3, strokeColor: '#E65579', lineDash:[0]},
             ampHandle: {lineWidth: 3, strokeColor: '#FFFD47', lineDash:[]},
-            baseLine: {lineWidth: 2, strokeColor: 'white', lineDash:[0]},
-            valueGuideLine: {lineWidth: 1, strokeColor: '#707070', lineDash:[1, 3]},
+            baseLine: {lineWidth: 2, strokeColor: '#C3C3CE', lineDash:[0]},
+            valueGuideLine: {lineWidth: 1, strokeColor: '#707070', lineDash:[2, 3]},
             valueText: { fillStyle: '#C3C3CE' }
         })
     }
