@@ -80,10 +80,10 @@ export default function Oscillator(props) {
                 </div>
                 <div className="control-item d-flex">
                     <div className="flex-1">
-                        <Signal hasSignal={props.signal}/>
+                        <Signal isOn={props.data.isOn} isSelected={props.isSelected} hasSignal={props.signal}/>
                     </div>
                     <div className="flex-1">
-                        <Signal hasSignal={props.signal}/>
+                        <Signal isOn={props.data.isOn} isSelected={props.isSelected} hasSignal={props.signal}/>
                     </div>
                 </div>
             </div>

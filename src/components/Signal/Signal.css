@@ -6,6 +6,10 @@
     height: 0%;
 }
 
+.not-selected {
+    background-color: rgb(126, 126, 126);
+}
+
 .signal-container {
     transform: rotate(180deg);
 
