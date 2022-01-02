@@ -41,3 +41,11 @@
     color: white;
     font-weight: 800;
 }
+
+.outer-signal-container {
+    margin: 0 10px;
+}
+
+.knob-container {
+    margin: 0 5px;
+}

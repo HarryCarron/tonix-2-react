@@ -27,18 +27,25 @@ function Knob({ value, size, updateOscData }) {
     }
 
     return (
-        <div className="h-100 center-child-xy" ref={container} onMouseDown={$event => onMouseDown($event)}>
-            <svg height={ size } width={ size }>
-                <g>
-                    <circle cx={ size / 2 } cy={ size / 2 } r="20" strokeWidth="1" fill="#262626"/>
-                </g>
+        <div className="d-flex-col">
+            <div className="flex-1 center-child-xy" ref={container} onMouseDown={$event => onMouseDown($event)}>
+                <svg height={ size } width={ size }>
+                    <g>
+                        <circle cx={ size / 2 } cy={ size / 2 } r="20" strokeWidth="1" fill="#262626"/>
+                    </g>
 
-                <g className="grabbable rotating-component" style={{transform: `rotate(${30 + value * 300}deg)`}}>
-                    <circle cx={ size / 2 } cy={ size / 2 } r="13" fill="#32303d" strokeWidth="6"/>
-                    <rect x={( size / 2 ) - knobLineWidth / 2} y={ size / 2 } width={ knobLineWidth } stroke="#fffd47" strokeWidth="1" height="10" rx="3" style={{fill: '#fffd47'}}/>
-                </g>
-            </svg>
+                    <g className="grabbable rotating-component" style={{transform: `rotate(${30 + value * 300}deg)`}}>
+                        <circle cx={ size / 2 } cy={ size / 2 } r="13" fill="#32303d" strokeWidth="6"/>
+                        <rect x={( size / 2 ) - knobLineWidth / 2} y={ size / 2 } width={ knobLineWidth } stroke="#fffd47" strokeWidth="1" height="10" rx="3" style={{fill: '#fffd47'}}/>
+                    </g>
+                </svg>
+            </div>
+
+            <div className="d-flex center-child-xy">
+                <input value={value.toFixed(1)} className="selector knob-input"/>
+            </div>
         </div>
+
     );
 }
 

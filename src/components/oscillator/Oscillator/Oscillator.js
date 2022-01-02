@@ -4,6 +4,7 @@ import WaveformSelector from './WaveformSelector/WaveformSelector';
 import DetuneSelector from './DetuneSelector/DetuneSelector';
 import Knob from './../../Knob/Knob';
 import LED from './../../LED/LED';
+import Signal from './../../Signal/Signal';
 
 
 export default function Oscillator(props) {
@@ -28,7 +29,7 @@ export default function Oscillator(props) {
                 </div>
                 <div className="flex-1 d-flex center-child-xy id-container">
                     {
-                        props.data.number
+                        props.number
                     }
                 </div>
             </div>
@@ -48,7 +49,7 @@ export default function Oscillator(props) {
                     <DetuneSelector detune={props.data.detune} onChangeDetune={props.setDetune}/>
                 </div>
             </div>
-            <div className="flex-1 d-flex-col h-100">
+            <div className="flex-1 d-flex-col h-100 knob-container">
                 <div className="d-flex center-child-xy header-item">
                     Phase
                 </div>
@@ -56,7 +57,7 @@ export default function Oscillator(props) {
                     <Knob size={45} updateOscData={ data => props.updateOscData(data) } value={props.data.phase} toggleOnState={props.toggleOnState}/>
                 </div>
             </div>
-            <div className="flex-1 d-flex-col h-100">
+            <div className="flex-1 d-flex-col h-100 knob-container">
                 <div className="d-flex center-child-xy header-item">
                     Gain
                 </div>
@@ -64,7 +65,7 @@ export default function Oscillator(props) {
                     <Knob size={45} updateOscData={ data => props.updateOscData(data) } value={props.data.gain}/>
                 </div>
             </div>
-            <div className="flex-1 d-flex-col h-100">
+            <div className="flex-1 d-flex-col h-100 knob-container">
                 <div className="d-flex center-child-xy header-item">
                     Pan
                 </div>
@@ -72,7 +73,20 @@ export default function Oscillator(props) {
                     <Knob size={45} updateOscData={ data => props.updateOscData(data) } value={props.data.pan}/>
                 </div>
             </div>
+
+            <div className="flex-1 d-flex-col h-100 outer-signal-container">
+                <div className="d-flex center-child-xy header-item">
+                    Signal
+                </div>
+                <div className="control-item d-flex">
+                    <div className="flex-1">
+                        <Signal hasSignal={props.signal}/>
+                    </div>
+                    <div className="flex-1">
+                        <Signal hasSignal={props.signal}/>
+                    </div>
+                </div>
+            </div>
         </div>
     );
-
 }

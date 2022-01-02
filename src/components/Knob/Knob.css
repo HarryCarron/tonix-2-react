@@ -6,3 +6,10 @@
 .knob-input-container {
     height: 20px;
 }
+
+.knob-input {
+    width: 15px;
+    font-size: 0.7em;
+    border-radius: 5px;
+    color: #c3c3c3;
+} 

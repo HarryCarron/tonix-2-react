@@ -60,7 +60,7 @@ function SettingsRack(props) {
                 </div>
 
 
-                <div className="setting-area h-100">
+                <div className="setting-area h-100 w-100">
                     {
                         activeTab === 0 && <Overview></Overview>
                     }

@@ -10,4 +10,4 @@ function OscillatorContainer(props) {
   
 }
 
-export default React.memo(OscillatorContainer, (newState, oldState) => ['data', 'isSelected'].every(k => newState[k] === oldState[k]));
+export default React.memo(OscillatorContainer, (newState, oldState) => ['data', 'isSelected', 'signal'].every(k => newState[k] === oldState[k]));
