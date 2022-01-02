@@ -49,3 +49,16 @@
 .knob-container {
     margin: 0 5px;
 }
+
+.pan-container {
+    /* margin: 0 10px; */
+}
+.pan-keys {
+    fill: white;
+    font-size: 0.8em;
+    font-weight: bolder;
+}
+
+.signal-seperator {
+    margin: 0 2px;
+}

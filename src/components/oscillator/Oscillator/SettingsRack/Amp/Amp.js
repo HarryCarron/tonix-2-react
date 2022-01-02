@@ -10,7 +10,7 @@ class Amp extends React.Component {
     canvas;
 
     xPad = 20;
-    yPad = 30;
+    yPad = 25;
 
     globalMouseMove;
     
