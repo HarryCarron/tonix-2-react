@@ -1,0 +1,29 @@
+.additive-controls {
+    margin: 0 10px;
+    padding: 5px;
+    color: #a5a5a5;
+    border-top: 1px solid #a5a5a5;
+}
+
+.additive-tools > div {
+    margin: 0 5px;
+    width: 10px;
+}
+
+.addative-button {
+    background-color: #181818;
+    padding: 1px 10px;
+    color: #a5a5a5;
+    border: none;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 3px;
+    font-size: 0.8em;
+}
+
+.addative-button:hover {
+    color: #ffffff;
+}
+
+.clear {
+    margin-left: 10px;
+}

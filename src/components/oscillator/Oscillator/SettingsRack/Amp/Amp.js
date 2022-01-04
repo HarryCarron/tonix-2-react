@@ -62,16 +62,16 @@ class Amp extends React.Component {
     }
 
     initCanvasUtil() {
-        this.canvasUtil = new CanvasUtilities(this.ctx, this.containerWidth, this.containerHeight);
+        this.canvasUtil = new CanvasUtilities(this.canvas, this.containerWidth, this.containerHeight);
         this.canvasUtil.setStyle({
             lineCap: 'round',
             textAlign: 'center',
             font: 'bold 8px Helvetica'
         })
         .setStyleProfiles({
-            ampLine: {lineWidth: 3, strokeColor: '#E65579', lineDash:[0]},
-            ampHandle: {lineWidth: 3, strokeColor: '#FFFD47', lineDash:[]},
-            baseLine: {lineWidth: 3, strokeColor: '#C3C3CE', lineDash:[0]},
+            ampLine: {lineWidth: 2, strokeColor: '#E65579', lineDash:[0]},
+            ampHandle: {lineWidth: 2, strokeColor: '#FFFD47', lineDash:[]},
+            baseLine: {lineWidth: 1, strokeColor: '#C3C3CE', lineDash:[0]},
             valueGuideLine: {lineWidth: 1, strokeColor: '#707070', lineDash:[2, 3]},
             valueText: { fillStyle: '#C3C3CE' }
         })

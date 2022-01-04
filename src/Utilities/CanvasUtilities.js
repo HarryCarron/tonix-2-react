@@ -1,14 +1,10 @@
 class CanvasUtilities {
-    constructor(ctx, width, height) {
-        this.ctx = ctx;
+    constructor(canvas, width, height) {
+        this.initCanvas(canvas, width, height);
         this.canvasWidth = width;
         this.canvasHeight = height;
         return this;
     }
-
-    relativeXPositioning = false;
-
-    currentXPosition = 0;
 
     styleProfiles = {};
 
@@ -50,11 +46,6 @@ class CanvasUtilities {
         return this;
     }
 
-    getRelativeXCoordinates(x) {
-        this.currentXPosition += x;
-        return this.currentXPosition;
-    }
-
     text(text, x, y) {
         this.ctx.fillText(text, x, y);
         return this;
@@ -92,6 +83,17 @@ class CanvasUtilities {
         return this;
     }
 
+    rect(x, y, width, height, fill) {
+        this.ctx.beginPath();
+        if (fill) {
+            this.ctx.fillRect(x, y, width, height);
+            this.ctx.strokeRect(x, y, width, height);
+        } else {
+            this.ctx.rect(x, y, width, height);
+        }
+        this.ctx.stroke();
+    }
+
     circle(x, y, r) {
 
         if (this.relativeXPositioning) {
@@ -105,18 +107,40 @@ class CanvasUtilities {
         return this;
     }
 
-    startRelativeXPositioning() {
-        this.relativeXPositioning = true;
-        this.currentPosition = 0;
-        return this;
+    initCanvas(canvas, width, height) {
+
+        canvas.current.width = width * 3;
+        canvas.current.height = height * 3;
+        canvas.current.style.width = `${width}px`;
+        canvas.current.style.height = `${height}px`;
+
+        this.ctx = canvas.current.getContext('2d');
+        this.ctx.scale(3, 3);
+
     }
 
-    endRelativeXPositioning() {
-        this.relativePositioning = false;
-        this.currentXPosition = 0;
-        return this;
+
+    getTrueCoordinates(clientX, clientY, validate) {
+        const canvasBB = this.canvas.current.getBoundingClientRect();
+        const canvasTop = canvasBB.top;
+        const canvasLeft = canvasBB.left;
+        const relativeY = Math.floor(this.totalYTravel - ((clientY - canvasTop) - this.yPad));
+        const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
+
+        let mappedX = relativeX / this.totalXTravel
+        let mappedY = relativeY / this.totalYTravel
+
+        if (validate) {
+            return [mappedX, mappedY].map(v => v >= 1 ? 1 : v <= 0 ? 0 : v);
+        }
+    
+        return [
+            mappedX,
+            mappedY,
+        ];
     }
 
 }
+
 
 export default CanvasUtilities;

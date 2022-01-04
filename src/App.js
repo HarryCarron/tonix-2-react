@@ -13,6 +13,7 @@ function App() {
     isOn: true,
     waveForm: 1,
     detune: 0,
+    partials: [],
     amp: {
       attack: 0.1,
       attackCurve: 1,
@@ -43,9 +44,7 @@ function App() {
   const [signal, setSignal] = useState(false);
 
 
-  new GlobalEventHandlers((signal) => {
-    setSignal(signal)
-  });
+  new GlobalEventHandlers((signal) => setSignal(signal));
 
   const updateOsc = (toUpdate) => {
     const [osc, setOsc] = getContext();
