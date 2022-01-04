@@ -42,7 +42,7 @@ function Knob({ value, size, updateOscData }) {
             </div>
 
             <div className="d-flex center-child-xy">
-                <input value={value.toFixed(1)} className="selector knob-input"/>
+                <input value={value.toFixed(1)} className="selector knob-input" readOnly/>
             </div>
         </div>
 
