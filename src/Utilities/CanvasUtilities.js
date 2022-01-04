@@ -1,5 +1,11 @@
 class CanvasUtilities {
-    constructor(canvas, width, height) {
+
+    xPad = 0;
+    yPad = 0;
+
+    constructor(canvas, xPad, yPad, width, height) {
+        this.xPad = xPad;
+        this.yPad = yPad;
         this.initCanvas(canvas, width, height);
         this.canvasWidth = width;
         this.canvasHeight = height;
@@ -114,6 +120,8 @@ class CanvasUtilities {
         canvas.current.style.width = `${width}px`;
         canvas.current.style.height = `${height}px`;
 
+        this.canvas = canvas;
+
         this.ctx = canvas.current.getContext('2d');
         this.ctx.scale(3, 3);
 
@@ -121,14 +129,17 @@ class CanvasUtilities {
 
 
     getTrueCoordinates(clientX, clientY, validate) {
+
+        const xTravel = (this.canvasWidth - (this.xPad * 2));
+        const yTravel = (this.canvasHeight - (this.yPad * 2));
         const canvasBB = this.canvas.current.getBoundingClientRect();
         const canvasTop = canvasBB.top;
         const canvasLeft = canvasBB.left;
-        const relativeY = Math.floor(this.totalYTravel - ((clientY - canvasTop) - this.yPad));
+        const relativeY = Math.floor(yTravel - ((clientY - canvasTop) - this.yPad));
         const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
 
-        let mappedX = relativeX / this.totalXTravel
-        let mappedY = relativeY / this.totalYTravel
+        let mappedX = relativeX / xTravel;
+        let mappedY = relativeY / (this.canvasHeight - (this.yPad * 2));
 
         if (validate) {
             return [mappedX, mappedY].map(v => v >= 1 ? 1 : v <= 0 ? 0 : v);

@@ -7,7 +7,7 @@ import CanvasUtilities from './../../../../../Utilities/CanvasUtilities';
 
 class Additive extends React.Component {
 
-    PARTIALS_UPPER_LIMIT = 36
+    PARTIALS_UPPER_LIMIT = 32
 
     container;
     canvas;
@@ -65,23 +65,23 @@ class Additive extends React.Component {
         const width = this.totalXTravel / totalPartialsNumber;
         const partialPad = totalPartialsNumber < 10 ? 6 : 4
 
-        this.props.partials.forEach((p, i) =>     
-            this.canvasUtil.rect(
+        this.props.partials.forEach((p, i) => {
+            this.canvasUtil.setStyle({
+                fillStyle: 'rgba(230, 85, 121, 0.3)', strokeColor: '#E65579', lineWidth: 1
+            }).rect(
                 this.xPad + (width * i) + (partialPad / 2),
                 this.floor,
                 width - partialPad,
                 (this.totalYTravel * p) * -1,
                 true
             )
-        );
+        });
 
     }
 
     initCanvasUtil() {
-        this.canvasUtil = new CanvasUtilities(this.canvas, this.containerWidth, this.containerHeight);
-        this.canvasUtil.setStyle({
-            fillStyle: 'rgba(230, 85, 121, 0.3)', strokeColor: '#E65579', lineWidth: 1
-        })
+        this.canvasUtil = new CanvasUtilities(this.canvas, this.xPad, this.yPad, this.containerWidth, this.containerHeight);
+
     }
 
     incrementPartial(mode) {
@@ -113,7 +113,7 @@ class Additive extends React.Component {
     }
 
     beginPartialManipulation = (e) => {
-        this.manipulationPartial(e)
+        this.manipulatePartial(e)
         this.globalMouseMove.initiate(e => this.manipulatePartial(e));
     }
 

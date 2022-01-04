@@ -62,7 +62,7 @@ class Amp extends React.Component {
     }
 
     initCanvasUtil() {
-        this.canvasUtil = new CanvasUtilities(this.canvas, this.containerWidth, this.containerHeight);
+        this.canvasUtil = new CanvasUtilities(this.canvas, this.xPad, this.yPad, this.containerWidth, this.containerHeight);
         this.canvasUtil.setStyle({
             lineCap: 'round',
             textAlign: 'center',
@@ -113,8 +113,7 @@ class Amp extends React.Component {
             const a = o.slice(0, i + 1);
             const v = a.reduce((a, b) => a + b);
             return this.xPad + ((this.totalXTravel || 1) * v);
-        }
-        );
+        });
     }
 
     getCurveName() {
@@ -203,8 +202,6 @@ class Amp extends React.Component {
 
         // decay line
         .styleProfile('ampLine');
-
-
 
         if (this.props.amp.decayCurve === 0) {
             this.canvasUtil.line(
@@ -328,42 +325,22 @@ class Amp extends React.Component {
         return v;
     }
 
-    getTrueCoordinates(clientX, clientY) {
-        const canvasBB = this.canvas.current.getBoundingClientRect();
-        const canvasTop = canvasBB.top;
-        const canvasLeft = canvasBB.left;
-        const relativeY = Math.floor(this.totalYTravel - ((clientY - canvasTop) - this.yPad));
-        const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
-
-        const mappedX = relativeX / this.totalXTravel
-        const mappedY = relativeY / this.totalYTravel
-
-        return [
-            mappedX,
-            mappedY,
-        ];
-    }
-
-
     ampValid() {
-        const v = [
+        return [
             this.props.amp.attack,
             this.props.amp.decay,
             this.props.amp.sustainWidth,
             this.props.amp.release,
-        ].reduce((a, b) => a + b);
+        ].reduce((a, b) => a + b) <= 1;
 
-        return v <= 1
     }
 
     handleClick({clientX, clientY}, i) {
         if (!(clientX && clientY)) {
             return 
         }
-        let [x, y] = this.getTrueCoordinates(clientX, clientY);
+        let [x, y] = this.canvasUtil.getTrueCoordinates(clientX, clientY);
         
-        
-
         if (i === 0) {
             const attack = this.getCurveDetails(0);
             x = this.validateValue(x);
