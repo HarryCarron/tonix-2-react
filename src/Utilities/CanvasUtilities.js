@@ -139,16 +139,12 @@ class CanvasUtilities {
         const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
 
         let mappedX = relativeX / xTravel;
-        let mappedY = relativeY / (this.canvasHeight - (this.yPad * 2));
+        let mappedY = relativeY / yTravel;
 
         if (validate) {
-            return [mappedX, mappedY].map(v => v >= 1 ? 1 : v <= 0 ? 0 : v);
+            [mappedX, mappedY] = [mappedX, mappedY].map(v => validate ? (v >= 1 ? 1 : v <= 0 ? 0 : v) : v);
         }
-    
-        return [
-            mappedX,
-            mappedY,
-        ];
+        return [mappedX, mappedY]
     }
 
 }

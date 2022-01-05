@@ -304,8 +304,6 @@ class Amp extends React.Component {
         .styleProfile('valueText')
         .text(`R: ${this.props.amp.release.toFixed(2)} ${ releaseCurveName }`, releaseX, this.floor + 15)
 
-
-
         this.canvasUtil.styleProfile('ampHandle')
         .circle(releaseX, this.floor, 3)
 
