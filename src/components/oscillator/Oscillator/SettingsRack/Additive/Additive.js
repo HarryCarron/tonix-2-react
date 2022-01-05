@@ -87,7 +87,7 @@ class Additive extends React.Component {
     incrementPartial(mode) {
         let partials = [...this.props.partials];
         if (mode) {
-            partials.push(1);
+            partials.push(0);
         } else {
             partials.pop();
         }
