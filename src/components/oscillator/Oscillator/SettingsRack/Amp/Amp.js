@@ -133,30 +133,29 @@ class Amp extends React.Component {
     }
 
     drawAmp() {
-
-
         const [attackX, decayX, sustainWidthX, releaseX] = this.getXpositions();
         const [attackCurveName, decayCurveName, releaseCurveName] = this.getCurveName();
-
 
         this.canvasUtil
         .clear()
         .styleProfile('baseLine')
-        .line(
-            this.xPad,
-            this.floor,
-            this.containerWidth - this.xPad,
-            this.floor,
+        .lines(            
+            [this.xPad, this.floor, this.containerWidth - this.xPad, this.floor],
+            [this.xPad, this.floor, this.xPad, this.yPad]
         )
-
-        .styleProfile('baseLine')
-        .line(
-            this.xPad,
-            this.floor,
-            this.xPad,
-            this.yPad,
+        .styleProfile('valueGuideLine')
+        .lines(
+            [attackX, this.yPad, attackX, this.floor],
+            [decayX, this.sustainHeight, decayX, this.yPad],
+            [this.xPad, this.sustainHeight, decayX, this.sustainHeight]
         )
-        // attack line
+        .styleProfile('valueText')
+        .texts(
+                [`A: ${ this.props.amp.attack.toFixed(2) } ${attackCurveName}`, attackX, this.floor + 15],
+                [`D: ${ this.props.amp.decay.toFixed(2) } ${ decayCurveName }`, decayX, this.yPad - 8],
+                [`S:  ${ this.props.amp.sustain.toFixed(1) }`, this.xPad - 18, this.sustainHeight],
+                [`R: ${this.props.amp.release.toFixed(2)} ${ releaseCurveName }`, releaseX, this.floor + 15]
+        )
         .styleProfile('ampLine');
 
         if (this.props.amp.attackCurve === 0) {
@@ -185,23 +184,6 @@ class Amp extends React.Component {
                 this.yPad,
             )
         }
-        
-        this.canvasUtil.styleProfile('valueGuideLine')
-        .line(
-            attackX,
-            this.yPad,
-            attackX,
-            this.floor
-        )
-        
-        .styleProfile('ampHandle')
-        .circle(attackX, this.yPad, 3)
-
-        .styleProfile('valueText')
-        .text(`A: ${this.props.amp.attack.toFixed(2)} ${attackCurveName}`, attackX, this.floor + 15)
-
-        // decay line
-        .styleProfile('ampLine');
 
         if (this.props.amp.decayCurve === 0) {
             this.canvasUtil.line(
@@ -230,49 +212,12 @@ class Amp extends React.Component {
             )
         }
 
-        this.canvasUtil.styleProfile('valueGuideLine')
-
-        .styleProfile('ampHandle')
-        .circle(decayX, this.sustainHeight, 3)
-
-        .styleProfile('valueGuideLine')
-        .line(
-            decayX,
-            this.sustainHeight,
-            decayX,
-            this.yPad,
-        )
-
-
-        .styleProfile('valueText')
-        .text( `D: ${ this.props.amp.decay.toFixed(2) } ${ decayCurveName }`, decayX, this.yPad - 8)
-
-
-        // sustain line
-        .styleProfile('ampLine')
-        .line(
+        this.canvasUtil.line(
             decayX,
             this.sustainHeight,
             sustainWidthX,
             this.sustainHeight,
         )
-
-        .styleProfile('valueGuideLine')
-        .line(
-            this.xPad,
-            this.sustainHeight,
-            decayX,
-            this.sustainHeight
-        )
-
-        .styleProfile('ampHandle')
-        .circle(sustainWidthX, this.sustainHeight, 3)
-
-        .styleProfile('valueText')
-        .text('S: ' + this.props.amp.sustain.toFixed(1), this.xPad - 18, this.sustainHeight)
-
-        // release line
-        .styleProfile('ampLine');
 
         if (this.props.amp.releaseCurve === 0) {
             this.canvasUtil.line(
@@ -300,16 +245,15 @@ class Amp extends React.Component {
                 this.floor,
             )
         }
-        this.canvasUtil
-        .styleProfile('valueText')
-        .text(`R: ${this.props.amp.release.toFixed(2)} ${ releaseCurveName }`, releaseX, this.floor + 15)
-
-        this.canvasUtil.styleProfile('ampHandle')
-        .circle(releaseX, this.floor, 3)
-
-        .styleProfile('valueText')
-        .text('-', sustainWidthX, this.sustainHeight);
         
+        this.canvasUtil.styleProfile('ampHandle')
+        .circles(
+                [attackX, this.yPad, 3],
+                [decayX, this.sustainHeight, 3],
+                [sustainWidthX, this.sustainHeight, 3],
+                [releaseX, this.floor, 3]
+            );
+
 
     }
 
@@ -361,12 +305,10 @@ class Amp extends React.Component {
             sustain[3](y);
         }
         if (i === 3) {
-            x = this.validateValue((this.props.amp.attack + this.props.amp.decay + this.sustainWidth) - x);
-            y = this.validateValue(y);
-            const decay = this.getCurveDetails(2);
-            const sustain = this.getCurveDetails(2);
-            decay[4](x);
-            sustain[3](y);
+            x = this.validateValue(x - this.props.amp.release);
+            const release = this.getCurveDetails(3);
+            release[3](x);
+            console.log(x);
         }
         if (this.ampValid()) {
             this.props.updateOscData({amp: this.props.amp});
@@ -400,7 +342,7 @@ class Amp extends React.Component {
             newCurve = curve + 1;
         }
         curveDetails[2](newCurve);
-        this.props.updateOscData({amp: this.props.amp})
+        this.props.updateOscData({amp: this.props.amp});
     }
 
     

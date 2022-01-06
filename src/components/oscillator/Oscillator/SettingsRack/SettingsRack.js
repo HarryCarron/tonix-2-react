@@ -80,6 +80,5 @@ function SettingsRack(props) {
 
 export default React.memo(SettingsRack,
     (prevProps, nextProps) => {
-        console.log(prevProps.activeOscillator === nextProps.activeOscillator);
         return prevProps.activeOscillator === nextProps.activeOscillator
     });

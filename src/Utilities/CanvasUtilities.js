@@ -52,8 +52,23 @@ class CanvasUtilities {
         return this;
     }
 
+    texts(...texts) {
+        texts.forEach(text => this.text(...text));
+        return this;
+    }
+
     text(text, x, y) {
         this.ctx.fillText(text, x, y);
+        return this;
+    }
+
+    lines(...lines) {
+        lines.forEach(line => this.line(...line))
+        return this;
+    }
+    
+    circles(...circles) {
+        circles.forEach(circle => this.circle(...circle))
         return this;
     }
 
