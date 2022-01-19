@@ -10,6 +10,7 @@ function SettingRackTab(props) {
 
     let classes = 'setting-tab flex-1 d-flex center-child-y';
 
+
     if (props.selected) {
         classes += ' selected-setting';
     }
@@ -25,6 +26,9 @@ function SettingRackTab(props) {
 
 function SettingsRack(props) {
     const [activeTab, setActiveTab] = useState(1);
+
+    const width = 320;
+    const height = 120;
 
     const settings = [
         {
@@ -47,13 +51,13 @@ function SettingsRack(props) {
                 <div className="d-flex-col tab-seperator">
                     { 
                         settings.map(
-                            setting =>
+                            ({id, label}) =>
                                     <SettingRackTab
-                                        key={setting.id}
-                                        id={setting.id}
-                                        onChangeTab={setActiveTab}
-                                        selected={activeTab === setting.id}
-                                        label={setting.label}
+                                        key={ id }
+                                        id={ id }
+                                        onChangeTab={ setActiveTab }
+                                        selected={ activeTab === id }
+                                        label={ label }
                                     />
                         )
                     }
@@ -65,7 +69,7 @@ function SettingsRack(props) {
                         activeTab === 0 && <Overview></Overview>
                     }
                     {
-                        activeTab === 1 && <Amp amp={props.activeOscillator.amp} updateOscData={props.updateOscData}></Amp>
+                        activeTab === 1 && <Amp dims={{ height, width }} amp={{...props.activeOscillator.amp}} updateOscData={props.updateOscData}></Amp>
                     }
                     {
                         activeTab === 2 && <Additive partials={props.activeOscillator.partials} updateOscData={props.updateOscData}></Additive>

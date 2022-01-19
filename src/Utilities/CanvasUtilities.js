@@ -52,23 +52,20 @@ class CanvasUtilities {
         return this;
     }
 
-    texts(...texts) {
-        texts.forEach(text => this.text(...text));
-        return this;
-    }
-
     text(text, x, y) {
         this.ctx.fillText(text, x, y);
         return this;
     }
 
-    lines(...lines) {
-        lines.forEach(line => this.line(...line))
+    multiple(fn, ...params) {
+        params.forEach(param => fn(this, param));
         return this;
     }
-    
-    circles(...circles) {
-        circles.forEach(circle => this.circle(...circle))
+
+    conditional(conditions) {
+        conditions
+        .filter(condition => condition[1])
+        .forEach(condition => condition[0](this));
         return this;
     }
 
@@ -88,6 +85,7 @@ class CanvasUtilities {
 
         return this;
     }
+
 
 
     curve(startX, startY, cpX, cpY, endX, endY) {

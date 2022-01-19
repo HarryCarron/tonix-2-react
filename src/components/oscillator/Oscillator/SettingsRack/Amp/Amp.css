@@ -4,6 +4,7 @@
     top: 0;
     left: 0;
     opacity: 0.8;
+    cursor: pointer;
 }
 
 .canvas-layer {
@@ -13,4 +14,20 @@
 .interaction-layer > div > .interaction-section {
     height: 100%;
     cursor: pointer;
+}
+
+.interaction-layer rect {
+    height: 100%;
+    fill-opacity: 0;
+    cursor: pointer;
+}
+
+.interaction-layer circle {
+    height: 100%;
+    cursor: grab;
+    fill-opacity: 0;
+}
+.interaction-layer circle:active {
+    cursor: grabbing;
+
 }
