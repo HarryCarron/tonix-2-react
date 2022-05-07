@@ -1,0 +1,19 @@
+.effect {
+    padding: 10px;
+    margin: 5px;
+    background-color: #313243;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.effect-topbar {
+    margin-bottom: 7px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #43424c;
+}
+
+.property-label {
+    margin-bottom: 5px;
+    color: #dedede;
+}

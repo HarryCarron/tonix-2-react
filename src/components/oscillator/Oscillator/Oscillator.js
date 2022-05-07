@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import WaveformSelector from './WaveformSelector/WaveformSelector';
 import DetuneSelector from './DetuneSelector/DetuneSelector';
-import Knob from './../../Knob/Knob';
-import LED from './../../LED/LED';
-import Signal from './../../Signal/Signal';
+import Knob from '../../Knob/Knob';
+import LED from '../../LED/LED';
+import Signal from '../../Signal/Signal';
 import SettingsRack from './SettingsRack/SettingsRack';
 
 export default function Oscillator(props) {

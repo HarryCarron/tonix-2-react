@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import './Additive.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import GlobalEventHandlers from './../../../../../Utilities/GlobalEventHandlers';
-import CanvasUtilities from './../../../../../Utilities/CanvasUtilities';
+import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
+import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 
 const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 24;
