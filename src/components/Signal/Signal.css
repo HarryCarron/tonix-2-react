@@ -12,14 +12,12 @@
 
 .signal-container {
     transform: rotate(180deg);
-
-} 
+}
 
 .inner-singal-container {
-    background-color: #262626;
+    background-color: #121010;
     width: 4px;
     margin: 5px 0;
     border-radius: 25px;
     overflow: hidden;
-
 }

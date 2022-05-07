@@ -1,21 +1,19 @@
 .settings {
-    font-family: 'Roboto Mono', monospace;
-    color: rgb(207 207 207);
-
+    color: #cdcccc;
+    border-left: 0px solid white;
 }
 
 .selected-setting {
     font-weight: 700;
     color: #ffffff;
     background-color: #141414;
+    transition: 0.2s;
 }
 
 .settings-rack {
+    border-top: 1px solid #1e1f29;
     background-color: rgb(28 28 28);
-    border-radius: 20px;
-    margin: 10px;
     overflow: hidden;
-    border: 1px solid #141414;
 }
 
 .setting-area {
@@ -26,7 +24,7 @@
     border-right: 1px solid #121212;
 }
 
-.tab-seperator > .setting-tab:not(:last-child) {
+.tab-seperator>.setting-tab:not(:last-child) {
     border-bottom: 1px solid #121212;
 }
 
@@ -37,4 +35,9 @@
 
 .setting-tab {
     padding: 0 10px;
+    font-size: 0.8em;
+}
+
+.tabs {
+    width: 60px;
 }

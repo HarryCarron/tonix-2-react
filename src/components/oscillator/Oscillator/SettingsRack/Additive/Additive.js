@@ -1,131 +1,101 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Additive.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from './../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from './../../../../../Utilities/CanvasUtilities';
 
-class Additive extends React.Component {
+const PARTIALS_UPPER_LIMIT = 32
+const TOOL_BAR_HEIGHT = 24;
+export default function Additive(props) {
 
-    PARTIALS_UPPER_LIMIT = 32
+    const xPad = 10;
+    const yPad = 15;
 
-    container;
-    canvas;
+    const canvas = useRef();
 
-    xPad = 10;
-    yPad = 15;
+    const utils = useRef({
+        globalMouseMove: new GlobalEventHandlers(),
+        canvas: null
+    })
 
-    partialPad = 8;
+    const renderValues = useRef({
+        totalXTravel: (props.dims.width - (xPad * 2)),
+        totalYTravel: (props.dims.height - (xPad * 2)),
+        floor: (props.dims.height - yPad / 2),
+    })
 
-
-    totalXTravel
-    totalYTravel
-
-
-    constructor(props) {
-        super(props);
-        this.container = React.createRef();
-        this.canvas = React.createRef();
-
-        this.state = {
-            containerWidth: 0,
-            containerHeight: 0,
-        }
-    }
-
-    componentDidMount() {
-        this.globalMouseMove = new GlobalEventHandlers();
-
-        this.setState({
-            containerWidth: this.container.current.offsetWidth,
-            containerHeight: this.container.current.offsetHeight
-        });
-
-        this.containerWidth = this.container.current.offsetWidth;
-        this.containerHeight = this.container.current.offsetHeight;
-
-
-        this.totalXTravel = (this.containerWidth - (this.xPad * 2));
-        this.totalYTravel = (this.containerHeight - (this.yPad * 2));
-
-        this.floor = (this.containerHeight - this.yPad / 2);
-
-        this.initCanvasUtil();
-
-    }
-
-    componentDidUpdate() {
-        this.canvasUtil.clear();
-        this.draw();
-    }
-
-    draw() {
-
-        const totalPartialsNumber = this.props.partials.length;
-        const width = this.totalXTravel / totalPartialsNumber;
-        const partialPad = totalPartialsNumber < 10 ? 6 : 4
-
-        this.props.partials.forEach((p, i) => {
-            this.canvasUtil.setStyle({
-                fillStyle: 'rgba(230, 85, 121, 0.3)', strokeColor: '#E65579', lineWidth: 1
-            }).rect(
-                this.xPad + (width * i) + (partialPad / 2),
-                this.floor,
-                width - partialPad,
-                (this.totalYTravel * p) * -1,
-                true
-            )
-        });
-
-    }
-
-    initCanvasUtil() {
-        this.canvasUtil = new CanvasUtilities(this.canvas, this.xPad, this.yPad, this.containerWidth, this.containerHeight);
-
-    }
-
-    incrementPartial(mode) {
-        let partials = [...this.props.partials];
+    const incrementPartial = (mode) => {
+        let partials = [...props.partials];
         if (mode) {
             partials.push(0);
         } else {
             partials.pop();
         }
 
-        if (partials.length <= this.PARTIALS_UPPER_LIMIT && partials.length >= 0) {
-            this.updatePartials(partials);
+        if (partials.length <= PARTIALS_UPPER_LIMIT && partials.length >= 0) {
+            updatePartials(partials);
         }
     }
 
-    updatePartials(partials) {
-        this.props.updateOscData({partials})
+    const updatePartials = (partials) => {
+        props.updateOscData({partials})
     }
 
-    randomize() {
-        const length = Math.floor(Math.random() * this.PARTIALS_UPPER_LIMIT);
+    const randomize = () => {
+        const length = Math.floor(Math.random() * PARTIALS_UPPER_LIMIT);
         const partials = Array.from({length}).map(_ => Math.random());
-        this.updatePartials(partials);
+        updatePartials(partials);
     }
 
-    clear() {
+    const clear = () => {
         const partials = [];
-        this.updatePartials(partials);
+        updatePartials(partials);
     }
 
-    beginPartialManipulation = (e) => {
-        this.manipulatePartial(e)
-        this.globalMouseMove.initiate(e => this.manipulatePartial(e));
+    const beginPartialManipulation = (e) => {
+        manipulatePartial(e)
+        utils.current.globalMouseMove.initiate(e => manipulatePartial(e));
     }
 
-    manipulatePartial({clientX, clientY}) {
+    useEffect(() => {
+        utils.current.canvas = new CanvasUtilities(canvas, xPad, yPad, props.dims.width, props.dims.height - TOOL_BAR_HEIGHT, true);
+        utils.current.canvas.setStyle({
+            fillStyle: 'rgba(230, 85, 121, 0.3)', strokeColor: '#E65579', lineWidth: 1
+        });
+
+    }, []);
+
+    useEffect(() => {
+        utils.current.canvas.clear();
+
+        const totalPartialsNumber = props.partials.length;
+        const width = renderValues.current.totalXTravel / totalPartialsNumber;
+        const partialPad = totalPartialsNumber < 10 ? 6 : 4
+
+        utils.current.canvas
+            .multiple(
+                (ctx, params) => ctx.rect(...params),
+                ...props.partials.map((partial, i) => [
+                    xPad + (width * i) + (partialPad / 2),
+                    renderValues.current.floor,
+                    width - partialPad,
+                    (renderValues.current.totalYTravel * partial) * -1,
+                    true
+                ])
+            )
+
+    }, [props.partials]);
+
+    const manipulatePartial = ({clientX, clientY}) => {
         if (!(clientX && clientY)) {
             return 
         }
-        let [x, y] = this.canvasUtil.getTrueCoordinates(clientX, clientY, true);
+        let [x, y] = utils.current.canvas.getTrueCoordinates(clientX, clientY, true);
 
-        const hoveredPartial = Math.floor(x * this.props.partials.length);
+        const hoveredPartial = Math.floor(x * props.partials.length);
 
-        const partials = this.props.partials;
+        const partials = props.partials;
 
         if (hoveredPartial >= partials.length) {
             return;
@@ -133,41 +103,37 @@ class Additive extends React.Component {
 
         partials[hoveredPartial] = y;
 
-        this.props.updateOscData(partials);
+        props.updateOscData(partials);
     }
 
 
-    render() {
-        return (
-            <div className="w-100 h-100 d-flex-col">
-                <div className="flex-1 w-100" ref={ this.container }>
-                    <canvas onMouseDown={this.beginPartialManipulation} ref={ this.canvas } height="0"></canvas>
+    return (
+        <div className="d-flex-col" style={{ height: props.dims.height, width: props.dims.width }}>
+            <div className="flex-1 w-100">
+                <canvas onMouseDown={beginPartialManipulation} ref={ canvas } height="0"></canvas>
+            </div>
+            <div className="additive-controls d-flex">
+                <div className="flex-1">
+                    <button className="addative-button pointer" onClick={() => randomize()}>
+                        RANDOMIZE
+                    </button>
+                    <button className="addative-button pointer clear" onClick={() => clear()}>
+                        CLEAR
+                    </button>
                 </div>
-                <div className="additive-controls d-flex">
-                    <div className="flex-1">
-                        <button className="addative-button pointer" onClick={() => this.randomize()}>
-                            RANDOMIZE
-                        </button>
-                        <button className="addative-button pointer clear" onClick={() => this.clear()}>
-                            CLEAR
-                        </button>
+                <div className="additive-tools d-flex">
+                    <div className="d-flex center-child-xy">
+                        <FontAwesomeIcon icon={faMinus} className="pointer" onClick={() => incrementPartial(false)}/>
                     </div>
-                    <div className="additive-tools d-flex">
-                        <div className="d-flex center-child-xy">
-                            <FontAwesomeIcon icon={faMinus} className="pointer" onClick={() => this.incrementPartial(false)}/>
-                        </div>
-                        <div className="d-flex center-child-xy">
-                            { this.props.partials.length }
-                        </div>
-                        <div className="d-flex center-child-xy">
-                            <FontAwesomeIcon icon={faPlus} className="pointer" onClick={() => this.incrementPartial(true)}/>
-                        </div>
+                    <div className="d-flex center-child-xy">
+                        { props.partials.length }
+                    </div>
+                    <div className="d-flex center-child-xy">
+                        <FontAwesomeIcon icon={faPlus} className="pointer" onClick={() => incrementPartial(true)}/>
                     </div>
                 </div>
             </div>
-        );
-    }
-    
+        </div>
+    );
 }
 
-export default Additive;

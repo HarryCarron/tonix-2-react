@@ -11,7 +11,7 @@
     position: relative;
 }
 
-.interaction-layer > div > .interaction-section {
+.interaction-layer>div>.interaction-section {
     height: 100%;
     cursor: pointer;
 }
@@ -27,7 +27,7 @@
     cursor: grab;
     fill-opacity: 0;
 }
+
 .interaction-layer circle:active {
     cursor: grabbing;
-
 }

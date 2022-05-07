@@ -1,12 +1,11 @@
 class CanvasUtilities {
-
     xPad = 0;
     yPad = 0;
 
-    constructor(canvas, xPad, yPad, width, height) {
+    constructor(canvas, xPad, yPad, width, height, setCanvasDims) {
         this.xPad = xPad;
         this.yPad = yPad;
-        this.initCanvas(canvas, width, height);
+        this.initCanvas(canvas, width, height, setCanvasDims);
         this.canvasWidth = width;
         this.canvasHeight = height;
         return this;
@@ -36,18 +35,34 @@ class CanvasUtilities {
     setStyle(styles) {
         Object.keys(styles).forEach(key => {
             const value = styles[key];
-            switch(key) {
-                case 'strokeColor': this.ctx.strokeStyle = value; break;
-                case 'lineWidth': this.ctx.lineWidth = value; break;
-                case 'fillColor': this.ctx.fillStyle = value; break;
-                case 'lineCap': this.ctx.lineCap = value; break;
-                case 'lineDash': this.ctx.setLineDash(value); break;
-                case 'font': this.ctx.font = value; break;
-                case 'textAlign': this.ctx.textAlign = value; break;
-                case 'fillStyle': this.ctx.fillStyle = value; break;
+            switch (key) {
+                case 'strokeColor':
+                    this.ctx.strokeStyle = value;
+                    break;
+                case 'lineWidth':
+                    this.ctx.lineWidth = value;
+                    break;
+                case 'fillColor':
+                    this.ctx.fillStyle = value;
+                    break;
+                case 'lineCap':
+                    this.ctx.lineCap = value;
+                    break;
+                case 'lineDash':
+                    this.ctx.setLineDash(value);
+                    break;
+                case 'font':
+                    this.ctx.font = value;
+                    break;
+                case 'textAlign':
+                    this.ctx.textAlign = value;
+                    break;
+                case 'fillStyle':
+                    this.ctx.fillStyle = value;
+                    break;
                 default:
-            };
-        })
+            }
+        });
 
         return this;
     }
@@ -64,13 +79,12 @@ class CanvasUtilities {
 
     conditional(conditions) {
         conditions
-        .filter(condition => condition[1])
-        .forEach(condition => condition[0](this));
+            .filter(condition => condition[1])
+            .forEach(condition => condition[0](this));
         return this;
     }
 
     line(x1, y1, x2, y2) {
-
         this.ctx.beginPath();
 
         if (this.relativeXPositioning) {
@@ -86,12 +100,8 @@ class CanvasUtilities {
         return this;
     }
 
-
-
     curve(startX, startY, cpX, cpY, endX, endY) {
-
         this.ctx.beginPath();
-
 
         this.ctx.moveTo(startX, startY);
         this.ctx.lineTo(startX, startY);
@@ -113,8 +123,9 @@ class CanvasUtilities {
         this.ctx.stroke();
     }
 
-    circle(x, y, r) {
+    arcRect() {}
 
+    circle(x, y, r) {
         if (this.relativeXPositioning) {
             x = this.getRelativeXCoordinates(x);
         }
@@ -122,45 +133,46 @@ class CanvasUtilities {
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, 0, 2 * Math.PI);
         this.ctx.stroke();
-        
+
         return this;
     }
 
-    initCanvas(canvas, width, height) {
-
-        canvas.current.width = width * 3;
-        canvas.current.height = height * 3;
-        canvas.current.style.width = `${width}px`;
-        canvas.current.style.height = `${height}px`;
+    initCanvas(canvas, width, height, setCanvasDims) {
+        if (setCanvasDims) {
+            canvas.current.width = width * 3;
+            canvas.current.height = height * 3;
+            canvas.current.style.width = `${width}px`;
+            canvas.current.style.height = `${height}px`;
+        }
 
         this.canvas = canvas;
 
         this.ctx = canvas.current.getContext('2d');
-        this.ctx.scale(3, 3);
 
+        this.ctx.scale(3, 3);
     }
 
-
     getTrueCoordinates(clientX, clientY, validate) {
-
-        const xTravel = (this.canvasWidth - (this.xPad * 2));
-        const yTravel = (this.canvasHeight - (this.yPad * 2));
+        const xTravel = this.canvasWidth - this.xPad * 2;
+        const yTravel = this.canvasHeight - this.yPad * 2;
         const canvasBB = this.canvas.current.getBoundingClientRect();
         const canvasTop = canvasBB.top;
         const canvasLeft = canvasBB.left;
-        const relativeY = Math.floor(yTravel - ((clientY - canvasTop) - this.yPad));
-        const relativeX = Math.floor((clientX - canvasLeft) - this.xPad);
+        const relativeY = Math.floor(
+            yTravel - (clientY - canvasTop - this.yPad)
+        );
+        const relativeX = Math.floor(clientX - canvasLeft - this.xPad);
 
         let mappedX = relativeX / xTravel;
         let mappedY = relativeY / yTravel;
 
         if (validate) {
-            [mappedX, mappedY] = [mappedX, mappedY].map(v => validate ? (v >= 1 ? 1 : v <= 0 ? 0 : v) : v);
+            [mappedX, mappedY] = [mappedX, mappedY].map(v =>
+                validate ? (v >= 1 ? 1 : v <= 0 ? 0 : v) : v
+            );
         }
-        return [mappedX, mappedY]
+        return [mappedX, mappedY];
     }
-
 }
-
 
 export default CanvasUtilities;
