@@ -14,8 +14,9 @@ export default function Oscillator(props) {
         isOn: true,
         waveForm: 1,
         detune: 0,
-        partials: [],
     });
+
+    const [partials, setPartials] = useState([]);
 
     let classes = 'oscillator d-flex-col';
 
@@ -121,7 +122,12 @@ export default function Oscillator(props) {
                 </div>
             </div>
 
-            <SettingsRack height={90} width={300}></SettingsRack>
+            <SettingsRack
+                partials={[...partials]}
+                setPartials={setPartials}
+                height={90}
+                width={300}
+            ></SettingsRack>
         </div>
     );
 }
