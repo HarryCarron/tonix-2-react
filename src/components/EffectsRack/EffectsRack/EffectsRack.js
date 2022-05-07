@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ReactCSSTransitionGroup } from 'react-transition-group';
 import { Menu, SubMenu, MenuItem, MenuButton } from '@szhsin/react-menu';
+import PingPongDelay from '../PingPongDelay/PingPongDelay';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import '../effect.css';
@@ -17,7 +18,7 @@ export function EffectsRack(props) {
             children: [
                 {
                     label: 'Ping Pong Delay',
-                    component: null,
+                    component: PingPongDelay,
                     id: 0,
                 },
                 {
@@ -96,14 +97,10 @@ export function EffectsRack(props) {
     ];
 
     const addEffect = effect => {
-        setActiveEffects(state => {
-            console.log(state);
-            return [...activeEffects, effect];
-        });
+        setActiveEffects(() => [...activeEffects, effect]);
     };
 
     const removeEffect = effect => {
-        console.log(effect);
         const newActiveEffects = [...activeEffects];
         const effectToRemoveID = newActiveEffects.findIndex(
             activeEffect => activeEffect === effect
@@ -113,11 +110,9 @@ export function EffectsRack(props) {
     };
 
     return (
-        <div>
-            <div className="d-flex">
-                <div className="flex-1 title d-flex center-child-y">
-                    Effects
-                </div>
+        <div class="d-flex-col h-100">
+            <div className="d-flex title">
+                <div className="flex-1"></div>
                 <div className="d-flex center-child-xy icon-container">
                     <Menu
                         menuButton={<MenuButton>Open menu</MenuButton>}
@@ -145,14 +140,12 @@ export function EffectsRack(props) {
                     </Menu>
                 </div>
             </div>
-            <div>
+            <div class="flex-1 active-error-area">
                 {activeEffects.map((effect, index) => (
                     <div className="effect">
-                        <div className="d-flex">
-                            <div className="flex-1 bold effect-topbar">
-                                {effect.label}
-                            </div>
-                            <div>
+                        <div className="d-flex effect-topbar">
+                            <div className="flex-1 bold">{effect.label}</div>
+                            <div className="d-flex center-child-xy">
                                 <FontAwesomeIcon
                                     icon={faTimes}
                                     className="pointer"

@@ -14,13 +14,13 @@ function App() {
     return (
         <div className="main-container d-flex center-child-xy">
             <div className="synth d-flex">
-                <div className="h-100">
+                <div className="h-100 oscillator-area">
                     <OscillatorContainer number={1} signal={signal} />
                     <OscillatorContainer number={2} signal={signal} />
                     <OscillatorContainer number={3} signal={signal} />
                 </div>
 
-                <div className="effects-filters-container d-flex-col filter-area">
+                <div className="effects-container h-100 d-flex-col filter-area">
                     <EffectsRack></EffectsRack>
                 </div>
             </div>

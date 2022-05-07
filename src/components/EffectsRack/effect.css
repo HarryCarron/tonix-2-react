@@ -1,19 +1,25 @@
 .effect {
     padding: 10px;
-    margin: 5px;
-    background-color: #313243;
+    background-color: #3e3f55;
     color: white;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin: 1px;
+    margin-bottom: 8px;
+}
+
+.effect:hover {
+    background-color: #4e5069;
+    outline: 1px solid #606060;
 }
 
 .effect-topbar {
     margin-bottom: 7px;
     padding-bottom: 7px;
-    border-bottom: 1px solid #43424c;
+    border-bottom: 1px solid #646371;
 }
 
 .property-label {
     margin-bottom: 5px;
     color: #dedede;
+    font-size: 0.9em;
 }

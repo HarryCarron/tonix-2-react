@@ -9,7 +9,7 @@ const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 24;
 export default function Additive(props) {
     const xPad = 10;
-    const yPad = 10;
+    const yPad = 5;
 
     const canvas = useRef();
 
@@ -126,7 +126,10 @@ export default function Additive(props) {
                     height="0"
                 ></canvas>
             </div>
-            <div className="additive-controls d-flex">
+            <div
+                className="additive-controls d-flex"
+                style={{ height: TOOL_BAR_HEIGHT }}
+            >
                 <div className="flex-1 d-flex center-child-y">
                     <button
                         className="addative-button pointer"

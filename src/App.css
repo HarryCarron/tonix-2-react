@@ -1,6 +1,5 @@
 .synth {
-    /* width: 1000px; */
-    /* height: 600px; */
+    height: 600px;
     background-color: #22232F;
     overflow: hidden;
     border-radius: 28px;
@@ -12,18 +11,21 @@
     width: 100wv;
 }
 
-.effects-filters-container {
+.effects-container {
     width: 250px;
 }
 
 .filter-area {
     margin: 8px;
     border-radius: 20px;
-    margin-left: 0;
 }
 
 .icon-container {
     padding: 15px;
     font-size: 1.2em;
     color: white;
+}
+
+.oscillator-area {
+    border-right: 1px solid #48495c;
 }

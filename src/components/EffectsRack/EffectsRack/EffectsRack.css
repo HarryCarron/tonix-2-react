@@ -2,3 +2,7 @@
     font-size: 1.3em;
     color: white;
 }
+
+.active-error-area {
+    overflow: auto;
+}

@@ -1,12 +1,9 @@
 .additive-controls {
-    height: 24px;
     margin: 0 10px;
-    /* padding: 5px; */
     color: #a5a5a5;
-    /* border-top: 1px solid #a5a5a5; */
 }
 
-.additive-tools > div {
+.additive-tools>div {
     margin: 0 5px;
     width: 10px;
 }
