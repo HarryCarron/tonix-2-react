@@ -17,3 +17,11 @@
 .input-container {
     margin-top: 3px;
 }
+
+.top {
+    fill: #32303d;
+}
+
+.top:hover {
+    fill: #585663;
+}

@@ -1,21 +1,16 @@
 .effect {
-    padding: 10px;
+    padding: 10px 0;
     background-color: #3e3f55;
     color: white;
     border-radius: 10px;
     margin: 1px;
     margin-bottom: 8px;
-}
-
-.effect:hover {
-    background-color: #4e5069;
-    outline: 1px solid #606060;
+    border: 1px solid #3c3d4e;
 }
 
 .effect-topbar {
-    margin-bottom: 7px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid #646371;
+    margin-bottom: 10px;
+    padding: 0 10px;
 }
 
 .property-label {

@@ -5,3 +5,7 @@
 .space-around {
     justify-content: space-around;
 }
+
+.knobs {
+    margin-top: 10px;
+}

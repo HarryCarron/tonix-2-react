@@ -52,6 +52,7 @@ function Knob({ value, size, updateOscData }) {
                             r="13"
                             fill="#32303d"
                             strokeWidth="6"
+                            className="top"
                         />
                         <rect
                             x={size / 2 - knobLineWidth / 2}

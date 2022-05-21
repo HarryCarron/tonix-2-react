@@ -126,7 +126,7 @@ export default function Oscillator(props) {
                 partials={[...partials]}
                 setPartials={setPartials}
                 height={90}
-                width={300}
+                width={268}
             ></SettingsRack>
         </div>
     );

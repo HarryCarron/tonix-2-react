@@ -112,6 +112,19 @@ class CanvasUtilities {
         return this;
     }
 
+    fill() {
+        this.ctx.fillStyle = 'rgba(254, 95, 85, 0.3)';
+        this.ctx.fill();
+        return this;
+    }
+
+    path(paths) {
+        this.ctx.beginPath();
+        paths.forEach(path => this.ctx.bezierCurveTo(...path));
+        this.ctx.stroke();
+        return this;
+    }
+
     rect(x, y, width, height, fill) {
         this.ctx.beginPath();
         if (fill) {

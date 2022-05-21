@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import './EffectsRack.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { ReactCSSTransitionGroup } from 'react-transition-group';
 import { Menu, SubMenu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import PingPongDelay from '../PingPongDelay/PingPongDelay';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import '../effect.css';
+import LED from '../../LED/LED';
 
 export function EffectsRack(props) {
     const [activeEffects, setActiveEffects] = useState([]);
@@ -18,7 +18,7 @@ export function EffectsRack(props) {
             children: [
                 {
                     label: 'Ping Pong Delay',
-                    component: PingPongDelay,
+                    component: <PingPongDelay />,
                     id: 0,
                 },
                 {
@@ -101,16 +101,18 @@ export function EffectsRack(props) {
     };
 
     const removeEffect = effect => {
-        const newActiveEffects = [...activeEffects];
-        const effectToRemoveID = newActiveEffects.findIndex(
-            activeEffect => activeEffect === effect
-        );
-        newActiveEffects.splice(effectToRemoveID, 1);
-        setActiveEffects(newActiveEffects);
+        setActiveEffects(() => {
+            const newActiveEffects = [...activeEffects];
+            const effectToRemoveID = newActiveEffects.findIndex(
+                activeEffect => activeEffect === effect
+            );
+            newActiveEffects.splice(effectToRemoveID, 1);
+            return newActiveEffects;
+        });
     };
 
     return (
-        <div class="d-flex-col h-100">
+        <div className="d-flex-col h-100">
             <div className="d-flex title">
                 <div className="flex-1"></div>
                 <div className="d-flex center-child-xy icon-container">
@@ -118,21 +120,26 @@ export function EffectsRack(props) {
                         menuButton={<MenuButton>Open menu</MenuButton>}
                         transition
                     >
-                        {effects.map(effect =>
+                        {effects.map((effect, fxi) =>
                             effect.children ? (
-                                <SubMenu label={effect.label}>
-                                    {effect.children.map(child => (
-                                        <>
-                                            <MenuItem
-                                                onClick={() => addEffect(child)}
-                                            >
-                                                {child.label}
-                                            </MenuItem>
-                                        </>
+                                <SubMenu
+                                    key={'list2 ' + fxi}
+                                    label={effect.label}
+                                >
+                                    {effect.children.map((child, fxci) => (
+                                        <MenuItem
+                                            key={fxci}
+                                            onClick={() => addEffect(child)}
+                                        >
+                                            {child.label}
+                                        </MenuItem>
                                     ))}
                                 </SubMenu>
                             ) : (
-                                <MenuItem onClick={() => addEffect(effect)}>
+                                <MenuItem
+                                    key={'list3 ' + fxi}
+                                    onClick={() => addEffect(effect)}
+                                >
                                     {effect.label}
                                 </MenuItem>
                             )
@@ -140,11 +147,19 @@ export function EffectsRack(props) {
                     </Menu>
                 </div>
             </div>
-            <div class="flex-1 active-error-area">
+            <div className="flex-1 active-error-area">
                 {activeEffects.map((effect, index) => (
-                    <div className="effect">
+                    <div key={'list ' + index} className="effect">
                         <div className="d-flex effect-topbar">
-                            <div className="flex-1 bold">{effect.label}</div>
+                            <div>
+                                <LED
+                                    isOn={true}
+                                    updateOscData={() => null}
+                                ></LED>
+                            </div>
+                            <div className="flex-1 bold effect-label">
+                                {effect.label}
+                            </div>
                             <div className="d-flex center-child-xy">
                                 <FontAwesomeIcon
                                     icon={faTimes}
@@ -153,10 +168,7 @@ export function EffectsRack(props) {
                                 />
                             </div>
                         </div>
-
-                        <React.Fragment key={index}>
-                            {effect.component()}
-                        </React.Fragment>
+                        {effect.component}
                     </div>
                 ))}
             </div>
