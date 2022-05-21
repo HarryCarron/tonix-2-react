@@ -4,8 +4,8 @@ import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
 
 export function Amp(props) {
-    const xPad = 35;
-    const yPad = 20;
+    const xPad = 15;
+    const yPad = 10;
 
     let previousValue = 0;
 
@@ -21,6 +21,19 @@ export function Amp(props) {
     });
 
     const utils = useRef({ globalMouseMove: new GlobalEventHandlers() });
+
+    const getCurveName = () =>
+        [amp.attackCurve, amp.decayCurve, amp.releaseCurve].map(curve => {
+            if (curve === 0) {
+                return 'LIN';
+            }
+            if (curve === 1) {
+                return 'EXP';
+            }
+            return 'COS';
+        });
+
+    const [attackCurveName, decayCurveName, releaseCurveName] = getCurveName();
 
     const ampValues = useRef({
         height: props.dims.height,
@@ -90,20 +103,7 @@ export function Amp(props) {
             );
         };
 
-        const getCurveName = () =>
-            [amp.attackCurve, amp.decayCurve, amp.releaseCurve].map(curve => {
-                if (curve === 0) {
-                    return 'LIN';
-                }
-                if (curve === 1) {
-                    return 'EXP';
-                }
-                return 'COS';
-            });
-
         const [attackX, decayX, sustainWidthX, releaseX] = getXpositions();
-        const [attackCurveName, decayCurveName, releaseCurveName] =
-            getCurveName();
 
         const sustainHeight = ampValues.current.sustainHeight;
         const floor = ampValues.current.floor;
@@ -122,18 +122,18 @@ export function Amp(props) {
             .multiple(
                 (ctx, params) => ctx.line(...params),
                 [attackX, yPad, attackX, floor],
-                [decayX, sustainHeight, decayX, yPad],
-                [xPad, sustainHeight, decayX, sustainHeight]
+                [decayX, sustainHeight, decayX, floor],
+                [sustainWidthX, sustainHeight, sustainWidthX, floor]
             )
 
             .styleProfile('valueText')
-            .multiple(
-                (ctx, params) => ctx.text(...params),
-                [`A: ${amp.attack.toFixed(2)} ${attackCurveName}`, attackX, floor + 12],
-                [`D: ${amp.decay.toFixed(2)} ${decayCurveName}`, decayX, yPad - 6],
-                [`S: ${amp.sustain.toFixed(1)}`, xPad - 18, sustainHeight],
-                [`R: ${amp.release.toFixed(2)} ${releaseCurveName}`, releaseX, floor + 12]
-            )
+            // .multiple(
+            //     (ctx, params) => ctx.text(...params),
+            //     [`A: ${amp.attack.toFixed(2)} ${attackCurveName}`, attackX, floor + 12],
+            //     [`D: ${amp.decay.toFixed(2)} ${decayCurveName}`, decayX, yPad - 6],
+            //     [`S: ${amp.sustain.toFixed(1)}`, xPad - 18, sustainHeight],
+            //     [`R: ${amp.release.toFixed(2)} ${releaseCurveName}`, releaseX, floor + 12]
+            // )
 
             .styleProfile('ampLine')
             .conditional([
@@ -318,22 +318,40 @@ export function Amp(props) {
     };
 
     return (
-        <div className="wh-100 canvas-layer">
-            <canvas ref={canvas}></canvas>
-            <div className="flex-1 interaction-layer d-flex">
-                <svg
-                    className="interaction-layer"
-                    height={props.dims.height}
-                    width={props.dims.width}
-                >
-                    {[0, 1, 2, 3].map(i =>
-                        interactionPanel(get(i), i, () => ampClicked(i))
-                    )}
+        <div className="wh-100 canvas-layer d-flex-col">
+            <div class="flex-1">
+                <canvas ref={canvas}></canvas>
+                <div className="flex-1 interaction-layer d-flex">
+                    <svg
+                        className="interaction-layer"
+                        height={props.dims.height}
+                        width={props.dims.width}
+                    >
+                        {[0, 1, 2, 3].map(i =>
+                            interactionPanel(get(i), i, () => ampClicked(i))
+                        )}
 
-                    {[0, 1, 2, 3].map(i =>
-                        interactionHandle(get(i), i, e => onHandleDrag(e, i))
-                    )}
-                </svg>
+                        {[0, 1, 2, 3].map(i =>
+                            interactionHandle(get(i), i, e =>
+                                onHandleDrag(e, i)
+                            )
+                        )}
+                    </svg>
+                </div>
+            </div>
+            <div className="env-info d-flex space-around">
+                <div className="bold env-details d-flex center-child-xy">
+                    A: {amp.attack.toFixed(2)} {attackCurveName}
+                </div>
+                <div className="bold env-details d-flex center-child-xy">
+                    D: {amp.decay.toFixed(2)} {decayCurveName}
+                </div>
+                <div className="bold env-details d-flex center-child-xy">
+                    S: {amp.sustain.toFixed(1)}
+                </div>
+                <div className="bold env-details d-flex center-child-xy">
+                    R: {amp.release.toFixed(2)} {releaseCurveName}
+                </div>
             </div>
         </div>
     );

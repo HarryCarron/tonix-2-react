@@ -31,3 +31,11 @@
 .interaction-layer circle:active {
     cursor: grabbing;
 }
+
+.env-info {
+    height: 20px;
+}
+
+.env-details {
+    font-size: 0.7em;
+}

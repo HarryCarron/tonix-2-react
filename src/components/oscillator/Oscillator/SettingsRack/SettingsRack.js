@@ -59,9 +59,7 @@ export default function SettingsRack(props) {
                         activeTab === 0 && <Overview></Overview>
                     } */}
                     {activeTab === 1 && (
-                        <Amp
-                            dims={{ height: props.height, width: props.width }}
-                        ></Amp>
+                        <Amp dims={{ height: 70, width: props.width }}></Amp>
                     )}
                     {activeTab === 2 && (
                         <Additive
