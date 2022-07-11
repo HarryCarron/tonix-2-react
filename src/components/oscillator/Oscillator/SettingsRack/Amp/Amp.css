@@ -34,8 +34,16 @@
 
 .env-info {
     height: 20px;
+    font-size: 0.8em;
 }
 
 .env-details {
-    font-size: 0.7em;
+    font-size: 0.9em;
+}
+
+.value-pill {
+    background-color: yellow;
+    color: black;
+    border-radius: 3px;
+    padding: 2px 7px;
 }

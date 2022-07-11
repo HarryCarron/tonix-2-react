@@ -1,0 +1,27 @@
+.selector {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #17181b;
+    color: white;
+    padding: 2px 5px;
+    text-align: center;
+    border: none;
+    border-radius: 7px;
+    margin: 0 3px;
+}
+
+.osc-detune-container {
+    width: 60px;
+}
+
+.osc-selector {
+    font-weight: 700;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid #3d3d3d;
+}
+
+.detune-selector {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

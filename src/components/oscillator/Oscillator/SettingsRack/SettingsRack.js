@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './SettingsRack.css';
 import Amp from './Amp/Amp';
 import Additive from './Additive/Additive';
-import Overview from './Overview/Overview';
 
 function SettingRackTab(props) {
     let classes = 'setting-tab flex-1 d-flex center-child-y';
@@ -59,7 +58,9 @@ export default function SettingsRack(props) {
                         activeTab === 0 && <Overview></Overview>
                     } */}
                     {activeTab === 1 && (
-                        <Amp dims={{ height: 70, width: props.width }}></Amp>
+                        <Amp
+                            dims={{ height: props.height, width: props.width }}
+                        ></Amp>
                     )}
                     {activeTab === 2 && (
                         <Additive

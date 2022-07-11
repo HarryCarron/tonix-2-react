@@ -1,6 +1,8 @@
 .settings {
     color: #cdcccc;
     border-left: 0px solid white;
+    width: 310px;
+    height: 100px;
 }
 
 .selected-setting {
@@ -11,7 +13,6 @@
 }
 
 .settings-rack {
-    border-top: 1px solid #1e1f29;
     background-color: rgb(28 28 28);
     overflow: hidden;
 }

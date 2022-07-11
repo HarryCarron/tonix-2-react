@@ -1,8 +1,7 @@
 .synth {
-    height: 600px;
-    background-color: #22232F;
+    background-color: #302f2f;
     overflow: hidden;
-    border-radius: 28px;
+    border-radius: 16px;
     box-shadow: rgba(46, 46, 46, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
@@ -12,13 +11,33 @@
 }
 
 .effects-container {
-    width: 190px;
+    /* width: 190px; */
 }
 
-.filter-area {
-    margin: 8px;
-    border-radius: 20px;
+.number {
+    font-size: 1em;
+    color: #ff5f5f;
 }
+
+.header-bar {
+    background-color: rgb(41 42 45);
+    color: white;
+    font-weight: 700;
+    letter-spacing: -2px;
+    padding: 10px;
+    font-size: 3em;
+}
+
+.oscillator-title {
+    background-color: rgb(28 28 28);
+    color: #7f7f7f;
+    font-weight: 700;
+    letter-spacing: 0px;
+    padding: 10px;
+    font-size: 1.5em;
+}
+
+.filter-area {}
 
 .icon-container {
     padding: 15px;
@@ -27,5 +46,14 @@
 }
 
 .oscillator-area {
-    border-right: 1px solid #3c3d4e;
+    border-right: 1px solid #181818;
+}
+
+.header {
+    height: 20px;
+    background-color: #1e1f28;
+}
+
+.filter-area {
+    width: 200px;
 }

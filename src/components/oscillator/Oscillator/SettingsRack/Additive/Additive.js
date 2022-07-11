@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Additive.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,8 @@ export default function Additive(props) {
 
     const canvas = useRef();
 
+    const [partials, setPartials] = useState([1]);
+
     const utils = useRef({
         globalMouseMove: new GlobalEventHandlers(),
         canvas: null,
@@ -25,27 +27,30 @@ export default function Additive(props) {
     });
 
     const incrementPartial = mode => {
-        let partials = [...props.partials];
+        let newPartials = [...partials];
         if (mode) {
-            partials.push(1);
+            newPartials.push(1);
         } else {
-            partials.pop();
+            newPartials.pop();
         }
 
-        if (partials.length <= PARTIALS_UPPER_LIMIT && partials.length >= 0) {
-            props.setPartials(partials);
+        if (
+            newPartials.length <= PARTIALS_UPPER_LIMIT &&
+            newPartials.length >= 0
+        ) {
+            setPartials(() => newPartials);
         }
     };
 
     const randomize = () => {
         const length = Math.floor(Math.random() * PARTIALS_UPPER_LIMIT);
         const partials = Array.from({ length }).map(_ => Math.random());
-        props.setPartials(partials);
+        setPartials(() => partials);
     };
 
     const clear = () => {
         const partials = [];
-        props.setPartials(partials);
+        setPartials(() => partials);
     };
 
     const beginPartialManipulation = e => {
@@ -63,8 +68,9 @@ export default function Additive(props) {
             true
         );
         utils.current.canvas.setStyle({
-            fillStyle: 'rgba(230, 85, 121, 0.3)',
-            strokeColor: '#fe5f55',
+            fillStyle: 'rgba(255, 255, 255, 0.1)',
+            glow: [5, 'rgba(255, 255, 255, 1)'],
+            strokeColor: 'rgba(255, 255, 255, 0.2)',
             lineWidth: 1,
         });
     }, [props.dims.width, props.dims.height]);
@@ -72,15 +78,13 @@ export default function Additive(props) {
     useEffect(() => {
         utils.current.canvas.clear();
 
-        // rect(x, y, width, height, fill) {
-
-        const totalPartialsNumber = props.partials.length;
+        const totalPartialsNumber = partials.length;
         const width = renderValues.current.totalXTravel / totalPartialsNumber;
         const partialPad = totalPartialsNumber < 10 ? 6 : 4;
 
         utils.current.canvas.multiple(
             (ctx, params) => ctx.rect(...params),
-            ...props.partials.map((partial, i) => {
+            ...partials.map((partial, i) => {
                 const x = xPad + width * i + partialPad / 2;
                 const y = renderValues.current.floor;
                 const partialWidth = width - partialPad;
@@ -89,7 +93,7 @@ export default function Additive(props) {
                 return [x, y, partialWidth, height, true];
             })
         );
-    }, [props.partials]);
+    }, [partials]);
 
     const manipulatePartial = ({ clientX, clientY }) => {
         if (!(clientX && clientY)) {
@@ -101,9 +105,7 @@ export default function Additive(props) {
             true
         );
 
-        const hoveredPartial = Math.floor(x * props.partials.length);
-
-        const partials = props.partials;
+        const hoveredPartial = Math.floor(x * partials.length);
 
         if (hoveredPartial >= partials.length) {
             return;
@@ -111,7 +113,7 @@ export default function Additive(props) {
 
         partials[hoveredPartial] = y;
 
-        props.setPartials(partials);
+        setPartials(() => partials);
     };
 
     return (
@@ -153,7 +155,7 @@ export default function Additive(props) {
                         />
                     </div>
                     <div className="d-flex center-child-xy">
-                        {props.partials.length}
+                        {partials.length}
                     </div>
                     <div className="d-flex center-child-xy">
                         <FontAwesomeIcon

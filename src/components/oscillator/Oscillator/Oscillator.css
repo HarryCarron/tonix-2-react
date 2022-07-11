@@ -1,17 +1,6 @@
 .oscillator {
-    margin: 8px;
-    width: 330px;
-    border-radius: 20px;
-    background-color: #313243;
-    border: 1px solid #1e1f29;
-    opacity: 1;
     overflow: hidden;
-    border: 1px solid #3c3d4e;
-}
-
-.oscillator:hover {
-    background-color: #4d4f67;
-    border: 1px solid #606060;
+    border-bottom: 1px solid #212020;
 }
 
 .hide-osc {
@@ -23,8 +12,9 @@
 }
 
 .header-item {
-    color: #dedede;
-    font-weight: 700;
+    color: #7c7c7c;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
 .id-container {
@@ -40,7 +30,7 @@
 }
 
 .controls-row {
-    margin: 7px;
+    margin: 3px;
 }
 
 .pan-keys {
@@ -54,5 +44,46 @@
 }
 
 .knob-container {
+    /* margin-top: 5px; */
+}
+
+.osc-number {
+    color: rgb(139, 139, 139);
+    font-family: Poppins;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.control-container {
+    background-color: #252525;
+    padding: 5px 5px;
+    border-radius: 3px;
+    margin: 1px 3px;
+    transition: 0.2s;
+    outline: 1px solid #252525;
+}
+
+.control-container:hover {
+    outline: 1px solid rgb(103, 103, 103);
+}
+
+.osc-id {
+    font-weight: 700;
+    color: #cbcbcb;
+    border-radius: 3px;
+    padding: 3px 5px;
+    margin-left: 5px;
+    font-size: 1.2em;
+}
+
+.osc-header {
+    padding: 0px 5px;
+}
+
+.osc-selector-container {
+    margin-top: 5px;
+}
+
+.osc-selector-container {
     margin-top: 5px;
 }

@@ -149,9 +149,9 @@ export function EffectsRack(props) {
             </div>
             <div className="flex-1 active-error-area">
                 {activeEffects.map((effect, index) => (
-                    <div key={'list ' + index} className="effect">
+                    <div key={'list ' + index} className="effect shadow-1">
                         <div className="d-flex effect-topbar">
-                            <div>
+                            <div className="d-flex center-child-xy">
                                 <LED
                                     isOn={true}
                                     updateOscData={() => null}

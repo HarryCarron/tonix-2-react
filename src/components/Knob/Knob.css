@@ -9,19 +9,36 @@
 
 .knob-input {
     width: 15px;
-    font-size: 0.7em;
+    font-size: 0.8em;
     border-radius: 5px;
     color: #ffffff;
 }
 
 .input-container {
     margin-top: 3px;
+    color: #bdbdbd;
+    font-size: 0.9em;
+    font-weight: 700;
+    margin: 3px;
 }
 
-.top {
-    fill: #32303d;
+.static-top {
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
 }
 
-.top:hover {
-    fill: #585663;
+.container {
+    background-color: #222224;
+    border: 1px solid #1a1a1b;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0 3px;
+    /* box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
+}
+
+.shadow-layer {
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, .7));
+}
+
+.shadow-layer-2 {
+    filter: drop-shadow(1px 1px 3px rgba(93, 101, 255, 0.7));
 }

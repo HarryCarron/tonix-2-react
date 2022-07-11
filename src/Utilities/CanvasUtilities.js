@@ -60,6 +60,12 @@ class CanvasUtilities {
                 case 'fillStyle':
                     this.ctx.fillStyle = value;
                     break;
+                case 'glow': {
+                    this.ctx.shadowBlur = value[0];
+                    this.ctx.shadowColor = value[1];
+                    break;
+                }
+
                 default:
             }
         });
@@ -113,7 +119,6 @@ class CanvasUtilities {
     }
 
     fill() {
-        this.ctx.fillStyle = 'rgba(254, 95, 85, 0.3)';
         this.ctx.fill();
         return this;
     }

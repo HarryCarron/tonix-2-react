@@ -7,5 +7,9 @@
 }
 
 .knobs {
-    margin-top: 10px;
+    margin-top: 5px;
+}
+
+.pp-controls {
+    width: 50px;
 }

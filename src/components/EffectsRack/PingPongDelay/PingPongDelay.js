@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import '../effect.css';
 import './PingPongDelay.css';
 import Knob from '../../Knob/Knob';
@@ -11,53 +11,58 @@ export default function PingPongDelay() {
         q: 0.5,
     });
 
-    const setFilter = data => {
-        setPingPong(currentPP => {
-            return { ...currentPP, ...data };
-        });
-    };
+    const setFilter = useCallback(
+        data => setPingPong(currentPP => ({ ...currentPP, ...data })),
+        []
+    );
 
     return (
-        <div className="d-flex-col">
-            <BandPass
-                gain={pingPong.gain}
-                freq={pingPong.freq}
-                q={pingPong.q}
-                setFilter={setFilter}
-            ></BandPass>
+        <div className="d-flex">
+            <div>
+                <BandPass
+                    gain={pingPong.gain}
+                    freq={pingPong.freq}
+                    q={pingPong.q}
+                    setFilter={setFilter}
+                ></BandPass>
+            </div>
+
             <div className="d-flex space-around knobs">
                 <div>
                     <div className="bold property-label d-flex center-child-x">
-                        Delay Time
+                        Time
                     </div>
                     <Knob
+                        arcWidth={3}
                         isOn={true}
-                        size={40}
-                        updateOscData={data => {}}
+                        color={'white'}
+                        size={30}
                         value={0}
-                    ></Knob>
+                    />
                 </div>
                 <div>
                     <div className="bold property-label d-flex center-child-x">
                         Feedback
                     </div>
                     <Knob
+                        arcWidth={3}
                         isOn={true}
-                        size={40}
-                        updateOscData={data => {}}
+                        color={'white'}
+                        size={30}
                         value={0}
-                    ></Knob>
+                    />
                 </div>
                 <div>
                     <div className="bold property-label d-flex center-child-x">
                         Wet
                     </div>
                     <Knob
+                        arcWidth={3}
                         isOn={true}
-                        size={40}
-                        updateOscData={data => {}}
+                        color={'white'}
+                        size={30}
                         value={0}
-                    ></Knob>
+                    />
                 </div>
             </div>
         </div>

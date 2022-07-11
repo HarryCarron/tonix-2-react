@@ -1,47 +1,82 @@
-import React from 'react';
-import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
+import React, { useRef, useState, useEffect } from 'react';
+
+import { DragAndDrop } from '../../Utilities/DragAndDrop';
 import './Knob.css';
 
-function Knob({ value, size, updateOscData }) {
-    var container;
+function Knob({ size, color, arcWidth }) {
+    const [value, setValue] = useState(0);
+    const knob = useRef();
 
-    var initialY;
+    useEffect(() => {
+        new DragAndDrop(knob.current, val => {
+            setValue(val[1]);
+        }).setCustomDimSet(node => {
+            const { height, width } = node.getBBox();
+            return {
+                height,
+                width,
+            };
+        });
+    }, []);
 
-    var globalEventHandlers = new GlobalEventHandlers();
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
-    const knobLineWidth = 5;
+        return {
+            x: centerX + radius * Math.cos(angleInRadians),
+            y: centerY + radius * Math.sin(angleInRadians),
+        };
+    }
 
-    const mouseMoving = e => {
-        var currentY = (initialY - e.clientY) / 100;
+    function describeArc(x, y, radius, startAngle, endAngle) {
+        var start = polarToCartesian(x, y, radius, endAngle);
+        var end = polarToCartesian(x, y, radius, startAngle);
 
-        if (currentY >= 0 && currentY <= 1) {
-            updateOscData({ phase: currentY });
-        }
-    };
+        var largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
 
-    const onMouseDown = e => {
-        initialY = e.clientY;
-        globalEventHandlers.initiate(mouseMoving);
-    };
+        return [
+            'M',
+            start.x,
+            start.y,
+            'A',
+            radius,
+            radius,
+            0,
+            largeArcFlag,
+            0,
+            end.x,
+            end.y,
+        ].join(' ');
+    }
 
     return (
         <div className="d-flex-col">
-            <div
-                className="flex-1 center-child-xy"
-                ref={container}
-                onMouseDown={$event => onMouseDown($event)}
-            >
-                <svg height={size} width={size}>
-                    <g>
-                        <circle
-                            cx={size / 2}
-                            cy={size / 2}
-                            r="19"
-                            strokeWidth="1"
-                            fill="#1e1e1e"
-                        />
-                    </g>
+            <div className="d-flex center-child-xy input-container">
+                {(value * 100).toFixed(0)}
+            </div>
+            <div className="flex-1 center-child-xy">
+                <svg height={size} width={size} ref={knob}>
+                    <path
+                        fill="none"
+                        stroke="grey"
+                        strokeWidth={arcWidth}
+                        strokeLinecap="round"
+                        d={describeArc(size / 2, size / 2, size / 2, 210, 510)}
+                    />
 
+                    <path
+                        fill="none"
+                        stroke={color}
+                        strokeWidth={arcWidth}
+                        strokeLinecap="round"
+                        d={describeArc(
+                            size / 2,
+                            size / 2,
+                            size / 2,
+                            210,
+                            210 + value * 300
+                        )}
+                    />
                     <g
                         className="grabbable rotating-component"
                         style={{ transform: `rotate(${30 + value * 300}deg)` }}
@@ -49,31 +84,20 @@ function Knob({ value, size, updateOscData }) {
                         <circle
                             cx={size / 2}
                             cy={size / 2}
-                            r="13"
-                            fill="#32303d"
-                            strokeWidth="6"
-                            className="top"
+                            r={size / 2}
+                            fill="transparent"
                         />
-                        <rect
-                            x={size / 2 - knobLineWidth / 2}
-                            y={size / 2}
-                            width={knobLineWidth}
-                            stroke="#fffd47"
-                            strokeWidth="1"
-                            height="10"
-                            rx="3"
-                            style={{ fill: '#fffd47' }}
-                        />
+                        <line
+                            x1={size / 2}
+                            y1={size - 5}
+                            x2={size / 2}
+                            y2={size}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke={color}
+                        ></line>
                     </g>
                 </svg>
-            </div>
-
-            <div className="d-flex center-child-xy input-container">
-                <input
-                    value={value.toFixed(1)}
-                    className="selector knob-input"
-                    readOnly
-                />
             </div>
         </div>
     );

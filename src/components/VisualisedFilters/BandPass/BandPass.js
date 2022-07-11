@@ -1,20 +1,21 @@
 import { useRef, useEffect } from 'react';
-import GlobalEventHandlers from './../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from './../../../Utilities/CanvasUtilities';
 import ArrOnN from './../../../Utilities/Math';
 import './BandPass.css';
 import './../Filters.css';
+import { DragAndDrop } from '../../../Utilities/DragAndDrop';
 
 export default function BandPass({ gain, freq, q, setFilter }) {
-    const width = 186;
-    const height = 80;
+    const width = 130;
+    const height = 70;
     const xPad = 8;
     const yPad = 8;
+    const qControl = useRef();
     const canvas = useRef();
-    const utils = useRef({ globalMouseMove: new GlobalEventHandlers() });
+    const canvasUtils = useRef();
 
     useEffect(() => {
-        utils.current.canvas = new CanvasUtilities(
+        canvasUtils.current = new CanvasUtilities(
             canvas,
             xPad,
             yPad,
@@ -30,62 +31,43 @@ export default function BandPass({ gain, freq, q, setFilter }) {
             .setStyleProfiles({
                 gridLine: {
                     lineWidth: 0.1,
-                    opacity: 0.5,
+                    opacity: 0.1,
                     strokeColor: 'white',
                     lineDash: [0],
                 },
                 filterHandle: {
-                    strokeColor: '#FFFD47',
+                    strokeColor: 'white',
                     lineWidth: 2,
                     opacity: 0.4,
                 },
                 filterLine: {
                     lineWidth: 2,
-                    strokeColor: '#fe5f55',
+                    strokeColor: '#BEBEBE',
                     lineDash: [],
+                    fillStyle: 'rgba(190, 190, 190, 0.2)',
+                    // glow: [10, 'rgba(225, 225, 225, 0.8)'],
                 },
-                guide: {
-                    lineWidth: 1,
-                    strokeColor: 'blue',
-                    lineDash: [],
-                },
-                axisText: { fillStyle: '#C3C3CE' },
             });
     }, []);
 
-    const mouseDown = e => {
-        manipulateFiler(e);
-        utils.current.globalMouseMove.initiate(e => manipulateFiler(e));
-    };
+    useEffect(() => {
+        new DragAndDrop(canvas.current, data =>
+            setFilter({
+                gain: data[1],
+                freq: data[0],
+            })
+        )
+            .setPad(xPad, yPad)
+            .allowOverHang(true);
+    }, [setFilter]);
 
-    const mouseDownValues = e => {
-        manipulateValue(e);
-        utils.current.globalMouseMove.initiate(e => manipulateValue(e));
-    };
-
-    const manipulateValue = ({ clientX, clientY }) => {
-        let [_, q] = utils.current.canvas.getTrueCoordinates(
-            clientX,
-            clientY,
-            true
+    useEffect(() => {
+        new DragAndDrop(qControl.current, res =>
+            setFilter({
+                q: res[1],
+            })
         );
-
-        setFilter({
-            q,
-        });
-    };
-    const manipulateFiler = ({ clientX, clientY }) => {
-        let [freq, gain] = utils.current.canvas.getTrueCoordinates(
-            clientX,
-            clientY,
-            true
-        );
-
-        setFilter({
-            freq,
-            gain,
-        });
-    };
+    }, [setFilter]);
 
     useEffect(() => {
         const availableWidth = width - xPad * 2;
@@ -146,17 +128,17 @@ export default function BandPass({ gain, freq, q, setFilter }) {
         const curve4EndX = xPad + availableWidth;
         const curve4EndY = yPad + availableHeight;
 
-        utils.current.canvas
+        canvasUtils.current
             .clear()
             .styleProfile('gridLine')
             .multiple(
                 (ctx, params) => ctx.line(...params),
-                ...ArrOnN(11).map(i => {
-                    const lineY = yPad + ((height - yPad * 2) / 10) * i;
+                ...ArrOnN(5).map(i => {
+                    const lineY = yPad + ((height - yPad * 2) / 4) * i;
                     return [xPad, height - lineY, width - xPad, height - lineY];
                 }),
-                ...ArrOnN(25).map(i => {
-                    const lineX = xPad + ((width - yPad * 2) / 24) * i;
+                ...ArrOnN(12).map(i => {
+                    const lineX = xPad + ((width - yPad * 2) / 11) * i;
                     return [lineX, yPad, lineX, height - yPad];
                 })
             )
@@ -195,32 +177,31 @@ export default function BandPass({ gain, freq, q, setFilter }) {
                     curve4EndY,
                 ],
             ])
-            .fill()
-            .styleProfile('filterHandle')
-
-            .circle(freqAt, gainAt, 3);
+            .fill();
     }, [gain, freq, q]);
 
     return (
-        <>
+        <div className="d-flex-xol">
             <div className="filter-container band-pass w-100">
-                <canvas ref={canvas} onMouseDown={mouseDown}></canvas>
+                <canvas ref={canvas}></canvas>
             </div>
-            <div className="filter-tools d-flex space-around">
-                <div class="filter-value bold d-flex center-child-y">BAND</div>
-                <div class="filter-value d-flex center-child-y">
+            <div className="d-flex filter-tools space-around">
+                <div className="filter-value bold d-flex center-child-xy">
+                    BAND
+                </div>
+                <div className="filter-value d-flex center-child-xy">
                     FREQ:{freq.toFixed(2)}
                 </div>
-                <div class="filter-value d-flex center-child-y">
+                <div className="filter-value d-flex center-child-xy">
                     GAIN:{gain.toFixed(2)}
                 </div>
                 <div
-                    class="filter-value d-flex center-child-y"
-                    onMouseDown={mouseDownValues}
+                    ref={qControl}
+                    className="filter-value d-flex center-child-xy"
                 >
                     Q:{q.toFixed(2)}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
