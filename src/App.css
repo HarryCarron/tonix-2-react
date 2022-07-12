@@ -2,7 +2,9 @@
     background-color: #302f2f;
     overflow: hidden;
     border-radius: 16px;
-    box-shadow: rgba(46, 46, 46, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: rgb(46 46 46 / 94%) 0px 54px 55px, rgb(0 0 0 / 27%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px
 }
 
 .main-container {
@@ -30,7 +32,7 @@
 
 .oscillator-title {
     background-color: rgb(28 28 28);
-    color: #7f7f7f;
+    color: #d0d0d0;
     font-weight: 700;
     letter-spacing: 0px;
     padding: 10px;
@@ -56,4 +58,12 @@
 
 .filter-area {
     width: 200px;
+}
+
+.synth-bottom {
+    width: 511px;
+    height: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background-color: #282A2A;
 }

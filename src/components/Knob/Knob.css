@@ -16,10 +16,15 @@
 
 .input-container {
     margin-top: 3px;
-    color: #bdbdbd;
+    color: #e6e6e6;
     font-size: 0.9em;
     font-weight: 700;
     margin: 3px;
+    background-color: #1d1d1d;
+    border: 1px solid #424242;
+    border-radius: 3px;
+    padding: 1px;
+    margin-bottom: 7px;
 }
 
 .static-top {
@@ -40,5 +45,5 @@
 }
 
 .shadow-layer-2 {
-    filter: drop-shadow(1px 1px 3px rgba(93, 101, 255, 0.7));
+    filter: drop-shadow(1px 1px 1px rgba(255, 255, 255, 0.4));
 }

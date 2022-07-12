@@ -68,6 +68,10 @@
         /* center items horizontally, in this case */
     }
     
+    .text-center {
+        text-align: center;
+    }
+    
     .center-child-y {
         align-items: center;
         /* center items horizontally, in this case */

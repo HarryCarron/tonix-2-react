@@ -58,7 +58,7 @@ function Knob({ size, color, arcWidth }) {
                 <svg height={size} width={size} ref={knob}>
                     <path
                         fill="none"
-                        stroke="grey"
+                        stroke="#383838"
                         strokeWidth={arcWidth}
                         strokeLinecap="round"
                         d={describeArc(size / 2, size / 2, size / 2, 210, 510)}

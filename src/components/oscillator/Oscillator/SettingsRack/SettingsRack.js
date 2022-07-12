@@ -36,7 +36,7 @@ export default function SettingsRack(props) {
     ];
 
     return (
-        <div className="settings-rack settings">
+        <div className="settings-rack settings shadow-1">
             <div className="d-flex h-100">
                 <div className="d-flex-col tabs tab-seperator">
                     {settings.map(({ id, label }) => (
@@ -58,9 +58,7 @@ export default function SettingsRack(props) {
                         activeTab === 0 && <Overview></Overview>
                     } */}
                     {activeTab === 1 && (
-                        <Amp
-                            dims={{ height: props.height, width: props.width }}
-                        ></Amp>
+                        <Amp dims={{ height: 80, width: 250 }}></Amp>
                     )}
                     {activeTab === 2 && (
                         <Additive

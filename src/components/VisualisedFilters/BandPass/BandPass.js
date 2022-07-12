@@ -133,12 +133,12 @@ export default function BandPass({ gain, freq, q, setFilter }) {
             .styleProfile('gridLine')
             .multiple(
                 (ctx, params) => ctx.line(...params),
-                ...ArrOnN(5).map(i => {
-                    const lineY = yPad + ((height - yPad * 2) / 4) * i;
+                ...ArrOnN(18).map(i => {
+                    const lineY = yPad + ((height - yPad * 2) / 17) * i;
                     return [xPad, height - lineY, width - xPad, height - lineY];
                 }),
-                ...ArrOnN(12).map(i => {
-                    const lineX = xPad + ((width - yPad * 2) / 11) * i;
+                ...ArrOnN(20).map(i => {
+                    const lineX = xPad + ((width - yPad * 2) / 19) * i;
                     return [lineX, yPad, lineX, height - yPad];
                 })
             )

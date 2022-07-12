@@ -20,20 +20,15 @@ export default function Oscillator(props) {
 
     return (
         <div className="oscillator">
-            {/* <div className="d-flex osc-header">
-                <div className="d-flex center-child-xy">
-                    <LED
-                        updateOscData={props.updateOscData}
-                        isOn={oscData.isOn}
-                    />
-                </div>
-                <div className="osc-id">{'Oscillator ' + props.number}</div>
-            </div> */}
-
             <div className="d-flex-col">
                 <div className="d-flex controls-row">
-                    <div className="flex-1 d-flex-col d-flex center-child-xy osc-number">
-                        {props.number}
+                    <div className="flex-1 d-flex-col d-flex center-child-xy">
+                        <div className="flex-1 d-flex center-child-xy">
+                            <LED isOn={true}></LED>
+                        </div>
+                        <div className="flex-1 d-flex center-child-xy osc-number">
+                            {props.number}
+                        </div>
                     </div>
 
                     <div className="flex-1 d-flex-col control-container">

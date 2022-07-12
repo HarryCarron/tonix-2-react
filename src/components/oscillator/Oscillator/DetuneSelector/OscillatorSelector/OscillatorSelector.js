@@ -11,20 +11,18 @@ function OscillatorSelector({ onChangeWaveForm }) {
 
     return (
         <div className="osc-detune-container d-flex-col">
-            <select
-                onChange={waveFormChanged}
-                className="selector osc-selector"
-            >
+            <select onChange={waveFormChanged} className="input-container">
                 {['SIN', 'SAW', 'SQR'].map((wave, i) => (
                     <option key={i} value={i}>
                         {wave}
                     </option>
                 ))}
             </select>
+            <div className="d-flex center-child-xy header-item">Detune</div>
             <input
                 value={tune}
                 type="text"
-                className="selector detune-selector"
+                className="input-container text-center"
             />
         </div>
     );
