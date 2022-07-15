@@ -11,6 +11,9 @@ class CanvasUtilities {
         return this;
     }
 
+    shape = [];
+    trackingShape = false;
+
     styleProfiles = {};
 
     clear() {
@@ -20,6 +23,54 @@ class CanvasUtilities {
 
     setStyleProfiles(profiles = {}) {
         this.styleProfiles = profiles;
+        return this;
+    }
+
+    trackShape() {
+        this.trackingShape = true;
+        return this;
+    }
+
+    stopTrackingShape() {
+        this.trackingShape = false;
+        return this;
+    }
+
+    drawShape(clear, close) {
+        this.ctx.beginPath();
+
+        let startingPoint;
+
+        this.shape.forEach((def, i, o) => {
+            const action = def.line ?? def.curve;
+
+            if (!i) {
+                if (def.line) {
+                    startingPoint = def.params.slice(0, 2);
+                } else if (def.curve) {
+                    startingPoint = def.params.slice(0, 2);
+                }
+                this.ctx.moveTo(...startingPoint);
+            }
+
+            action(def.params);
+            this.ctx.strokeStyle = 'rgba(0,0,0,0)';
+            this.ctx.stroke();
+        });
+
+        if (close) {
+            this.ctx.closePath();
+        }
+        var gradient = this.ctx.createLinearGradient(175, 0, 175, 80);
+        gradient.addColorStop(0, 'rgba(255, 95, 95, 0.5)');
+        gradient.addColorStop(1, 'rgba(255, 95, 95, 0)');
+
+        this.ctx.fillStyle = gradient;
+        this.ctx.fill();
+
+        if (clear) {
+            this.shape = [];
+        }
         return this;
     }
 
@@ -101,6 +152,14 @@ class CanvasUtilities {
         this.ctx.moveTo(x1, y1);
         this.ctx.lineTo(x2, y2);
 
+        if (this.trackingShape) {
+            this.shape.push({
+                line: params => {
+                    this.ctx.lineTo(...params.slice(2));
+                },
+                params: [x1, y1, x2, y2],
+            });
+        }
         this.ctx.stroke();
 
         return this;
@@ -110,15 +169,33 @@ class CanvasUtilities {
         this.ctx.beginPath();
 
         this.ctx.moveTo(startX, startY);
-        this.ctx.lineTo(startX, startY);
         this.ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+
+        if (this.trackingShape) {
+            this.shape.push({
+                curve: params => {
+                    this.ctx.quadraticCurveTo(...params.slice(2));
+                },
+                params: [startX, startY, cpX, cpY, endX, endY],
+            });
+        }
 
         this.ctx.stroke();
 
         return this;
     }
 
-    fill() {
+    fill(colour) {
+        this.ctx.fillStyle = colour;
+        this.ctx.fill();
+        return this;
+    }
+
+    gradientFill(x1, y1, x2, y2, colour1, colour2) {
+        var gradient = this.ctx.createLinearGradient(x1, y2, x2, y2);
+        gradient.addColorStop(0, colour1);
+        gradient.addColorStop(1, colour2);
+        this.ctx.fillStyle = gradient;
         this.ctx.fill();
         return this;
     }

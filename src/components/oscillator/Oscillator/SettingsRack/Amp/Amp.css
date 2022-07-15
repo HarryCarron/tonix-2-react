@@ -33,12 +33,14 @@
 }
 
 .env-info {
+    border-top: 1px solid #653636;
     height: 20px;
     font-size: 0.8em;
 }
 
 .env-details {
     font-size: 0.9em;
+    color: #ff5f5f;
 }
 
 .value-pill {
