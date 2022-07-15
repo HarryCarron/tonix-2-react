@@ -50,10 +50,7 @@ export default function SettingsRack(props) {
                     ))}
                 </div>
 
-                <div
-                    className="flex-1 setting-area h-100"
-                    style={{ height: props.height, width: props.width }}
-                >
+                <div className="flex-1 setting-area h-100">
                     {/* {
                         activeTab === 0 && <Overview></Overview>
                     } */}
@@ -64,7 +61,7 @@ export default function SettingsRack(props) {
                     )}
                     {activeTab === 2 && (
                         <Additive
-                            dims={{ height: props.height, width: props.width }}
+                            dims={{ height: 0, width: 0 }}
                             partials={props.partials}
                             setPartials={props.setPartials}
                         ></Additive>

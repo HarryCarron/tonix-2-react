@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, {
+    useEffect,
+    useRef,
+    useCallback,
+    useState,
+    useLayoutEffect,
+} from 'react';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
@@ -6,6 +12,8 @@ import './Amp.css';
 export function Amp(props) {
     const xPad = 15;
     const yPad = 10;
+
+    const [_, viewReady] = useState(false);
 
     const [amp, setAmp] = useState({
         attack: 0.1,
@@ -34,26 +42,41 @@ export function Amp(props) {
     const [attackCurveName, decayCurveName, releaseCurveName] = getCurveName();
 
     const ampValues = useRef({
-        height: props.dims.height,
-        floor: props.dims.height - yPad,
-        totalXTravel: props.dims.width - xPad * 2,
-        totalYTravel: props.dims.height - yPad * 2,
+        height: 0,
+        width: 0,
+        floor: 0,
+        totalXTravel: 0,
+        totalYTravel: 0,
         sustainWidth: 0,
-        sustainHeight:
-            props.dims.height -
-            yPad -
-            amp.sustain * (props.dims.height - yPad * 2),
+        sustainHeight: 0,
     });
 
     const canvas = useRef();
+    const container = useRef();
+
+    useLayoutEffect(() => {
+        if (container.current) {
+            ampValues.current.totalXTravel =
+                container.current.offsetWidth - xPad * 2;
+            ampValues.current.totalYTravel =
+                container.current.offsetHeight - yPad * 2;
+
+            ampValues.current.floor = container.current.offsetHeight - yPad;
+
+            ampValues.current.height = container.current.offsetHeight;
+            ampValues.current.width = container.current.offsetWidth;
+
+            viewReady();
+        }
+    }, []);
 
     useEffect(() => {
         utils.current.canvas = new CanvasUtilities(
             canvas,
             xPad,
             yPad,
-            props.dims.width,
-            props.dims.height - 30,
+            container.current.offsetWidth,
+            container.current.offsetHeight,
             true
         )
             .setStyle({
@@ -62,21 +85,26 @@ export function Amp(props) {
                 font: 'bold 7px Helvetica',
             })
             .setStyleProfiles({
+                ampGuide: {
+                    lineWidth: 1,
+                    strokeColor: 'rgba(255, 95, 95, 0.5)',
+                    lineDash: [2, 2],
+                },
                 ampLine: {
                     lineWidth: 2,
-                    strokeColor: '#BEBEBE',
+                    strokeColor: '#ff5f5f',
                     lineDash: [0],
                 },
                 ampLineFill: { fillColor: '#FE5F55', opacity: 0.4 },
                 ampHandle: {
                     lineWidth: 2,
-                    strokeColor: 'white',
+                    strokeColor: '#ff5f5f',
                     fillColor: '#FFFD47',
                     lineDash: [],
                 },
                 baseLine: {
                     lineWidth: 2,
-                    strokeColor: '#383838',
+                    strokeColor: 'rgba(255, 95, 95, 0.3)',
                     lineDash: [0],
                 },
                 valueGuideLine: {
@@ -86,13 +114,12 @@ export function Amp(props) {
                 },
                 valueText: { fillStyle: '#C3C3CE' },
             });
-    }, [props.dims.height, props.dims.width]);
+    }, []);
 
     const drawAmp = useCallback(() => {
         ampValues.current.sustainHeight =
             ampValues.current.floor -
-            amp.sustain * (props.dims.height - yPad * 2);
-
+            amp.sustain * (ampValues.current.height - yPad * 2);
         const getXpositions = () => {
             return [amp.attack, amp.decay, amp.sustainWidth, amp.release].map(
                 (_, i, o) =>
@@ -101,35 +128,47 @@ export function Amp(props) {
                         o.slice(0, i + 1).reduce((a, b) => a + b)
             );
         };
-
         const [attackX, decayX, sustainWidthX, releaseX] = getXpositions();
-
         const sustainHeight = ampValues.current.sustainHeight;
         const floor = ampValues.current.floor;
         const canvas = utils.current.canvas;
-
         // prettier-ignore
         canvas.clear()
             .styleProfile('baseLine')
             .multiple(
                 (ctx, params) => ctx.line(...params),
-                [xPad, floor, props.dims.width - xPad, floor],
+                [xPad, floor, ampValues.current.width - xPad, floor],
                 [xPad, floor, xPad, yPad]
             )
+            .styleProfile('ampGuide')
+            .multiple(
+                (ctx, params) => ctx.line(...params),
+                [attackX, floor, attackX, yPad],
+                [decayX, floor, decayX, yPad],
+                [sustainWidthX, floor, sustainWidthX, yPad],
+                [releaseX, floor, releaseX, yPad],
+            )
             .styleProfile('ampLine')
+            .trackShape()
             .conditional([
+                // attack
                 [ctx => ctx.line(xPad, floor, attackX, yPad), amp.attackCurve === 0],
                 [ctx => ctx.curve(xPad, floor, attackX, floor, attackX, yPad), amp.attackCurve === 1],
                 [ctx => ctx.curve(xPad, floor, xPad, yPad, attackX, yPad), amp.attackCurve === 2],
+                // decay
                 [ctx => ctx.line(attackX, yPad, decayX, sustainHeight), amp.decayCurve === 0],
                 [ctx => ctx.curve(attackX, yPad, attackX, sustainHeight, decayX, sustainHeight), amp.decayCurve === 1],
-                [ctx =>ctx.curve(attackX, yPad, decayX, yPad, decayX, sustainHeight), amp.decayCurve === 2],
+                [ctx => ctx.curve(attackX, yPad, decayX, yPad, decayX, sustainHeight), amp.decayCurve === 2],
+                // sustain
+                [ctx => ctx.line(decayX, sustainHeight, sustainWidthX, sustainHeight), true],
+                // release
                 [ctx => ctx.line(sustainWidthX, sustainHeight, releaseX, floor), amp.releaseCurve === 0],
                 [ctx => ctx.curve(sustainWidthX, sustainHeight, sustainWidthX, floor, releaseX, floor), amp.releaseCurve === 1],
                 [ctx => ctx.curve(sustainWidthX, sustainHeight, releaseX, sustainHeight, releaseX, floor), amp.releaseCurve === 2],
             ])
-            .line(decayX, sustainHeight, sustainWidthX, sustainHeight)
-
+            .stopTrackingShape()
+            .drawShape(true, true)
+            .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.5)', 'rgba(255, 95, 95, 0)')
             .styleProfile('ampHandle')
             .multiple(
                 (ctx, params) => ctx.circle(...params),
@@ -147,8 +186,6 @@ export function Amp(props) {
         amp.releaseCurve,
         amp.sustain,
         amp.sustainWidth,
-        props.dims.width,
-        props.dims.height,
     ]);
 
     useEffect(_ => drawAmp(), [drawAmp]);
@@ -299,13 +336,14 @@ export function Amp(props) {
     };
 
     return (
-        <div className="wh-100 canvas-layer">
-            <canvas ref={canvas}></canvas>
-            <div className="flex-1 interaction-layer d-flex">
+        <div className="canvas-layer h-100 d-flex-col styled">
+            <div className="flex-1" ref={container}>
+                <canvas height="0" width="0" ref={canvas}></canvas>
+
                 <svg
                     className="interaction-layer"
-                    height={props.dims.height - 30}
-                    width={props.dims.width}
+                    height={ampValues.current.height}
+                    width={ampValues.current.width}
                 >
                     {[0, 1, 2, 3].map(i =>
                         interactionPanel(get(i), i, () => ampClicked(i))
