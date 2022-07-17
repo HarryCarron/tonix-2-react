@@ -50,9 +50,9 @@ export default function Oscillator(props) {
                         </div>
                         <div className="flex-1 knob-container">
                             <Knob
-                                arcWidth={2}
+                                arcWidth={3}
                                 isOn={oscData.isOn}
-                                color={'white'}
+                                color={'#DCDCDC'}
                                 size={25}
                                 updateOscData={data =>
                                     props.updateOscData(data)
@@ -67,9 +67,9 @@ export default function Oscillator(props) {
                         </div>
                         <div className="flex-1 knob-container">
                             <Knob
-                                arcWidth={2}
+                                arcWidth={3}
                                 isOn={oscData.isOn}
-                                color={'white'}
+                                color={'#DCDCDC'}
                                 size={25}
                                 updateOscData={data =>
                                     props.updateOscData(data)
@@ -84,9 +84,9 @@ export default function Oscillator(props) {
                         </div>
                         <div className="flex-1 knob-container">
                             <Knob
-                                arcWidth={2}
+                                arcWidth={3}
                                 isOn={oscData.isOn}
-                                color={'white'}
+                                color={'#DCDCDC'}
                                 size={25}
                                 updateOscData={data =>
                                     props.updateOscData(data)

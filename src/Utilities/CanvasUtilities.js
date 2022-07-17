@@ -192,7 +192,7 @@ class CanvasUtilities {
     }
 
     gradientFill(x1, y1, x2, y2, colour1, colour2) {
-        var gradient = this.ctx.createLinearGradient(x1, y2, x2, y2);
+        var gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
         gradient.addColorStop(0, colour1);
         gradient.addColorStop(1, colour2);
         this.ctx.fillStyle = gradient;

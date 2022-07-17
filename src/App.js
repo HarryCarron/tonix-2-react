@@ -27,14 +27,7 @@ function App() {
                     </div>
                     <div className="filter-area d-flex-col">
                         <div className="oscillator-title">Filters</div>
-                        <div className="flex-1 settings-rack settings shadow-1">
-                            <BandPass
-                                gain={1}
-                                freq={0.5}
-                                q={0.5}
-                                setFilter={() => null}
-                            />
-                        </div>
+                        <div className="flex-1 settings-rack settings shadow-1"></div>
                         <div className="flex-1 settings-rack settings shadow-1"></div>
                     </div>
                 </div>

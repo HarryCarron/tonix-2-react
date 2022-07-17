@@ -88,7 +88,7 @@ export function Amp(props) {
                 ampGuide: {
                     lineWidth: 1,
                     strokeColor: 'rgba(255, 95, 95, 0.5)',
-                    lineDash: [2, 2],
+                    lineDash: [2, 3],
                 },
                 ampLine: {
                     lineWidth: 2,
@@ -168,7 +168,7 @@ export function Amp(props) {
             ])
             .stopTrackingShape()
             .drawShape(true, true)
-            .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.5)', 'rgba(255, 95, 95, 0)')
+            .gradientFill(175, 0, 175, 0, 'rgba(255, 133, 133, 0.5)', 'rgba(255, 133, 133, 0)')
             .styleProfile('ampHandle')
             .multiple(
                 (ctx, params) => ctx.circle(...params),

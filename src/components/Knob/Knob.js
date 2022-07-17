@@ -89,10 +89,10 @@ function Knob({ size, color, arcWidth }) {
                         />
                         <line
                             x1={size / 2}
-                            y1={size - 5}
+                            y1={size - 6}
                             x2={size / 2}
                             y2={size}
-                            strokeWidth="2"
+                            strokeWidth="3"
                             strokeLinecap="round"
                             stroke={color}
                         ></line>
