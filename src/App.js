@@ -27,9 +27,6 @@ function App() {
                     </div>
                     <div className="filter-area d-flex-col">
                         <div className="oscillator-title">Filters</div>
-<<<<<<< Updated upstream
-                        <div className="flex-1 settings-rack settings shadow-1"></div>
-=======
                         <div className="flex-1 filters-rack settings shadow-1">
                             <div className="w-100 filter-1">
                                 <BandPass
@@ -40,7 +37,6 @@ function App() {
                                 />
                             </div>
                         </div>
->>>>>>> Stashed changes
                         <div className="flex-1 settings-rack settings shadow-1"></div>
                     </div>
                 </div>
