@@ -61,12 +61,12 @@ class CanvasUtilities {
         if (close) {
             this.ctx.closePath();
         }
-        var gradient = this.ctx.createLinearGradient(175, 0, 175, 80);
-        gradient.addColorStop(0, 'rgba(255, 95, 95, 0.5)');
-        gradient.addColorStop(1, 'rgba(255, 95, 95, 0)');
+        // var gradient = this.ctx.createLinearGradient(175, 0, 175, 80);
+        // gradient.addColorStop(0, 'rgba(255, 95, 95, 0.5)');
+        // gradient.addColorStop(1, 'rgba(255, 95, 95, 0)');
 
-        this.ctx.fillStyle = gradient;
-        this.ctx.fill();
+        // this.ctx.fillStyle = gradient;
+        // this.ctx.fill();
 
         if (clear) {
             this.shape = [];
@@ -192,7 +192,7 @@ class CanvasUtilities {
     }
 
     gradientFill(x1, y1, x2, y2, colour1, colour2) {
-        var gradient = this.ctx.createLinearGradient(x1, y2, x2, y2);
+        var gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
         gradient.addColorStop(0, colour1);
         gradient.addColorStop(1, colour2);
         this.ctx.fillStyle = gradient;
