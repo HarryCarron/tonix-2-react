@@ -61,12 +61,6 @@ class CanvasUtilities {
         if (close) {
             this.ctx.closePath();
         }
-        var gradient = this.ctx.createLinearGradient(175, 0, 175, 80);
-        gradient.addColorStop(0, 'rgba(255, 95, 95, 0.5)');
-        gradient.addColorStop(1, 'rgba(255, 95, 95, 0)');
-
-        this.ctx.fillStyle = gradient;
-        this.ctx.fill();
 
         if (clear) {
             this.shape = [];
@@ -202,8 +196,19 @@ class CanvasUtilities {
 
     path(paths) {
         this.ctx.beginPath();
-        paths.forEach(path => this.ctx.bezierCurveTo(...path));
+        paths.forEach(path => {
+            this.ctx.bezierCurveTo(...path);
+            if (this.trackingShape) {
+                this.shape.push({
+                    curve: params => {
+                        this.ctx.bezierCurveTo(...params);
+                    },
+                    params: path,
+                });
+            }
+        });
         this.ctx.stroke();
+
         return this;
     }
 

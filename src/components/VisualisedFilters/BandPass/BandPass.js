@@ -6,23 +6,23 @@ import './../Filters.css';
 import { DragAndDrop } from '../../../Utilities/DragAndDrop';
 
 export default function BandPass({ gain, freq, q, setFilter }) {
-    const width = 130;
-    const height = 70;
-    const xPad = 8;
-    const yPad = 8;
+    const xPad = 12;
+    const yPad = 12;
     const qControl = useRef();
     const canvas = useRef();
     const canvasUtils = useRef();
+    const container = useRef();
 
     useEffect(() => {
         canvasUtils.current = new CanvasUtilities(
             canvas,
             xPad,
             yPad,
-            width,
-            height,
+            container.current.offsetWidth,
+            container.current.offsetHeight,
             true
         )
+
             .setStyle({
                 lineCap: 'round',
                 textAlign: 'center',
@@ -30,9 +30,9 @@ export default function BandPass({ gain, freq, q, setFilter }) {
             })
             .setStyleProfiles({
                 gridLine: {
-                    lineWidth: 0.1,
-                    opacity: 0.1,
-                    strokeColor: 'white',
+                    lineWidth: 1,
+                    opacity: 0.3,
+                    strokeColor: 'rgba(255, 95, 95, 0.2)',
                     lineDash: [0],
                 },
                 filterHandle: {
@@ -42,10 +42,8 @@ export default function BandPass({ gain, freq, q, setFilter }) {
                 },
                 filterLine: {
                     lineWidth: 2,
-                    strokeColor: '#BEBEBE',
-                    lineDash: [],
-                    fillStyle: 'rgba(190, 190, 190, 0.2)',
-                    // glow: [10, 'rgba(225, 225, 225, 0.8)'],
+                    strokeColor: '#ff5f5f',
+                    lineDash: [0],
                 },
             });
     }, []);
@@ -70,8 +68,8 @@ export default function BandPass({ gain, freq, q, setFilter }) {
     }, [setFilter]);
 
     useEffect(() => {
-        const availableWidth = width - xPad * 2;
-        const availableHeight = height - yPad * 2;
+        const availableWidth = container.current.offsetWidth - xPad * 2;
+        const availableHeight = container.current.offsetHeight - yPad * 2;
 
         const freqAt = availableWidth * freq + xPad;
         const gainAt = availableHeight - availableHeight * gain + yPad;
@@ -133,16 +131,21 @@ export default function BandPass({ gain, freq, q, setFilter }) {
             .styleProfile('gridLine')
             .multiple(
                 (ctx, params) => ctx.line(...params),
-                ...ArrOnN(18).map(i => {
-                    const lineY = yPad + ((height - yPad * 2) / 17) * i;
+                ...ArrOnN(26).map(i => {
+                    const height = container.current.offsetHeight;
+                    const width = container.current.offsetWidth;
+                    const lineY = yPad + ((height - yPad * 2) / 25) * i;
                     return [xPad, height - lineY, width - xPad, height - lineY];
                 }),
-                ...ArrOnN(20).map(i => {
-                    const lineX = xPad + ((width - yPad * 2) / 19) * i;
+                ...ArrOnN(40).map(i => {
+                    const height = container.current.offsetHeight;
+                    const width = container.current.offsetWidth;
+                    const lineX = xPad + ((width - yPad * 2) / 39) * i;
                     return [lineX, yPad, lineX, height - yPad];
                 })
             )
             .styleProfile('filterLine')
+            .trackShape()
             .path([
                 [
                     curve1StartX,
@@ -177,13 +180,23 @@ export default function BandPass({ gain, freq, q, setFilter }) {
                     curve4EndY,
                 ],
             ])
+            .stopTrackingShape()
+            .drawShape(true, true)
+            .gradientFill(
+                175,
+                0,
+                175,
+                130,
+                'rgba(255, 95, 95, 0.3)',
+                'rgba(255, 95, 95, 0)'
+            )
             .fill();
     }, [gain, freq, q]);
 
     return (
-        <div className="d-flex-xol">
-            <div className="filter-container band-pass w-100">
-                <canvas ref={canvas}></canvas>
+        <div className="d-flex-col h-100 h-100">
+            <div className="flex-1 band-pass w-100" ref={container}>
+                <canvas height="0" width="0" ref={canvas}></canvas>
             </div>
             <div className="d-flex filter-tools space-around">
                 <div className="filter-value bold d-flex center-child-xy">

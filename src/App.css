@@ -41,6 +41,10 @@
 
 .filter-area {}
 
+.filter-1 {
+    height: 150px;
+}
+
 .icon-container {
     padding: 15px;
     font-size: 1.2em;
@@ -57,7 +61,8 @@
 }
 
 .filter-area {
-    width: 200px;
+    /* width: 300px; */
+    background-color: rgb(28 28 28);
 }
 
 .synth-bottom {
