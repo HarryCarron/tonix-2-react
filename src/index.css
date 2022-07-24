@@ -31,6 +31,10 @@
         cursor: pointer;
     }
     
+    canvas {
+        vertical-align: bottom;
+    }
+    
     .cursor-grab {
         cursor: move;
         /* fallback if grab cursor is unsupported */

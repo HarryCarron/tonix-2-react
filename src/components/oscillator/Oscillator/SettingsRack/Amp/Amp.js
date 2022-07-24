@@ -9,7 +9,7 @@ import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
 
-export function Amp(props) {
+export function Amp() {
     const xPad = 15;
     const yPad = 10;
 

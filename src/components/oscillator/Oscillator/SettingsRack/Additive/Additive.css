@@ -1,6 +1,7 @@
 .additive-controls {
-    margin: 0 10px;
-    color: #a5a5a5;
+    border-top: 1px solid #653636;
+    color: #934646;
+    font-size: 0.9em;
 }
 
 .additive-tools>div {
@@ -8,10 +9,14 @@
     width: 10px;
 }
 
+.additive-tools {
+    font-size: 0.8em
+}
+
 .addative-button {
     background-color: #181818;
     padding: 1px 10px;
-    color: #a5a5a5;
+    color: #934646;
     border: none;
     font-family: 'Roboto Mono', monospace;
     border-radius: 3px;
@@ -19,7 +24,7 @@
 }
 
 .addative-button:hover {
-    color: #ffffff;
+    color: #ff5f5f;
 }
 
 .clear {

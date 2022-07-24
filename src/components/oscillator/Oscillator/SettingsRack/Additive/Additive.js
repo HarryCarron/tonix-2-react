@@ -6,12 +6,13 @@ import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 
 const PARTIALS_UPPER_LIMIT = 32;
-const TOOL_BAR_HEIGHT = 24;
+const TOOL_BAR_HEIGHT = 20;
 export default function Additive(props) {
     const xPad = 10;
-    const yPad = 5;
+    const yPad = 20;
 
     const canvas = useRef();
+    const container = useRef();
 
     const [partials, setPartials] = useState([1]);
 
@@ -21,9 +22,9 @@ export default function Additive(props) {
     });
 
     const renderValues = useRef({
-        totalXTravel: props.dims.width - xPad * 2,
-        totalYTravel: props.dims.height - TOOL_BAR_HEIGHT - xPad * 2,
-        floor: props.dims.height - TOOL_BAR_HEIGHT - yPad / 2,
+        totalXTravel: 0,
+        totalYTravel: 0,
+        floor: 0,
     });
 
     const incrementPartial = mode => {
@@ -59,29 +60,32 @@ export default function Additive(props) {
     };
 
     useEffect(() => {
+        renderValues.current.totalXTravel =
+            container.current.offsetWidth - xPad * 2;
+        renderValues.current.totalYTravel =
+            container.current.offsetHeight - yPad;
+        renderValues.current.floor = container.current.offsetHeight - yPad / 2;
+
         utils.current.canvas = new CanvasUtilities(
             canvas,
             xPad,
             yPad,
-            props.dims.width,
-            props.dims.height - TOOL_BAR_HEIGHT,
+            container.current.offsetWidth,
+            container.current.offsetHeight,
             true
         );
         utils.current.canvas.setStyle({
-            fillStyle: 'rgba(255, 255, 255, 0.1)',
-            glow: [5, 'rgba(255, 255, 255, 1)'],
-            strokeColor: 'rgba(255, 255, 255, 0.2)',
+            fillStyle: 'rgba(255, 95, 95, 0.4)',
+            strokeColor: '#ff5f5f',
             lineWidth: 1,
         });
-    }, [props.dims.width, props.dims.height]);
+    }, []);
 
     useEffect(() => {
         utils.current.canvas.clear();
-
         const totalPartialsNumber = partials.length;
         const width = renderValues.current.totalXTravel / totalPartialsNumber;
         const partialPad = totalPartialsNumber < 10 ? 6 : 4;
-
         utils.current.canvas.multiple(
             (ctx, params) => ctx.rect(...params),
             ...partials.map((partial, i) => {
@@ -89,7 +93,6 @@ export default function Additive(props) {
                 const y = renderValues.current.floor;
                 const partialWidth = width - partialPad;
                 const height = renderValues.current.totalYTravel * partial * -1;
-
                 return [x, y, partialWidth, height, true];
             })
         );
@@ -113,21 +116,24 @@ export default function Additive(props) {
 
         partials[hoveredPartial] = y;
 
-        setPartials(() => partials);
+        setPartials(state => {
+            const newState = [...state];
+            newState[hoveredPartial] = y;
+            return newState;
+        });
     };
 
     return (
-        <div
-            className="d-flex-col"
-            style={{ height: props.dims.height, width: props.dims.width }}
-        >
-            <div className="flex-1 w-100">
+        <div className="d-flex-col h-100">
+            <div className="flex-1" ref={container}>
                 <canvas
                     onMouseDown={beginPartialManipulation}
                     ref={canvas}
                     height="0"
+                    width="0"
                 ></canvas>
             </div>
+
             <div
                 className="additive-controls d-flex"
                 style={{ height: TOOL_BAR_HEIGHT }}
