@@ -72,7 +72,7 @@ export function Amp() {
 
     useEffect(() => {
         utils.current.canvas = new CanvasUtilities(
-            canvas,
+            canvas.current,
             xPad,
             yPad,
             container.current.offsetWidth,

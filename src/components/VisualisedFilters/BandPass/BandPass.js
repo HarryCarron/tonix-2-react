@@ -15,7 +15,7 @@ export default function BandPass({ gain, freq, q, setFilter }) {
 
     useEffect(() => {
         canvasUtils.current = new CanvasUtilities(
-            canvas,
+            canvas.current,
             xPad,
             yPad,
             container.current.offsetWidth,

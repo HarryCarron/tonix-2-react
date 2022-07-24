@@ -271,7 +271,7 @@ class CanvasUtilities {
 
         this.canvas = canvas;
 
-        this.ctx = canvas.current.getContext('2d');
+        this.ctx = canvas.getContext('2d');
 
         this.ctx.scale(3, 3);
     }
