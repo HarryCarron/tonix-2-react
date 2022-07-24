@@ -1,8 +1,29 @@
-class CanvasUtilities {
-    xPad = 0;
-    yPad = 0;
+import {
+    TrackedShapeDefinition,
+    TrackedShapeActionType,
+} from './../types/CanvasUtilities';
 
-    constructor(canvas, xPad, yPad, width, height, setCanvasDims) {
+class CanvasUtilities {
+    private xPad: number = 0;
+    private yPad: number = 0;
+    private canvasWidth: number = 0;
+    private canvasHeight: number = 0;
+    private canvas: HTMLCanvasElement;
+    private ctx: any = null;
+
+    private styleProfiles = {};
+
+    private shape: TrackedShapeDefinition[] = [];
+    private trackingShape: boolean = false;
+
+    constructor(
+        canvas: HTMLCanvasElement,
+        xPad: number,
+        yPad: number,
+        width: number,
+        height: number,
+        setCanvasDims: boolean
+    ) {
         this.xPad = xPad;
         this.yPad = yPad;
         this.initCanvas(canvas, width, height, setCanvasDims);
@@ -11,49 +32,38 @@ class CanvasUtilities {
         return this;
     }
 
-    shape = [];
-    trackingShape = false;
-
-    styleProfiles = {};
-
-    clear() {
+    public clear(): this {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         return this;
     }
 
-    setStyleProfiles(profiles = {}) {
+    public setStyleProfiles(profiles = {}): this {
         this.styleProfiles = profiles;
         return this;
     }
 
-    trackShape() {
+    public trackShape(): this {
         this.trackingShape = true;
         return this;
     }
 
-    stopTrackingShape() {
+    public stopTrackingShape(): this {
         this.trackingShape = false;
         return this;
     }
 
-    drawShape(clear, close) {
+    public drawShape(clear: boolean, close: boolean) {
         this.ctx.beginPath();
 
-        let startingPoint;
+        let startingPoint: [number, number];
 
-        this.shape.forEach((def, i, o) => {
-            const action = def.line ?? def.curve;
-
+        this.shape.forEach((def, i) => {
             if (!i) {
-                if (def.line) {
-                    startingPoint = def.params.slice(0, 2);
-                } else if (def.curve) {
-                    startingPoint = def.params.slice(0, 2);
-                }
+                startingPoint = def.params.slice(0, 2) as [number, number];
                 this.ctx.moveTo(...startingPoint);
             }
 
-            action(def.params);
+            def.action(def.params);
             this.ctx.strokeStyle = 'rgba(0,0,0,0)';
             this.ctx.stroke();
         });
@@ -68,7 +78,7 @@ class CanvasUtilities {
         return this;
     }
 
-    styleProfile(profileKey) {
+    public styleProfile(profileKey) {
         if (this.styleProfiles[profileKey]) {
             this.setStyle(this.styleProfiles[profileKey]);
         } else {
@@ -77,7 +87,7 @@ class CanvasUtilities {
         return this;
     }
 
-    setStyle(styles) {
+    public setStyle(styles): this {
         Object.keys(styles).forEach(key => {
             const value = styles[key];
             switch (key) {
@@ -118,39 +128,35 @@ class CanvasUtilities {
         return this;
     }
 
-    text(text, x, y) {
+    public text(text, x, y): this {
         this.ctx.fillText(text, x, y);
         return this;
     }
 
-    multiple(fn, ...params) {
+    public multiple(fn, ...params): this {
         params.forEach(param => fn(this, param));
         return this;
     }
 
-    conditional(conditions) {
+    public conditional(conditions): this {
         conditions
             .filter(condition => condition[1])
             .forEach(condition => condition[0](this));
         return this;
     }
 
-    line(x1, y1, x2, y2) {
+    public line(x1: number, y1: number, x2: number, y2: number): this {
         this.ctx.beginPath();
-
-        if (this.relativeXPositioning) {
-            x1 = this.getRelativeXCoordinates(x1);
-            x2 = this.getRelativeXCoordinates(x2);
-        }
 
         this.ctx.moveTo(x1, y1);
         this.ctx.lineTo(x2, y2);
 
         if (this.trackingShape) {
             this.shape.push({
-                line: params => {
+                action: params => {
                     this.ctx.lineTo(...params.slice(2));
                 },
+                actionType: TrackedShapeActionType.line,
                 params: [x1, y1, x2, y2],
             });
         }
@@ -159,7 +165,14 @@ class CanvasUtilities {
         return this;
     }
 
-    curve(startX, startY, cpX, cpY, endX, endY) {
+    public curve(
+        startX: number,
+        startY: number,
+        cpX: number,
+        cpY: number,
+        endX: number,
+        endY: number
+    ): this {
         this.ctx.beginPath();
 
         this.ctx.moveTo(startX, startY);
@@ -167,9 +180,10 @@ class CanvasUtilities {
 
         if (this.trackingShape) {
             this.shape.push({
-                curve: params => {
+                action: params => {
                     this.ctx.quadraticCurveTo(...params.slice(2));
                 },
+                actionType: TrackedShapeActionType.curve,
                 params: [startX, startY, cpX, cpY, endX, endY],
             });
         }
@@ -179,13 +193,20 @@ class CanvasUtilities {
         return this;
     }
 
-    fill(colour) {
+    public fill(colour: string): this {
         this.ctx.fillStyle = colour;
         this.ctx.fill();
         return this;
     }
 
-    gradientFill(x1, y1, x2, y2, colour1, colour2) {
+    public gradientFill(
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number,
+        colour1: string,
+        colour2: string
+    ): this {
         var gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
         gradient.addColorStop(0, colour1);
         gradient.addColorStop(1, colour2);
@@ -194,15 +215,16 @@ class CanvasUtilities {
         return this;
     }
 
-    path(paths) {
+    public path(paths: [number[]]): this {
         this.ctx.beginPath();
         paths.forEach(path => {
             this.ctx.bezierCurveTo(...path);
             if (this.trackingShape) {
                 this.shape.push({
-                    curve: params => {
+                    action: params => {
                         this.ctx.bezierCurveTo(...params);
                     },
+                    actionType: TrackedShapeActionType.curve,
                     params: path,
                 });
             }
@@ -212,7 +234,13 @@ class CanvasUtilities {
         return this;
     }
 
-    rect(x, y, width, height, fill) {
+    public rect(
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        fill: boolean
+    ): this {
         this.ctx.beginPath();
         if (fill) {
             this.ctx.fillRect(x, y, width, height);
@@ -221,15 +249,11 @@ class CanvasUtilities {
             this.ctx.rect(x, y, width, height);
         }
         this.ctx.stroke();
+
+        return this;
     }
 
-    arcRect() {}
-
-    circle(x, y, r) {
-        if (this.relativeXPositioning) {
-            x = this.getRelativeXCoordinates(x);
-        }
-
+    public circle(x: number, y: number, r: number): this {
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, 0, 2 * Math.PI);
         this.ctx.stroke();
@@ -237,12 +261,12 @@ class CanvasUtilities {
         return this;
     }
 
-    initCanvas(canvas, width, height, setCanvasDims) {
+    private initCanvas(canvas, width, height, setCanvasDims): void {
         if (setCanvasDims) {
-            canvas.current.width = width * 3;
-            canvas.current.height = height * 3;
-            canvas.current.style.width = `${width}px`;
-            canvas.current.style.height = `${height}px`;
+            canvas.width = width * 3;
+            canvas.height = height * 3;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
         }
 
         this.canvas = canvas;
@@ -252,26 +276,40 @@ class CanvasUtilities {
         this.ctx.scale(3, 3);
     }
 
-    getTrueCoordinates(clientX, clientY, validate) {
+    /**
+     * todo: Decouple co-ord logic. Move to implementing codes' scope.
+     * @param clientX
+     * @param clientY
+     * @param validate
+     * @returns
+     */
+    public getTrueCoordinates(
+        clientX,
+        clientY,
+        validate
+    ): [number, number] | undefined {
         const xTravel = this.canvasWidth - this.xPad * 2;
         const yTravel = this.canvasHeight - this.yPad * 2;
-        const canvasBB = this.canvas.current.getBoundingClientRect();
-        const canvasTop = canvasBB.top;
-        const canvasLeft = canvasBB.left;
-        const relativeY = Math.floor(
-            yTravel - (clientY - canvasTop - this.yPad)
-        );
-        const relativeX = Math.floor(clientX - canvasLeft - this.xPad);
-
-        let mappedX = relativeX / xTravel;
-        let mappedY = relativeY / yTravel;
-
-        if (validate) {
-            [mappedX, mappedY] = [mappedX, mappedY].map(v =>
-                validate ? (v >= 1 ? 1 : v <= 0 ? 0 : v) : v
+        const canvasBB: DOMRect | undefined =
+            this.canvas?.getBoundingClientRect();
+        if (canvasBB) {
+            const canvasTop = canvasBB?.top;
+            const canvasLeft = canvasBB?.left;
+            const relativeY = Math.floor(
+                yTravel - (clientY - canvasTop - this.yPad)
             );
+            const relativeX = Math.floor(clientX - canvasLeft - this.xPad);
+
+            let mappedX = relativeX / xTravel;
+            let mappedY = relativeY / yTravel;
+
+            if (validate) {
+                [mappedX, mappedY] = [mappedX, mappedY].map(v =>
+                    validate ? (v >= 1 ? 1 : v <= 0 ? 0 : v) : v
+                );
+            }
+            return [mappedX, mappedY];
         }
-        return [mappedX, mappedY];
     }
 }
 
