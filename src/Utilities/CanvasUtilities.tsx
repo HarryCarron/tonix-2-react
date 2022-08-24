@@ -1,27 +1,33 @@
 import {
     TrackedShapeDefinition,
     TrackedShapeActionType,
+    BezierCurveTuple,
+    CoOrdTuple,
+    LineTuple,
+    RectTuple,
+    CircleTuple,
 } from './../types/CanvasUtilities';
 
-class CanvasUtilities {
-    private xPad: number = 0;
-    private yPad: number = 0;
+export interface StyleProfiles {
+    [name: string]: string | number | [number, number];
+}
+
+export default class CanvasUtilities {
     private canvasWidth: number = 0;
     private canvasHeight: number = 0;
-    private canvas: HTMLCanvasElement;
-    private ctx: any = null;
+    private ctx: CanvasRenderingContext2D = null;
 
     private styleProfiles = {};
 
-    private shape: TrackedShapeDefinition[] = [];
+    private shape: any[] = [];
     private trackingShape: boolean = false;
 
     constructor(
-        canvas: HTMLCanvasElement,
-        xPad: number,
-        yPad: number,
-        width: number,
-        height: number,
+        private canvas: HTMLCanvasElement,
+        private xPad: number = 0,
+        private yPad: number = 0,
+        width: number = 0,
+        height: number = 0,
         setCanvasDims: boolean
     ) {
         this.xPad = xPad;
@@ -88,7 +94,7 @@ class CanvasUtilities {
     }
 
     public setStyle(styles): this {
-        Object.keys(styles).forEach(key => {
+        Object.keys(styles).forEach((key: string) => {
             const value = styles[key];
             switch (key) {
                 case 'strokeColor':
@@ -128,12 +134,15 @@ class CanvasUtilities {
         return this;
     }
 
-    public text(text, x, y): this {
+    public text(text: string, x: number, y: number): this {
         this.ctx.fillText(text, x, y);
         return this;
     }
 
-    public multiple(fn, ...params): this {
+    public multiple<T>(
+        fn: (arg1: this, arg2: T[]) => void,
+        ...params: T[][]
+    ): this {
         params.forEach(param => fn(this, param));
         return this;
     }
@@ -153,8 +162,13 @@ class CanvasUtilities {
 
         if (this.trackingShape) {
             this.shape.push({
-                action: params => {
-                    this.ctx.lineTo(...params.slice(2));
+                action: (params: LineTuple) => {
+                    const line: CoOrdTuple = params.slice(2) as [
+                        number,
+                        number
+                    ];
+
+                    this.ctx.lineTo(...line);
                 },
                 actionType: TrackedShapeActionType.line,
                 params: [x1, y1, x2, y2],
@@ -180,8 +194,10 @@ class CanvasUtilities {
 
         if (this.trackingShape) {
             this.shape.push({
-                action: params => {
-                    this.ctx.quadraticCurveTo(...params.slice(2));
+                action: (params: number[]) => {
+                    this.ctx.quadraticCurveTo(
+                        ...(params.slice(2) as [number, number, number, number])
+                    );
                 },
                 actionType: TrackedShapeActionType.curve,
                 params: [startX, startY, cpX, cpY, endX, endY],
@@ -215,13 +231,13 @@ class CanvasUtilities {
         return this;
     }
 
-    public path(paths: [number[]]): this {
+    public path(paths: number[][]): this {
         this.ctx.beginPath();
-        paths.forEach(path => {
+        paths.forEach((path: BezierCurveTuple) => {
             this.ctx.bezierCurveTo(...path);
             if (this.trackingShape) {
                 this.shape.push({
-                    action: params => {
+                    action: (params: BezierCurveTuple) => {
                         this.ctx.bezierCurveTo(...params);
                     },
                     actionType: TrackedShapeActionType.curve,
@@ -312,5 +328,3 @@ class CanvasUtilities {
         }
     }
 }
-
-export default CanvasUtilities;
