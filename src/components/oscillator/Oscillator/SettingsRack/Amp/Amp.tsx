@@ -4,12 +4,47 @@ import React, {
     useCallback,
     useState,
     useLayoutEffect,
+    FunctionComponent,
+    ReactElement,
 } from 'react';
+import { CircleTuple, LineTuple } from '../../../../../types/CanvasUtilities';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
 
-export function Amp() {
+enum Section {
+    attack,
+    decay,
+    sustain,
+    release,
+}
+
+interface AmpWidths {
+    attack: number;
+    decay: number;
+    sustainWidth: number;
+    release: number;
+}
+
+type LineType = Section;
+type HandleType = Section;
+
+enum CurveType {
+    LIN,
+    COS,
+    EXP,
+}
+
+interface SectionDetail {
+    x: number;
+    width: number;
+    handle: {
+        x: number;
+        y: number;
+    };
+}
+
+export const Amp: FunctionComponent = () => {
     const xPad = 15;
     const yPad = 10;
 
@@ -26,17 +61,18 @@ export function Amp() {
         releaseCurve: 0,
     });
 
-    const utils = useRef({ globalMouseMove: new GlobalEventHandlers() });
+    const globalMouseMove = useRef(new GlobalEventHandlers());
+    const canvasUtils = useRef<CanvasUtilities>();
 
-    const getCurveName = () =>
+    const getCurveName = (): CurveType[] =>
         [amp.attackCurve, amp.decayCurve, amp.releaseCurve].map(curve => {
             if (curve === 0) {
-                return 'LIN';
+                return CurveType.LIN;
             }
             if (curve === 1) {
-                return 'EXP';
+                return CurveType.EXP;
             }
-            return 'COS';
+            return CurveType.COS;
         });
 
     const [attackCurveName, decayCurveName, releaseCurveName] = getCurveName();
@@ -51,8 +87,8 @@ export function Amp() {
         sustainHeight: 0,
     });
 
-    const canvas = useRef();
-    const container = useRef();
+    const canvasElem = useRef<HTMLCanvasElement>();
+    const container = useRef<HTMLDivElement>();
 
     useLayoutEffect(() => {
         if (container.current) {
@@ -66,13 +102,13 @@ export function Amp() {
             ampValues.current.height = container.current.offsetHeight;
             ampValues.current.width = container.current.offsetWidth;
 
-            viewReady();
+            viewReady(true);
         }
     }, []);
 
     useEffect(() => {
-        utils.current.canvas = new CanvasUtilities(
-            canvas.current,
+        canvasUtils.current = new CanvasUtilities(
+            canvasElem.current,
             xPad,
             yPad,
             container.current.offsetWidth,
@@ -120,7 +156,7 @@ export function Amp() {
         ampValues.current.sustainHeight =
             ampValues.current.floor -
             amp.sustain * (ampValues.current.height - yPad * 2);
-        const getXpositions = () => {
+        const getXpositions = (): number[] => {
             return [amp.attack, amp.decay, amp.sustainWidth, amp.release].map(
                 (_, i, o) =>
                     xPad +
@@ -131,18 +167,17 @@ export function Amp() {
         const [attackX, decayX, sustainWidthX, releaseX] = getXpositions();
         const sustainHeight = ampValues.current.sustainHeight;
         const floor = ampValues.current.floor;
-        const canvas = utils.current.canvas;
         // prettier-ignore
-        canvas.clear()
+        canvasUtils.current.clear()
             .styleProfile('baseLine')
             .multiple(
-                (ctx, params) => ctx.line(...params),
+                (ctx, params: LineTuple) => ctx.line(...params),
                 [xPad, floor, ampValues.current.width - xPad, floor],
                 [xPad, floor, xPad, yPad]
             )
             .styleProfile('ampGuide')
             .multiple(
-                (ctx, params) => ctx.line(...params),
+                (ctx, params: LineTuple) => ctx.line(...params),
                 [attackX, floor, attackX, yPad],
                 [decayX, floor, decayX, yPad],
                 [sustainWidthX, floor, sustainWidthX, yPad],
@@ -171,7 +206,7 @@ export function Amp() {
             .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.6)', 'rgba(255, 95, 95, 0)')
             .styleProfile('ampHandle')
             .multiple(
-                (ctx, params) => ctx.circle(...params),
+                (ctx, params: CircleTuple) => ctx.circle(...params),
                 [attackX, yPad, 2],
                 [decayX, sustainHeight, 2],
                 [sustainWidthX, sustainHeight, 2],
@@ -188,20 +223,20 @@ export function Amp() {
         amp.sustainWidth,
     ]);
 
-    useEffect(_ => drawAmp(), [drawAmp]);
+    useEffect(() => drawAmp(), [drawAmp]);
 
-    const validateValue = v => {
-        if (v >= 1) {
+    const validateValue = (value: number) => {
+        if (value >= 1) {
             return 1;
         }
-        if (v <= 0) {
+        if (value <= 0) {
             return 0;
         }
 
-        return v;
+        return value;
     };
 
-    const widthValid = amp => {
+    const widthValid = (amp: AmpWidths): boolean => {
         return (
             [amp.attack, amp.decay, amp.sustainWidth, amp.release].reduce(
                 (a, b) => a + b
@@ -209,14 +244,18 @@ export function Amp() {
         );
     };
 
-    const handleClick = ({ clientX, clientY }, i) => {
+    const handleClick = ({ clientX, clientY }, i: HandleType) => {
         if (!(clientX && clientY)) {
             return;
         }
-        let [x, y] = utils.current.canvas.getTrueCoordinates(clientX, clientY);
+        let [x, y] = canvasUtils.current.getTrueCoordinates(
+            clientX,
+            clientY,
+            false
+        );
 
         switch (i) {
-            case 0: {
+            case Section.attack: {
                 let attack = validateValue(x);
                 setAmp(state => {
                     if (widthValid({ ...state, attack })) {
@@ -226,9 +265,9 @@ export function Amp() {
                 });
                 break;
             }
-            case 1: {
+            case Section.decay: {
                 const decay = validateValue(x - amp.attack);
-                const sustain = validateValue(y, false);
+                const sustain = validateValue(y);
                 setAmp(state => {
                     if (widthValid({ ...state, decay })) {
                         return { ...state, decay };
@@ -238,7 +277,7 @@ export function Amp() {
                 setAmp(state => ({ ...state, sustain }));
                 break;
             }
-            case 2: {
+            case Section.sustain: {
                 const sustainWidth = validateValue(
                     x - (amp.attack + amp.decay)
                 );
@@ -255,7 +294,7 @@ export function Amp() {
 
                 break;
             }
-            case 3: {
+            case Section.release: {
                 const release = validateValue(
                     x - (amp.attack + amp.decay + amp.sustainWidth)
                 );
@@ -272,26 +311,26 @@ export function Amp() {
         }
     };
 
-    const onHandleDrag = (e, i) => {
+    const onHandleDrag = (e: React.MouseEvent<SVGElement>, i: LineType) => {
         handleClick(e, i);
-        utils.current.globalMouseMove.initiate(e => handleClick(e, i));
+        globalMouseMove.current.initiate(e => handleClick(e, i));
     };
 
-    const ampClicked = i => {
-        let currentCurve;
-        let set;
+    const ampClicked = (i: Section): void => {
+        let currentCurve: number;
+        let set: () => void;
         switch (i) {
-            case 0: {
+            case Section.attack: {
                 currentCurve = amp.attackCurve;
                 set = () => setAmp({ ...amp, attackCurve: currentCurve });
                 break;
             }
-            case 1: {
+            case Section.decay: {
                 currentCurve = amp.decayCurve;
                 set = () => setAmp({ ...amp, decayCurve: currentCurve });
                 break;
             }
-            case 3: {
+            case Section.release: {
                 currentCurve = amp.releaseCurve;
                 set = () => setAmp({ ...amp, releaseCurve: currentCurve });
                 break;
@@ -303,13 +342,13 @@ export function Amp() {
         if (currentCurve === 2) {
             currentCurve = 0;
         } else {
-            currentCurve = currentCurve + 1;
+            currentCurve = ++currentCurve;
         }
 
-        set();
+        set?.();
     };
 
-    const get = id => {
+    const get = (id: LineType): SectionDetail => {
         const sustainHeight = ampValues.current.sustainHeight;
         const all = [amp.attack, amp.decay, amp.sustainWidth, amp.release];
         const pointY = [
@@ -338,19 +377,24 @@ export function Amp() {
     return (
         <div className="canvas-layer h-100 d-flex-col styled">
             <div className="flex-1" ref={container}>
-                <canvas height="0" width="0" ref={canvas}></canvas>
+                <canvas height="0" width="0" ref={canvasElem}></canvas>
 
                 <svg
                     className="interaction-layer"
                     height={ampValues.current.height}
                     width={ampValues.current.width}
                 >
-                    {[0, 1, 2, 3].map(i =>
+                    {[0, 1, 2, 3].map((i: Section) =>
                         interactionPanel(get(i), i, () => ampClicked(i))
                     )}
 
-                    {[0, 1, 2, 3].map(i =>
-                        interactionHandle(get(i), i, e => onHandleDrag(e, i))
+                    {[0, 1, 2, 3].map((i: HandleType) =>
+                        interactionHandle(
+                            get(i),
+                            i,
+                            (e: React.MouseEvent<SVGElement>) =>
+                                onHandleDrag(e, i)
+                        )
                     )}
                 </svg>
             </div>
@@ -370,14 +414,34 @@ export function Amp() {
             </div>
         </div>
     );
-}
+};
 
-const interactionPanel = ({ x, width }, i, onAmpClick) => (
-    <rect key={i} onClick={onAmpClick} x={x} width={width} y="0" />
+const interactionPanel = (
+    { x, width },
+    i: number,
+    onAmpClick: (e: React.MouseEvent<SVGElement>) => void
+): ReactElement<SVGRectElement> => (
+    <rect
+        key={i}
+        onClick={(e: React.MouseEvent<SVGElement>) => onAmpClick(e)}
+        x={x}
+        width={width}
+        y="0"
+    />
 );
 
-const interactionHandle = ({ handle: { x, y } }, i, onHandleDrag) => (
-    <circle key={i} onMouseDown={onHandleDrag} cx={x} cy={y} r="5" />
+const interactionHandle = (
+    { handle: { x, y } },
+    i: number,
+    onHandleDrag: (e: React.MouseEvent<SVGElement>) => void
+): ReactElement<SVGCircleElement> => (
+    <circle
+        key={i}
+        onMouseDown={(e: React.MouseEvent<SVGElement>) => onHandleDrag(e)}
+        cx={x}
+        cy={y}
+        r="5"
+    />
 );
 
 export default Amp;
