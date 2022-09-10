@@ -1,25 +1,42 @@
-import React, { useEffect, useRef, useState, FunctionComponent } from 'react';
+import { useEffect, useRef, useState, FunctionComponent } from 'react';
 import './Additive.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
+import { RectTuple } from '../../../../../types/CanvasUtilities';
 
-const PARTIALS_UPPER_LIMIT = 32;
-const TOOL_BAR_HEIGHT = 20;
+interface RenderValues {
+    totalXTravel: number;
+    totalYTravel: number;
+    floor: number;
+}
+
+interface Utils {
+    globalMouseMove: GlobalEventHandlers;
+    canvas: CanvasUtilities;
+}
+
+const PARTIALS_UPPER_LIMIT: number = 32;
+const TOOL_BAR_HEIGHT: number = 20;
 const Additive: FunctionComponent = () => {
     const xPad: number = 10;
     const yPad: number = 20;
 
-    const canvas = useRef<HTMLCanvasElement | null>(null);
+    const canvas = useRef<HTMLCanvasElement>(null);
     const container = useRef<HTMLDivElement>(null);
 
-    const utils = useRef<{
-        globalMouseMove: GlobalEventHandlers;
-        canvas: CanvasUtilities | null;
-    }>({
+    const utils = useRef<Utils>({
         globalMouseMove: new GlobalEventHandlers(),
         canvas: null,
+    });
+
+    const [partials, setPartials] = useState([1]);
+
+    const renderValues = useRef<RenderValues>({
+        totalXTravel: 0,
+        totalYTravel: 0,
+        floor: 0,
     });
 
     useEffect(() => {
@@ -47,16 +64,8 @@ const Additive: FunctionComponent = () => {
         }
     }, []);
 
-    const [partials, setPartials] = useState([1]);
-
-    const renderValues = useRef({
-        totalXTravel: 0,
-        totalYTravel: 0,
-        floor: 0,
-    });
-
-    const incrementPartial = (mode): void => {
-        let newPartials = [...partials];
+    const incrementPartial = (mode: boolean): void => {
+        let newPartials: number[] = [...partials];
         if (mode) {
             newPartials.push(1);
         } else {
@@ -78,23 +87,29 @@ const Additive: FunctionComponent = () => {
     };
 
     const clear = (): void => {
-        const partials = [];
-        setPartials(() => partials);
+        setPartials(() => []);
     };
 
-    const beginPartialManipulation = (e): void => {
+    const beginPartialManipulation = (
+        e: React.MouseEvent<HTMLElement>
+    ): void => {
         manipulatePartial(e);
-        utils.current.globalMouseMove.initiate(e => manipulatePartial(e));
+        utils.current.globalMouseMove.initiate(
+            (e: React.MouseEvent<HTMLElement>) => manipulatePartial(e)
+        );
     };
 
     useEffect(() => {
-        utils?.current?.canvas?.clear();
+        if (!utils?.current?.canvas) {
+            return;
+        }
+        utils.current.canvas.clear();
         const totalPartialsNumber = partials.length;
         const width = renderValues.current.totalXTravel / totalPartialsNumber;
         const partialPad = totalPartialsNumber < 10 ? 6 : 4;
 
-        utils?.current?.canvas?.multiple(
-            (ctx, params) => ctx.rect(...params),
+        utils.current.canvas.multiple(
+            (ctx, params: RectTuple) => ctx.rect(...params),
             ...partials.map((partial, i) => {
                 const x = xPad + width * i + partialPad / 2;
                 const y = renderValues.current.floor;
@@ -135,7 +150,9 @@ const Additive: FunctionComponent = () => {
         <div className="d-flex-col h-100">
             <div className="flex-1" ref={container}>
                 <canvas
-                    onMouseDown={beginPartialManipulation}
+                    onMouseDown={(e: React.MouseEvent<HTMLElement>) =>
+                        beginPartialManipulation(e)
+                    }
                     ref={canvas}
                     height="0"
                     width="0"
