@@ -1,17 +1,18 @@
-import { useRef, useEffect } from 'react';
-import CanvasUtilities from './../../../Utilities/CanvasUtilities';
-import ArrOnN from './../../../Utilities/Math';
+import { useRef, useEffect, ReactElement } from 'react';
+import CanvasUtilities from '../../../Utilities/CanvasUtilities';
+import ArrOnN from '../../../Utilities/Math';
 import './BandPass.css';
 import './../Filters.css';
 import { DragAndDrop } from '../../../Utilities/DragAndDrop';
+import { CoOrdTuple, LineTuple } from '../../../types/CanvasUtilities';
 
-export default function BandPass({ gain, freq, q, setFilter }) {
-    const xPad = 12;
-    const yPad = 12;
+export default function BandPass({ gain, freq, q, setFilter }): ReactElement {
+    const xPad: number = 12;
+    const yPad: number = 12;
     const qControl = useRef();
-    const canvas = useRef();
-    const canvasUtils = useRef();
-    const container = useRef();
+    const canvas = useRef<HTMLCanvasElement>();
+    const canvasUtils = useRef<CanvasUtilities>();
+    const container = useRef<HTMLDivElement>();
 
     useEffect(() => {
         canvasUtils.current = new CanvasUtilities(
@@ -49,7 +50,7 @@ export default function BandPass({ gain, freq, q, setFilter }) {
     }, []);
 
     useEffect(() => {
-        new DragAndDrop(canvas.current, data =>
+        new DragAndDrop(canvas.current, (data: CoOrdTuple) =>
             setFilter({
                 gain: data[1],
                 freq: data[0],
@@ -60,7 +61,7 @@ export default function BandPass({ gain, freq, q, setFilter }) {
     }, [setFilter]);
 
     useEffect(() => {
-        new DragAndDrop(qControl.current, res =>
+        new DragAndDrop(qControl.current, (res: CoOrdTuple) =>
             setFilter({
                 q: res[1],
             })
@@ -130,7 +131,7 @@ export default function BandPass({ gain, freq, q, setFilter }) {
             .clear()
             .styleProfile('gridLine')
             .multiple(
-                (ctx, params) => ctx.line(...params),
+                (ctx, params: LineTuple) => ctx.line(...params),
                 ...ArrOnN(26).map(i => {
                     const height = container.current.offsetHeight;
                     const width = container.current.offsetWidth;
@@ -190,7 +191,7 @@ export default function BandPass({ gain, freq, q, setFilter }) {
                 'rgba(255, 95, 95, 0.3)',
                 'rgba(255, 95, 95, 0)'
             )
-            .fill();
+            .fill(null);
     }, [gain, freq, q]);
 
     return (
