@@ -5,6 +5,8 @@ import GlobalEventHandlers from './Utilities/GlobalEventHandlers';
 import { EffectsRack } from './components/EffectsRack/EffectsRack/EffectsRack';
 import SettingsRack from './components/oscillator/Oscillator/SettingsRack/SettingsRack';
 import BandPass from './components/VisualisedFilters/BandPass/BandPass';
+import { PatchSearch } from './components/PatchSearch/PatchSearch';
+
 function App() {
     const [signal, setSignal] = useState(false);
 
@@ -13,10 +15,16 @@ function App() {
     return (
         <div className="main-container d-flex-col center-child-xy">
             <div className="synth">
-                <div className="header-bar">
-                    Tonix
-                    <span className="number">2</span>
+                <div className="d-flex header-bar">
+                    <div className="app-title">
+                        Tonix
+                        <span className="number">2</span>
+                    </div>
+                    <div className="flex-1 d-flex">
+                        <PatchSearch />
+                    </div>
                 </div>
+
                 <div className="d-flex">
                     <div className="h-100 oscillator-area f-flex-col">
                         <div className="oscillator-title">Oscillators</div>

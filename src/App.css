@@ -4,7 +4,9 @@
     border-radius: 16px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    box-shadow: rgb(46 46 46 / 94%) 0px 54px 55px, rgb(0 0 0 / 27%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px
+    box-shadow: rgb(46 46 46 / 94%) 0px 54px 55px,
+        rgb(0 0 0 / 27%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px,
+        rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
 }
 
 .main-container {
@@ -22,12 +24,15 @@
 }
 
 .header-bar {
-    background-color: rgb(41 42 45);
+    background-color: rgb(31 31 31);
+    padding: 10px;
+}
+
+.app-title {
+    font-size: 3em;
     color: white;
     font-weight: 700;
     letter-spacing: -2px;
-    padding: 10px;
-    font-size: 3em;
 }
 
 .oscillator-title {
@@ -38,8 +43,6 @@
     padding: 10px;
     font-size: 1.5em;
 }
-
-.filter-area {}
 
 .filter-1 {
     height: 150px;
@@ -66,9 +69,9 @@
 }
 
 .synth-bottom {
-    width: 511px;
+    width: 621px;
     height: 30px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
-    background-color: #282A2A;
+    background-color: #282a2a;
 }

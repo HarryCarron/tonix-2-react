@@ -168,7 +168,7 @@ export function Amp() {
             ])
             .stopTrackingShape()
             .drawShape(true, true)
-            .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.6)', 'rgba(255, 95, 95, 0)')
+            // .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.6)', 'rgba(255, 95, 95, 0)')
             .styleProfile('ampHandle')
             .multiple(
                 (ctx, params) => ctx.circle(...params),

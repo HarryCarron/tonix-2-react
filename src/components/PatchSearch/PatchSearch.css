@@ -1,0 +1,74 @@
+.patch-search-container {
+    position: relative;
+    margin: 0 10px;
+}
+
+.ps-search-container {
+    height: 28px;
+    /* border-bottom: 2px solid #303030; */
+    overflow: hidden;
+}
+
+.relative {
+    position: relative;
+}
+
+.ps-search {
+    background-color: rgb(29 29 29);
+    border: 2px solid #303030;
+    border-radius: 10px;
+    overflow: hidden;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
+    z-index: 100;
+    margin: 0 20px;
+    margin-top: 2px;
+}
+
+.ps-search.ps-closed {
+    transition-property: height, width;
+    transition-delay: 0s, 0.3s;
+}
+
+.ps-search.ps-open {
+    transition-property: width, height;
+    transition-delay: 0s, 0.3s;
+}
+
+.ps-open {
+    height: 400px;
+    width: 400px;
+}
+
+.ps-closed {
+    width: 280px;
+    height: 28px;
+}
+
+.ps-search {
+    position: absolute;
+}
+
+.bg-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    animation-name: fadeIn;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    background-color: black;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
+.patch-search-body {
+    min-height: 0;
+}
