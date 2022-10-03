@@ -10,8 +10,8 @@ import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
 
 export function Amp() {
-    const xPad = 15;
-    const yPad = 10;
+    const xPad = 45;
+    const yPad = 6;
 
     const [_, viewReady] = useState(false);
 
@@ -91,13 +91,13 @@ export function Amp() {
                     lineDash: [2, 3],
                 },
                 ampLine: {
-                    lineWidth: 2,
+                    lineWidth: 1.8,
                     strokeColor: '#ff5f5f',
                     lineDash: [0],
                 },
                 ampLineFill: { fillColor: '#FE5F55', opacity: 0.4 },
                 ampHandle: {
-                    lineWidth: 2,
+                    lineWidth: 1,
                     strokeColor: '#ff5f5f',
                     fillColor: '#FFFD47',
                     lineDash: [],

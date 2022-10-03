@@ -51,9 +51,12 @@ function Knob({ size, color, arcWidth }) {
 
     return (
         <div className="d-flex-col">
-            <div className="d-flex center-child-xy input-container">
-                {(value * 100).toFixed(0)}
+            <div className="w-100 d-flex center-child-x">
+                <div className="d-flex center-child-xy input-container width">
+                    {(value * 100).toFixed(0)}
+                </div>
             </div>
+
             <div className="flex-1 center-child-xy">
                 <svg height={size} width={size} ref={knob}>
                     <path

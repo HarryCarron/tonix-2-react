@@ -6,10 +6,10 @@ import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 
 const PARTIALS_UPPER_LIMIT = 32;
-const TOOL_BAR_HEIGHT = 20;
+const TOOL_BAR_HEIGHT = 15;
 export default function Additive(props) {
-    const xPad = 10;
-    const yPad = 20;
+    const xPad = 5;
+    const yPad = 15;
 
     const canvas = useRef();
     const container = useRef();

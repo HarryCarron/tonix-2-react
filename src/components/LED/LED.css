@@ -1,6 +1,6 @@
 .led {
-    height: 8px;
-    width: 8px;
+    height: 5px;
+    width: 5px;
     border: 1px solid white;
     border-radius: 30px;
     transition: 0.4s;
@@ -8,5 +8,5 @@
 
 .is-on {
     background-color: white;
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 2px 4px
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 2px 4px;
 }
