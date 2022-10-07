@@ -65,7 +65,6 @@ export class DragAndDrop {
         let mappedX = relativeX / this.hostDim.width;
         let mappedY = relativeY / this.hostDim.height;
 
-        console.log(mappedX, mappedY);
 
         return [mappedX, mappedY].map(v => (v >= 1 ? 1 : v <= 0 ? 0 : v));
     }

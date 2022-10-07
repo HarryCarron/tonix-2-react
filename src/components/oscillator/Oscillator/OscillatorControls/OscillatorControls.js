@@ -2,7 +2,7 @@ import OscillatorSelector from '../DetuneSelector/OscillatorSelector/OscillatorS
 import Knob from '../../../Knob/Knob'
 import Signal from './../../../Signal/Signal';
 
-export default function OscillatorControls() {
+export default function OscillatorControls({updateOscData}) {
 
 
     return (
@@ -32,9 +32,7 @@ export default function OscillatorControls() {
                                 isOn={true}
                                 color={'#DCDCDC'}
                                 size={22}
-                                updateOscData={
-                                    () => null
-                                }
+                                updateOscData={updateOscData}
                                 value={true}
                             />
                         </div>

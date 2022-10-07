@@ -9,7 +9,6 @@ function Signal({ hasSignal, isOn }) {
         style = { height: '100%' };
     }
 
-    console.log(hasSignal);
 
     return (
         <div className="h-100 d-flex center-child-x">

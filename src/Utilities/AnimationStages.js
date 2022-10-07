@@ -22,7 +22,6 @@ export class Animation {
         this.fpsInterval = 1000 / this.fps;
         this.then = window.performance.now();
         this.startTime = this.then;
-        console.log(this.startTime);
         this.animate();
     }
 

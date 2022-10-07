@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import './App.css';
 import OscillatorContainer from './components/oscillator/Oscillator/OscillatorContainer';
 import GlobalEventHandlers from './Utilities/GlobalEventHandlers';
 import { PatchSearch } from './components/PatchSearch/PatchSearch';
 import Oscillator from './components/oscillator/Oscillator/Oscillator';
+import * as Tone from 'tone';
 function App() {
     const [signal, setSignal] = useState(false);
+
+    const toneStart = useRef(false);
+
+    useMemo(() => {
+        window.addEventListener('click', () => {
+            if (toneStart.current) {
+                return;
+            }
+            Tone.start();
+            toneStart.current = true;
+        });
+    }, []);
+
 
     new GlobalEventHandlers(signal => setSignal(signal));
 

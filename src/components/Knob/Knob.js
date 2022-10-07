@@ -3,13 +3,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { DragAndDrop } from '../../Utilities/DragAndDrop';
 import './Knob.css';
 
-function Knob({ size, color, arcWidth }) {
+function Knob({ size, color, arcWidth, updateOscData }) {
     const [value, setValue] = useState(0);
     const knob = useRef();
 
     useEffect(() => {
         new DragAndDrop(knob.current, val => {
             setValue(val[1]);
+            updateOscData?.(value);
         }).setCustomDimSet(node => {
             const { height, width } = node.getBBox();
             return {
