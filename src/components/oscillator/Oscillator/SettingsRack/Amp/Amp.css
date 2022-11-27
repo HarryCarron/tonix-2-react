@@ -9,6 +9,20 @@
 
 .canvas-layer {
     position: relative;
+    height: 70px;
+    width: 250px;
+    background-color: rgb(76 76 76);
+}
+
+.amp-container {
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 2px solid rgb(206, 206, 206);
+}
+
+.knob-row {
+    padding: 5px 0;
 }
 
 .interaction-layer>div>.interaction-section {
@@ -26,6 +40,10 @@
     height: 100%;
     cursor: grab;
     fill-opacity: 0;
+}
+
+.envelope-knob {
+    padding-bottom: 10px;
 }
 
 .interaction-layer circle:active {

@@ -1,0 +1,26 @@
+.node-header {
+    height: 25px;
+}
+
+.node-action-container {
+    width: 20px;
+}
+
+.node-name-input {
+    outline: none;
+    border: none;
+    transition: 0.5s;
+    background-color: transparent;
+    font-size: 1.3em;
+    font-weight: 800;
+    color: grey;
+}
+
+.node-name-input:focus {
+    background-color: white;
+    color: black;
+}
+
+.node-info {
+    padding: 0 5px;
+}

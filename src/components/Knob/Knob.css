@@ -16,19 +16,19 @@
 
 .input-container {
     margin-top: 3px;
-    color: #e6e6e6;
+    color: #464646;
     font-size: 0.9em;
     font-weight: 700;
     margin: 3px;
-    background-color: #1d1d1d;
-    border: 1px solid #424242;
+    background-color: #ffffff;
+    border: 2px solid #d1d1d1;
     border-radius: 3px;
     padding: 1px;
     margin-bottom: 7px;
 }
 
 .static-top {
-    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));
 }
 
 .container {
@@ -41,7 +41,7 @@
 }
 
 .shadow-layer {
-    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, .7));
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.7));
 }
 
 .shadow-layer-2 {

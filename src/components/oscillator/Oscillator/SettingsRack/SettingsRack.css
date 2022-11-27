@@ -2,7 +2,7 @@
     color: #908f8f;
     border-left: 0px solid white;
     /* width: 310px; */
-    height: 100px;
+    height: 90px;
 }
 
 .selected-setting {
@@ -13,11 +13,9 @@
 }
 
 .settings-rack {
-    border-top: 1px solid rgb(12, 12, 12);
-    border-bottom: 2px solid rgb(12, 12, 12);
-    background-color: rgb(28 28 28);
+    background-color: rgb(76 76 76);
     overflow: hidden;
-    height: 70px;
+    height: 90px;
 }
 
 .setting-area {

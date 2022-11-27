@@ -2,46 +2,32 @@ import React, { useState } from 'react';
 import './App.css';
 import OscillatorContainer from './components/oscillator/Oscillator/OscillatorContainer';
 import GlobalEventHandlers from './Utilities/GlobalEventHandlers';
-import { PatchSearch } from './components/PatchSearch/PatchSearch';
+import Header from './components/workSpace/Header/Header';
+import Amp from './components/oscillator/Oscillator/SettingsRack/Amp/Amp';
+import Node from './components/node/Node';
+import OscillatorBus from './components/oscillatorBus/OscillatorBus';
 import Oscillator from './components/oscillator/Oscillator/Oscillator';
+
 function App() {
-    const [signal, setSignal] = useState(false);
-
-    new GlobalEventHandlers(signal => setSignal(signal));
-
     return (
-        <div className="main-container d-flex-col center-child-xy">
-            <div className="synth">
-                <div className="d-flex header-bar">
-                    <div className="app-title">
-                        Tonix
-                        <span className="number">2</span>
-                    </div>
-                    <div className="flex-1 d-flex">
-                        <PatchSearch />
-                    </div>
-                </div>
+        <div className="main-container d-flex-col">
+            <Header></Header>
 
+            <div className="flex-1 work-area d-flex center-child-xy">
                 <div className="d-flex">
-                    <div className="h-100 oscillator-area">
-                        <div className="oscillator-title">Voice</div>
-
-                        <div className="d-flex">
-                            <div>
-                                { [1,2,3].map(
-                                number => 
-                                    <Oscillator number={number}/>
-                                ) }
-                            </div>
-                        </div>
-
+                    <Node>
+                        <OscillatorBus />
+                    </Node>
+                    <div
+                        style={{ marginLeft: '100px' }}
+                        className="d-flex center-child-y"
+                    >
+                        <Node>
+                            <Amp />
+                        </Node>
                     </div>
-
                 </div>
-                <div className="w-100 synth-bottom"></div>
             </div>
-            
-
         </div>
     );
 }

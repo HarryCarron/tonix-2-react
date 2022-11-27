@@ -1,7 +1,5 @@
 .oscillator {
     overflow: hidden;
-    width: 280px;
-    /* border-bottom: 1px solid #212020; */
 }
 
 .hide-osc {
@@ -60,12 +58,11 @@
 }
 
 .control-container {
-    background-color: #252525;
+    background-color: #ededed;
     padding: 2px;
     border-radius: 3px;
     margin: 1px 3px;
     transition: 0.2s;
-    outline: 1px solid #252525;
 }
 
 .control-container:hover {

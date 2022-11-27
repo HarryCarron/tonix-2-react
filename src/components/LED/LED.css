@@ -7,6 +7,6 @@
 }
 
 .is-on {
-    background-color: white;
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 2px 4px;
+    background-color: #3e3e3e;
+    /* box-shadow: rgba(17, 17, 17, 0.2) 0px 0px 3px 4px; */
 }

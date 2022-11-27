@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
+import Knob from '../../../../Knob/Knob';
 
 const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 15;
 export default function Additive(props) {
-    const xPad = 5;
-    const yPad = 15;
+    const xPad = 8;
+    const yPad = 12;
 
     const canvas = useRef();
     const container = useRef();
@@ -75,8 +76,8 @@ export default function Additive(props) {
             true
         );
         utils.current.canvas.setStyle({
-            fillStyle: 'rgba(255, 95, 95, 0.4)',
-            strokeColor: '#ff5f5f',
+            fillStyle: 'grey',
+            strokeColor: '#c7c7c7',
             lineWidth: 1,
         });
     }, []);
@@ -85,7 +86,8 @@ export default function Additive(props) {
         utils.current.canvas.clear();
         const totalPartialsNumber = partials.length;
         const width = renderValues.current.totalXTravel / totalPartialsNumber;
-        const partialPad = totalPartialsNumber < 10 ? 6 : 4;
+        // const partialPad = totalPartialsNumber < 10 ? 6 : 4;
+        const partialPad = 3;
         utils.current.canvas.multiple(
             (ctx, params) => ctx.rect(...params),
             ...partials.map((partial, i) => {

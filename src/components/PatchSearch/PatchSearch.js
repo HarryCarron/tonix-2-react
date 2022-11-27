@@ -18,13 +18,7 @@ export function PatchSearch() {
         }, patchSearchRef.current);
     }, [patchSearchRef]);
 
-    let psClasses = 'ps-search relative d-flex-col ';
-
-    if (open) {
-        psClasses += 'ps-open';
-    } else {
-        psClasses += 'ps-closed';
-    }
+    let psClasses = 'ps-search d-flex-col ';
 
     return (
         <>

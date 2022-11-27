@@ -14,15 +14,14 @@
 }
 
 .ps-search {
-    background-color: rgb(29 29 29);
-    border: 2px solid #303030;
+    width: 400px;
+    background-color: rgb(245, 245, 245);
+    border: 2px solid #ededed;
     border-radius: 10px;
     overflow: hidden;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;
     z-index: 100;
-    margin: 0 20px;
-    margin-top: 2px;
 }
 
 .ps-search.ps-closed {
@@ -36,17 +35,17 @@
 }
 
 .ps-open {
-    height: 400px;
+    /* height: 400px; */
     width: 400px;
 }
 
 .ps-closed {
-    width: 150px;
+    /* width: 150px; */
     height: 28px;
 }
 
 .ps-search {
-    position: absolute;
+    /* position: absolute; */
 }
 
 .bg-blur {

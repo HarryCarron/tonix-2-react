@@ -15,10 +15,9 @@ body {
     user-select: none;
     /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-    background: white;
-    background-image: radial-gradient(rgb(194, 194, 194) 1px, transparent 0);
-    background-size: 20px 20px;
-    background-position: -19px -19px;
+    background: #ebebeb;
+    background-image: radial-gradient(rgb(208 208 208) 1.7px, transparent 0);
+    background-size: 25px 25px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;500;700&display=swap');
@@ -43,6 +42,7 @@ canvas {
     cursor: -webkit-grab;
 }
 
+
 /* (Optional) Apply a "closed-hand" cursor during drag operation. */
 
 svg {
@@ -56,8 +56,7 @@ svg {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 * {
@@ -127,24 +126,36 @@ code {
     cursor: pointer;
 }
 
-.shadow-1 {
-    box-shadow: rgb(82 82 82 / 64%) 0px 0px 2px 0px inset,
-        rgb(50 50 93 / 25%) 0px 50px 100px -20px,
-        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+.grabber {
+    cursor: move;
+    /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 }
 
-.shadow-4 {
-    box-shadow: rgba(119, 119, 119, 0.64) 0px 0px 2px 0px inset,
-        rgb(50 50 93 / 25%) 0px 50px 100px -20px,
-        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+.grabber:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.shadow-1 {
+    box-shadow: rgb(82 82 82 / 64%) 0px 0px 2px 0px inset, rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px;
 }
 
 .shadow-2 {
-    box-shadow: rgb(19 19 19 / 61%) 0px 7px 8px 5px,
-        rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    box-shadow: rgb(19 19 19 / 61%) 0px 7px 8px 5px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
 }
 
 .shadow-3 {
-    box-shadow: rgb(0 0 0 / 9%) 0px 6px 4px 3px,
-        rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    box-shadow: rgb(0 0 0 / 9%) 0px 6px 4px 3px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+}
+
+.shadow-4 {
+    box-shadow: rgb(22 22 22 / 15%) 10px 10px 0px;
+}
+
+.space-around {
+    justify-content: space-around;
 }

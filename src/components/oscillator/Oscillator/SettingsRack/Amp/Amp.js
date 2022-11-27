@@ -8,10 +8,13 @@ import React, {
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
+import Knob from '../../../../Knob/Knob';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export function Amp() {
-    const xPad = 45;
-    const yPad = 6;
+    const xPad = 10;
+    const yPad = 10;
 
     const [_, viewReady] = useState(false);
 
@@ -87,29 +90,29 @@ export function Amp() {
             .setStyleProfiles({
                 ampGuide: {
                     lineWidth: 1,
-                    strokeColor: 'rgba(255, 95, 95, 0.5)',
+                    strokeColor: 'grey',
                     lineDash: [2, 3],
                 },
                 ampLine: {
-                    lineWidth: 1.8,
-                    strokeColor: '#ff5f5f',
+                    lineWidth: 2,
+                    strokeColor: '#E0E0E0',
                     lineDash: [0],
                 },
-                ampLineFill: { fillColor: '#FE5F55', opacity: 0.4 },
+                ampLineFill: { fillColor: 'grey', opacity: 0.4 },
                 ampHandle: {
-                    lineWidth: 1,
-                    strokeColor: '#ff5f5f',
-                    fillColor: '#FFFD47',
+                    lineWidth: 2,
+                    strokeColor: '#E0E0E0',
+                    fillColor: '#E0E0E08',
                     lineDash: [],
                 },
                 baseLine: {
-                    lineWidth: 2,
-                    strokeColor: 'rgba(255, 95, 95, 0.3)',
+                    lineWidth: 1,
+                    strokeColor: 'grey',
                     lineDash: [0],
                 },
                 valueGuideLine: {
                     lineWidth: 1,
-                    strokeColor: '#707070',
+                    strokeColor: 'grey',
                     lineDash: [2, 3],
                 },
                 valueText: { fillStyle: '#C3C3CE' },
@@ -136,17 +139,11 @@ export function Amp() {
         canvas.clear()
             .styleProfile('baseLine')
             .multiple(
-                (ctx, params) => ctx.line(...params),
-                [xPad, floor, ampValues.current.width - xPad, floor],
-                [xPad, floor, xPad, yPad]
+                (ctx, params) => ctx.line(...params), [xPad, floor, ampValues.current.width - xPad, floor], [xPad, floor, xPad, yPad]
             )
             .styleProfile('ampGuide')
             .multiple(
-                (ctx, params) => ctx.line(...params),
-                [attackX, floor, attackX, yPad],
-                [decayX, floor, decayX, yPad],
-                [sustainWidthX, floor, sustainWidthX, yPad],
-                [releaseX, floor, releaseX, yPad],
+                (ctx, params) => ctx.line(...params), [attackX, floor, attackX, yPad], [decayX, floor, decayX, yPad], [sustainWidthX, floor, sustainWidthX, yPad], [releaseX, floor, releaseX, yPad],
             )
             .styleProfile('ampLine')
             .trackShape()
@@ -168,14 +165,10 @@ export function Amp() {
             ])
             .stopTrackingShape()
             .drawShape(true, true)
-            // .gradientFill(175, 0, 175, 80, 'rgba(255, 95, 95, 0.6)', 'rgba(255, 95, 95, 0)')
+            .gradientFill(175, 0, 175, 80, 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.2)')
             .styleProfile('ampHandle')
             .multiple(
-                (ctx, params) => ctx.circle(...params),
-                [attackX, yPad, 2],
-                [decayX, sustainHeight, 2],
-                [sustainWidthX, sustainHeight, 2],
-                [releaseX, floor, 2]
+                (ctx, params) => ctx.circle(...params), [attackX, yPad, 2], [decayX, sustainHeight, 2], [sustainWidthX, sustainHeight, 2], [releaseX, floor, 2]
             );
     }, [
         amp.attack,
@@ -336,36 +329,77 @@ export function Amp() {
     };
 
     return (
-        <div className="canvas-layer h-100 d-flex-col styled">
-            <div className="flex-1" ref={container}>
-                <canvas height="0" width="0" ref={canvas}></canvas>
+        <div className="amp-container shadow-4">
+            <div className="oscillator-title d-flex">
+                <div>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </div>
+                <div className="flex-1 d-fle center-child-xy">Envelope</div>
 
-                <svg
-                    className="interaction-layer"
-                    height={ampValues.current.height}
-                    width={ampValues.current.width}
-                >
-                    {[0, 1, 2, 3].map(i =>
-                        interactionPanel(get(i), i, () => ampClicked(i))
-                    )}
-
-                    {[0, 1, 2, 3].map(i =>
-                        interactionHandle(get(i), i, e => onHandleDrag(e, i))
-                    )}
-                </svg>
+                <div>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </div>
             </div>
-            <div className="env-info d-flex space-around">
-                <div className="bold env-details d-flex center-child-xy">
-                    A: {amp.attack.toFixed(2)} {attackCurveName}
+            <div className="canvas-layer h-100 d-flex-col styled">
+                <div className="flex-1" ref={container}>
+                    <canvas height="0" width="0" ref={canvas}></canvas>
+                    <svg
+                        className="interaction-layer"
+                        height={ampValues.current.height}
+                        width={ampValues.current.width}
+                    >
+                        {[0, 1, 2, 3].map(i =>
+                            interactionPanel(get(i), i, () => ampClicked(i))
+                        )}
+                        {[0, 1, 2, 3].map(i =>
+                            interactionHandle(get(i), i, e =>
+                                onHandleDrag(e, i)
+                            )
+                        )}
+                    </svg>
                 </div>
-                <div className="bold env-details d-flex center-child-xy">
-                    D: {amp.decay.toFixed(2)} {decayCurveName}
+            </div>
+            <div className="d-flex knob-row space-around w-100">
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item">Attack</div>
+
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.attack}
+                    />
                 </div>
-                <div className="bold env-details d-flex center-child-xy">
-                    S: {amp.sustain.toFixed(1)}
+                <div className="control-container envelope-knob flex-1">
+                    <div className="center-child-xy header-item">Decay</div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.decay}
+                    />
                 </div>
-                <div className="bold env-details d-flex center-child-xy">
-                    R: {amp.release.toFixed(2)} {releaseCurveName}
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item">Sustain</div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.sustain}
+                    />
+                </div>
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item">Release</div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.release}
+                    />
                 </div>
             </div>
         </div>

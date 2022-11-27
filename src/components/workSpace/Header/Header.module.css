@@ -1,0 +1,25 @@
+.header-bar {
+    height: 50px;
+    background-color: white;
+    border-bottom: 3px solid rgb(226 226 226);
+}
+
+.number {
+    font-size: 0.8em;
+    color: #ff5f5f;
+}
+
+.app-title {
+    font-size: 3em;
+    color: #3b3b3b;
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin: 0 25px;
+    line-height: 0px;
+}
+
+.icon-container {
+    padding: 15px;
+    font-size: 1.2em;
+    color: white;
+}
