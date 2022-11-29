@@ -24,3 +24,13 @@
 .node-info {
     padding: 0 5px;
 }
+
+.node {
+    transition: transform 0.1s;
+}
+
+.item-container {
+    transition: box-shadow 0.1s;
+    border-radius: 5px;
+    overflow: hidden;
+}

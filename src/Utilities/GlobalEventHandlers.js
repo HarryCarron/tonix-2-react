@@ -18,9 +18,12 @@ class GlobalEventHandlers {
         });
     }
 
-    initiate(onMouseMove) {
+    initiate(onMouseMove, onDrop) {
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', _ => {
+            if (onDrop) {
+                onDrop();
+            }
             this.removeGlobalEventListeners(onMouseMove);
         });
     }

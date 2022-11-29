@@ -1,0 +1,45 @@
+.keyboard {
+    width: 250px;
+    height: 70px;
+    border: 2px solid rgb(206, 206, 206);
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.keyboard-side {
+    width: 10px;
+    background-color: white;
+}
+
+.keyboard-top-bottom-accent {
+    height: 10px;
+    background-color: rgb(241, 241, 241);
+}
+
+.keyboard-side-right {
+    width: 50px;
+    background-color: white;
+}
+
+.keyboard-top {
+    height: 30px;
+}
+
+.keys-background {
+    background-color: rgb(146 146 146);
+    border-radius: 2px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.key {
+    fill: white;
+    stroke: rgb(92, 92, 92);
+    stroke-width: 0.5;
+}
+
+.keyboard-bottom {
+    height: 8px;
+    background-color: #d4d4d4;
+}

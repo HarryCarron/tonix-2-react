@@ -145,13 +145,13 @@ export default function Additive(props) {
                         className="addative-button pointer"
                         onClick={() => randomize()}
                     >
-                        RANDOMIZE
+                        Randomize
                     </button>
                     <button
                         className="addative-button pointer clear"
                         onClick={() => clear()}
                     >
-                        CLEAR
+                        Clear
                     </button>
                 </div>
                 <div className="additive-tools d-flex">

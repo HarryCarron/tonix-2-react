@@ -5,7 +5,7 @@ import { faWaveSquare } from '@fortawesome/free-solid-svg-icons';
 
 export default function OscillatorBus() {
     return (
-        <div className="synth shadow-4">
+        <div className="synth">
             <div className="d-flex">
                 <div className="h-100 oscillator-area">
                     <div className="oscillator-title d-flex">

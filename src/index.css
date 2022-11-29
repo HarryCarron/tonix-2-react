@@ -34,6 +34,14 @@ canvas {
     vertical-align: bottom;
 }
 
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
 .cursor-grab {
     cursor: move;
     /* fallback if grab cursor is unsupported */
@@ -152,10 +160,19 @@ code {
     box-shadow: rgb(0 0 0 / 9%) 0px 6px 4px 3px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
 }
 
+.shadow-4-moving {
+    box-shadow: rgb(22 22 22 / 5%) 15px 15px 0px;
+}
+
 .shadow-4 {
-    box-shadow: rgb(22 22 22 / 15%) 10px 10px 0px;
+    box-shadow: rgb(22 22 22 / 25%) 5px 5px 0px;
 }
 
 .space-around {
     justify-content: space-around;
+}
+
+.no-grow {
+    align-self: flex-start;
+    justify-self: flex-start;
 }
