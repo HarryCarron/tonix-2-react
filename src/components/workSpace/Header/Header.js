@@ -7,7 +7,7 @@ export default function Header() {
             <div className="d-flex center-child-xy">
                 <div className={styles['app-title']}>
                     Tonix
-                    <span className={styles['number']}>2</span>
+                    <span className={styles['number']}>lab</span>
                 </div>
                 <PatchSearch />
             </div>

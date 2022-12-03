@@ -9,3 +9,9 @@
 .pp-controls {
     width: 50px;
 }
+
+.ping-pong-delay {
+    background-color: #ffffff;
+    overflow: hidden;
+    border-radius: 8px;
+}

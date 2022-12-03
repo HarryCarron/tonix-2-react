@@ -1,10 +1,7 @@
 .keyboard {
     width: 250px;
     height: 70px;
-    border: 2px solid rgb(206, 206, 206);
     background-color: white;
-    border-radius: 5px;
-    overflow: hidden;
 }
 
 .keyboard-side {
@@ -33,8 +30,14 @@
     border-bottom-right-radius: 0;
 }
 
-.key {
+.natural-key {
     fill: white;
+    stroke: rgb(92, 92, 92);
+    stroke-width: 0.5;
+}
+
+.minor-key {
+    fill: rgb(67, 67, 67);
     stroke: rgb(92, 92, 92);
     stroke-width: 0.5;
 }

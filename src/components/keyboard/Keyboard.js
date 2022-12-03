@@ -15,7 +15,9 @@ export default function Keyboard() {
 
     const keysNum = 7 * 5;
     const naturalKeyWidth = containerDims.width / keysNum;
-    const sharpKeyWidth = containerDims.width / keysNum / 2;
+
+    let currentOctave = 0;
+    let currentKey = -1;
 
     useEffect(() => {
         setContainerDim({
@@ -50,7 +52,7 @@ export default function Keyboard() {
                         {Array.from({ length: keysNum }).map((key, keyId) => {
                             return (
                                 <rect
-                                    class="key"
+                                    class="natural-key"
                                     width={naturalKeyWidth}
                                     x={naturalKeyWidth * keyId}
                                     y={keyPad}
@@ -59,9 +61,33 @@ export default function Keyboard() {
                                 ></rect>
                             );
                         })}
+                        {Array.from({ length: keysNum }).map((key, keyId) => {
+                            currentKey++;
+                            if (currentKey === 7) {
+                                currentKey = 0;
+                                currentOctave++;
+                            }
+                            return (
+                                <>
+                                    {[0, 1, 3, 4, 5].includes(currentKey) && (
+                                        <rect
+                                            class="minor-key"
+                                            width={naturalKeyWidth / 2}
+                                            x={
+                                                naturalKeyWidth / 1.5 +
+                                                naturalKeyWidth * keyId
+                                            }
+                                            y={keyPad}
+                                            height={containerDims.height / 1.5}
+                                            rx="1"
+                                        ></rect>
+                                    )}
+                                </>
+                            );
+                        })}
                     </svg>
                 </div>
-                <div className="keyboard-side-right"></div>
+                <div className="keyboard-side"></div>
             </div>
             <div className="keyboard-bottom"></div>
         </div>

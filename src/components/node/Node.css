@@ -13,7 +13,7 @@
     background-color: transparent;
     font-size: 1.3em;
     font-weight: 800;
-    color: grey;
+    color: #303030;
 }
 
 .node-name-input:focus {
@@ -30,6 +30,7 @@
 }
 
 .item-container {
+    border: 2px solid rgb(206, 206, 206);
     transition: box-shadow 0.1s;
     border-radius: 5px;
     overflow: hidden;

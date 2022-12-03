@@ -16,9 +16,6 @@
 
 .amp-container {
     background-color: white;
-    border-radius: 5px;
-    overflow: hidden;
-    border: 2px solid rgb(206, 206, 206);
 }
 
 .knob-row {

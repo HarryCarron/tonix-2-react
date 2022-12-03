@@ -1,0 +1,22 @@
+.filter-tools {
+    padding: 5px 0px;
+    font-size: 1em;
+    font-family: Helvetica, sans-serif;
+}
+
+.filter-value {
+    color: rgb(29, 29, 29);
+    font-family: Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.filter-container {}
+
+.band-pass {
+    background-color: rgb(76 76 76);
+    height: 80px;
+}
+
+.filter {
+    background-color: white;
+}

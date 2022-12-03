@@ -11,7 +11,7 @@ export class DragAndDrop {
         width: 0,
     };
 
-    constructor(host, onDrag) {
+    constructor(host = {}, onDrag = data => {}) {
         this.host = host;
         this.onDrag = onDrag;
 
@@ -64,8 +64,6 @@ export class DragAndDrop {
         //     relativeY / (this.hostDim.height - this.buffer.y / 2 - this.pad.y);
         let mappedX = relativeX / this.hostDim.width;
         let mappedY = relativeY / this.hostDim.height;
-
-        console.log(mappedX, mappedY);
 
         return [mappedX, mappedY].map(v => (v >= 1 ? 1 : v <= 0 ? 0 : v));
     }

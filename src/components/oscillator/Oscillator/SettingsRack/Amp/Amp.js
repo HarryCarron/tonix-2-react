@@ -135,40 +135,127 @@ export function Amp() {
         const sustainHeight = ampValues.current.sustainHeight;
         const floor = ampValues.current.floor;
         const canvas = utils.current.canvas;
-        // prettier-ignore
-        canvas.clear()
+        canvas
+            .clear()
             .styleProfile('baseLine')
             .multiple(
-                (ctx, params) => ctx.line(...params), [xPad, floor, ampValues.current.width - xPad, floor], [xPad, floor, xPad, yPad]
+                (ctx, params) => ctx.line(...params),
+                [xPad, floor, ampValues.current.width - xPad, floor],
+                [xPad, floor, xPad, yPad]
             )
             .styleProfile('ampGuide')
             .multiple(
-                (ctx, params) => ctx.line(...params), [attackX, floor, attackX, yPad], [decayX, floor, decayX, yPad], [sustainWidthX, floor, sustainWidthX, yPad], [releaseX, floor, releaseX, yPad],
+                (ctx, params) => ctx.line(...params),
+                [attackX, floor, attackX, yPad],
+                [decayX, floor, decayX, yPad],
+                [sustainWidthX, floor, sustainWidthX, yPad],
+                [releaseX, floor, releaseX, yPad]
             )
             .styleProfile('ampLine')
             .trackShape()
             .conditional([
                 // attack
-                [ctx => ctx.line(xPad, floor, attackX, yPad), amp.attackCurve === 0],
-                [ctx => ctx.curve(xPad, floor, attackX, floor, attackX, yPad), amp.attackCurve === 1],
-                [ctx => ctx.curve(xPad, floor, xPad, yPad, attackX, yPad), amp.attackCurve === 2],
+                [
+                    ctx => ctx.line(xPad, floor, attackX, yPad),
+                    amp.attackCurve === 0,
+                ],
+                [
+                    ctx =>
+                        ctx.curve(xPad, floor, attackX, floor, attackX, yPad),
+                    amp.attackCurve === 1,
+                ],
+                [
+                    ctx => ctx.curve(xPad, floor, xPad, yPad, attackX, yPad),
+                    amp.attackCurve === 2,
+                ],
                 // decay
-                [ctx => ctx.line(attackX, yPad, decayX, sustainHeight), amp.decayCurve === 0],
-                [ctx => ctx.curve(attackX, yPad, attackX, sustainHeight, decayX, sustainHeight), amp.decayCurve === 1],
-                [ctx => ctx.curve(attackX, yPad, decayX, yPad, decayX, sustainHeight), amp.decayCurve === 2],
+                [
+                    ctx => ctx.line(attackX, yPad, decayX, sustainHeight),
+                    amp.decayCurve === 0,
+                ],
+                [
+                    ctx =>
+                        ctx.curve(
+                            attackX,
+                            yPad,
+                            attackX,
+                            sustainHeight,
+                            decayX,
+                            sustainHeight
+                        ),
+                    amp.decayCurve === 1,
+                ],
+                [
+                    ctx =>
+                        ctx.curve(
+                            attackX,
+                            yPad,
+                            decayX,
+                            yPad,
+                            decayX,
+                            sustainHeight
+                        ),
+                    amp.decayCurve === 2,
+                ],
                 // sustain
-                [ctx => ctx.line(decayX, sustainHeight, sustainWidthX, sustainHeight), true],
+                [
+                    ctx =>
+                        ctx.line(
+                            decayX,
+                            sustainHeight,
+                            sustainWidthX,
+                            sustainHeight
+                        ),
+                    true,
+                ],
                 // release
-                [ctx => ctx.line(sustainWidthX, sustainHeight, releaseX, floor), amp.releaseCurve === 0],
-                [ctx => ctx.curve(sustainWidthX, sustainHeight, sustainWidthX, floor, releaseX, floor), amp.releaseCurve === 1],
-                [ctx => ctx.curve(sustainWidthX, sustainHeight, releaseX, sustainHeight, releaseX, floor), amp.releaseCurve === 2],
+                [
+                    ctx =>
+                        ctx.line(sustainWidthX, sustainHeight, releaseX, floor),
+                    amp.releaseCurve === 0,
+                ],
+                [
+                    ctx =>
+                        ctx.curve(
+                            sustainWidthX,
+                            sustainHeight,
+                            sustainWidthX,
+                            floor,
+                            releaseX,
+                            floor
+                        ),
+                    amp.releaseCurve === 1,
+                ],
+                [
+                    ctx =>
+                        ctx.curve(
+                            sustainWidthX,
+                            sustainHeight,
+                            releaseX,
+                            sustainHeight,
+                            releaseX,
+                            floor
+                        ),
+                    amp.releaseCurve === 2,
+                ],
             ])
             .stopTrackingShape()
             .drawShape(true, true)
-            .gradientFill(175, 0, 175, 80, 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.2)')
+            .gradientFill(
+                175,
+                0,
+                175,
+                80,
+                'rgba(255, 255, 255, 0.2)',
+                'rgba(255, 255, 255, 0.2)'
+            )
             .styleProfile('ampHandle')
             .multiple(
-                (ctx, params) => ctx.circle(...params), [attackX, yPad, 2], [decayX, sustainHeight, 2], [sustainWidthX, sustainHeight, 2], [releaseX, floor, 2]
+                (ctx, params) => ctx.circle(...params),
+                [attackX, yPad, 2],
+                [decayX, sustainHeight, 2],
+                [sustainWidthX, sustainHeight, 2],
+                [releaseX, floor, 2]
             );
     }, [
         amp.attack,
