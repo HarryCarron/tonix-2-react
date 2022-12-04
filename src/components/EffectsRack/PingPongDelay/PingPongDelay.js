@@ -12,59 +12,58 @@ export default function PingPongDelay() {
     });
 
     const setFilter = useCallback(
-        data => setPingPong(currentPP => ({...currentPP, ...data })), []
+        data => setPingPong(currentPP => ({ ...currentPP, ...data })),
+        []
     );
 
-    return ( <
-        div className = "d-flex-col ping-pong-delay" >
-        <
-        div className = "filter-container" >
-        <
-        BandPass gain = { pingPong.gain }
-        freq = { pingPong.freq }
-        q = { pingPong.q }
-        setFilter = { setFilter } >
-        < /BandPass>{' '} <
-        /div>{' '} <
-        div className = "d-flex space-around knobs" >
-        <
-        div className = "control-container" >
-        <
-        div className = "bold header-item d-flex center-child-x" >
-        Time { ' ' } <
-        /div>{' '} <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { 0 }
-        />{' '} <
-        /div>{' '} <
-        div className = "control-container" >
-        <
-        div className = "bold header-item d-flex center-child-x" >
-        Feedback { ' ' } <
-        /div>{' '} <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { 0 }
-        />{' '} <
-        /div>{' '} <
-        div className = "control-container" >
-        <
-        div className = "bold header-item d-flex center-child-x" >
-        Wet { ' ' } <
-        /div>{' '} <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { 0 }
-        />{' '} <
-        /div>{' '} <
-        /div>{' '} <
-        /div>
+    return (
+        <div className="d-flex-col ping-pong-delay">
+            {/* <div className="filter-container">
+                <BandPass
+                    gain={pingPong.gain}
+                    freq={pingPong.freq}
+                    q={pingPong.q}
+                    setFilter={setFilter}
+                ></BandPass>
+            </div> */}
+            <div className="d-flex space-around knobs">
+                <div className="control-container">
+                    <div className="bold header-item d-flex center-child-x">
+                        Time
+                    </div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={0}
+                    />
+                </div>
+                <div className="control-container">
+                    <div className="bold header-item d-flex center-child-x">
+                        Feedback
+                    </div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={0}
+                    />
+                </div>
+                <div className="control-container">
+                    <div className="bold header-item d-flex center-child-x">
+                        Wet
+                    </div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={0}
+                    />
+                </div>
+            </div>
+        </div>
     );
 }

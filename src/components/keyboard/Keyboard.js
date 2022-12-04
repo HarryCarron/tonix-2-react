@@ -28,20 +28,6 @@ export default function Keyboard() {
 
     return (
         <div className="keyboard d-flex-col">
-            <div className="keyboard-top">
-                <div className="oscillator-title d-flex">
-                    <div>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                    </div>
-                    <div className="flex-1 d-fle center-child-xy ">
-                        Keyboard
-                    </div>
-
-                    <div>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                    </div>
-                </div>
-            </div>
             <div className="d-flex flex-1">
                 <div className="keyboard-side"></div>
                 <div className="flex-1 keys-background" ref={keyboardContainer}>

@@ -203,16 +203,6 @@ export default function Filter() {
 
     return (
         <div className="d-flex-col filter">
-            <div className="oscillator-title d-flex">
-                <div>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-                <div className="flex-1 d-fle center-child-xy ">Filter</div>
-
-                <div>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-            </div>
             <div className="band-pass w-100" ref={container}>
                 <canvas height="0" width="0" ref={canvas}></canvas>
             </div>

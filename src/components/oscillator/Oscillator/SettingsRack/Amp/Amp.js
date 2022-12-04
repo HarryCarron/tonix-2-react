@@ -417,16 +417,6 @@ export function Amp() {
 
     return (
         <div className="amp-container shadow-4">
-            <div className="oscillator-title d-flex">
-                <div>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-                <div className="flex-1 d-fle center-child-xy">Envelope</div>
-
-                <div>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-            </div>
             <div className="canvas-layer h-100 d-flex-col styled">
                 <div className="flex-1" ref={container}>
                     <canvas height="0" width="0" ref={canvas}></canvas>

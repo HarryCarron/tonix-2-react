@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Node(props) {
     const nodeContainer = useRef();
@@ -45,7 +46,10 @@ export default function Node(props) {
         >
             <div className="node-header d-flex node-info">
                 <div className="flex-1 d-flex center-child-y">
-                    <input className="pointer node-name-input w-100" />
+                    <input
+                        className="pointer node-name-input w-100"
+                        value={'Node ' + props.i}
+                    />
                 </div>
                 <div
                     onMouseDown={$event => initiateMove($event)}
@@ -57,12 +61,25 @@ export default function Node(props) {
                     <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
                 </div>
             </div>
+
             <div
                 className={
                     (moving ? 'shadow-4-moving' : 'shadow-4') +
                     ' item-container'
                 }
             >
+                <div className="oscillator-title d-flex">
+                    <div>
+                        <FontAwesomeIcon icon={faArrowRight} />
+                    </div>
+                    <div className="flex-1 d-fle center-child-xy ">
+                        {props.label}
+                    </div>
+
+                    <div>
+                        <FontAwesomeIcon icon={faArrowRight} />
+                    </div>
+                </div>
                 {props.children}
             </div>
         </div>
