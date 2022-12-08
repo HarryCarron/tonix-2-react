@@ -64,7 +64,7 @@ export default function Keyboard() {
                                                 naturalKeyWidth * keyId
                                             }
                                             y={keyPad}
-                                            height={containerDims.height / 1.5}
+                                            height={containerDims.height / 1.8}
                                             rx="1"
                                         ></rect>
                                     )}
