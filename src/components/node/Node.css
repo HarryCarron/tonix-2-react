@@ -49,6 +49,14 @@
     font-size: 0.7em;
 }
 
+.connector:hover {
+    background-color: rgb(255, 78, 108);
+}
+
+.connector-active {
+    background-color: rgb(255, 78, 108);
+}
+
 .-left {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;

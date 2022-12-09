@@ -38,7 +38,7 @@ export default function Keyboard() {
                         {Array.from({ length: keysNum }).map((key, keyId) => {
                             return (
                                 <rect
-                                    class="natural-key"
+                                    className="natural-key"
                                     width={naturalKeyWidth}
                                     x={naturalKeyWidth * keyId}
                                     y={keyPad}
@@ -57,7 +57,7 @@ export default function Keyboard() {
                                 <>
                                     {[0, 1, 3, 4, 5].includes(currentKey) && (
                                         <rect
-                                            class="minor-key"
+                                            className="minor-key"
                                             width={naturalKeyWidth / 2}
                                             x={
                                                 naturalKeyWidth / 1.5 +

@@ -1,21 +1,65 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './Node.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Node(props) {
+export default function Node({
+    nodeMoved,
+    label,
+    i,
+    component,
+    connectionAttempted,
+}) {
     const nodeContainer = useRef();
+    const rightTerminal = useRef();
+    const leftTerminal = useRef();
     const globalMouseMove = useRef(new GlobalEventHandlers());
     const [position, setPosition] = useState({
-        top: props.top,
-        left: props.left,
+        top: 10,
+        left: 10,
     });
 
     const [moving, setMoving] = useState(false);
+
+    useEffect(() => {
+        const [input, output] = [
+            leftTerminal.current,
+            rightTerminal.current,
+        ].map((terminal, i) => {
+            let { left, width, top, height } = terminal.getBoundingClientRect();
+
+            return {
+                x: left + (!i ? 0 : width) - 3,
+                y: top + height / 2,
+                terminal,
+            };
+        });
+        nodeMoved(i, {
+            input,
+            output,
+        });
+    }, [nodeMoved, position, i]);
+
+    const initiateConnection = useCallback(() => {
+        globalMouseMove.current.initiate(
+            ({ clientX, clientY }) => {
+                connectionAttempted(i, {
+                    x: clientX,
+                    y: clientY,
+                });
+            },
+            ({ clientX, clientY }) => {
+                connectionAttempted({
+                    dropped: true,
+                    x: clientX,
+                    y: clientY,
+                });
+            }
+        );
+    }, [i, connectionAttempted]);
 
     const initiateMove = useCallback(() => {
         setMoving(true);
@@ -31,8 +75,8 @@ export default function Node(props) {
     }, [setPosition]);
 
     const scale = `scale(${moving ? '1.02' : '1'})`;
-    const left = `${props.position.left}px`;
-    const top = `${props.position.top}px`;
+    const left = `${position.left}px`;
+    const top = `${position.top}px`;
 
     return (
         <div
@@ -45,7 +89,10 @@ export default function Node(props) {
             }}
         >
             <div className="d-flex center-child-y">
-                <div className="connector d-flex center-child-xy -left">
+                <div
+                    className="connector d-flex center-child-xy -left"
+                    ref={leftTerminal}
+                >
                     <FontAwesomeIcon icon={faArrowRight} />
                 </div>
             </div>
@@ -54,7 +101,7 @@ export default function Node(props) {
                     <div className="flex-1 d-flex center-child-y">
                         <input
                             className="pointer node-name-input w-100"
-                            value={'Node ' + props.i}
+                            value={'Node ' + i}
                         />
                     </div>
                     <div
@@ -78,15 +125,19 @@ export default function Node(props) {
                 >
                     <div className="oscillator-title d-flex">
                         <div className="flex-1 d-fle center-child-xy ">
-                            {props.label}
+                            {label}
                         </div>
                     </div>
-                    {props.component()}
+                    {component()}
                 </div>
             </div>
 
             <div className="d-flex center-child-y">
-                <div className="connector d-flex center-child-xy -right">
+                <div
+                    className={'connector d-flex center-child-xy -right '}
+                    ref={rightTerminal}
+                    onMouseDown={initiateConnection}
+                >
                     <FontAwesomeIcon icon={faArrowRight} />
                 </div>
             </div>

@@ -58,10 +58,6 @@ export class DragAndDrop {
         const relativeY = Math.floor(height - (clientY - hostTop));
         const relativeX = Math.floor(clientX - hostLeft);
 
-        // let mappedX =
-        //     relativeX / (this.hostDim.width - this.buffer.x / 2 - this.pad.x);
-        // let mappedY =
-        //     relativeY / (this.hostDim.height - this.buffer.y / 2 - this.pad.y);
         let mappedX = relativeX / this.hostDim.width;
         let mappedY = relativeY / this.hostDim.height;
 

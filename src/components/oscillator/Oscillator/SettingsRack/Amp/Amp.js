@@ -31,15 +31,16 @@ export function Amp() {
 
     const utils = useRef({ globalMouseMove: new GlobalEventHandlers() });
 
-    const getCurveName = () => [amp.attackCurve, amp.decayCurve, amp.releaseCurve].map(curve => {
-        if (curve === 0) {
-            return 'LIN';
-        }
-        if (curve === 1) {
-            return 'EXP';
-        }
-        return 'COS';
-    });
+    const getCurveName = () =>
+        [amp.attackCurve, amp.decayCurve, amp.releaseCurve].map(curve => {
+            if (curve === 0) {
+                return 'LIN';
+            }
+            if (curve === 1) {
+                return 'EXP';
+            }
+            return 'COS';
+        });
 
     const [attackCurveName, decayCurveName, releaseCurveName] = getCurveName();
 
@@ -74,13 +75,13 @@ export function Amp() {
 
     useEffect(() => {
         utils.current.canvas = new CanvasUtilities(
-                canvas,
-                xPad,
-                yPad,
-                container.current.offsetWidth,
-                container.current.offsetHeight,
-                true
-            )
+            canvas,
+            xPad,
+            yPad,
+            container.current.offsetWidth,
+            container.current.offsetHeight,
+            true
+        )
             .setStyle({
                 lineCap: 'round',
                 textAlign: 'center',
@@ -125,9 +126,9 @@ export function Amp() {
         const getXpositions = () => {
             return [amp.attack, amp.decay, amp.sustainWidth, amp.release].map(
                 (_, i, o) =>
-                xPad +
-                ampValues.current.totalXTravel *
-                o.slice(0, i + 1).reduce((a, b) => a + b)
+                    xPad +
+                    ampValues.current.totalXTravel *
+                        o.slice(0, i + 1).reduce((a, b) => a + b)
             );
         };
         const [attackX, decayX, sustainWidthX, releaseX] = getXpositions();
@@ -138,11 +139,17 @@ export function Amp() {
             .clear()
             .styleProfile('baseLine')
             .multiple(
-                (ctx, params) => ctx.line(...params), [xPad, floor, ampValues.current.width - xPad, floor], [xPad, floor, xPad, yPad]
+                (ctx, params) => ctx.line(...params),
+                [xPad, floor, ampValues.current.width - xPad, floor],
+                [xPad, floor, xPad, yPad]
             )
             .styleProfile('ampGuide')
             .multiple(
-                (ctx, params) => ctx.line(...params), [attackX, floor, attackX, yPad], [decayX, floor, decayX, yPad], [sustainWidthX, floor, sustainWidthX, yPad], [releaseX, floor, releaseX, yPad]
+                (ctx, params) => ctx.line(...params),
+                [attackX, floor, attackX, yPad],
+                [decayX, floor, decayX, yPad],
+                [sustainWidthX, floor, sustainWidthX, yPad],
+                [releaseX, floor, releaseX, yPad]
             )
             .styleProfile('ampLine')
             .trackShape()
@@ -154,7 +161,7 @@ export function Amp() {
                 ],
                 [
                     ctx =>
-                    ctx.curve(xPad, floor, attackX, floor, attackX, yPad),
+                        ctx.curve(xPad, floor, attackX, floor, attackX, yPad),
                     amp.attackCurve === 1,
                 ],
                 [
@@ -168,67 +175,67 @@ export function Amp() {
                 ],
                 [
                     ctx =>
-                    ctx.curve(
-                        attackX,
-                        yPad,
-                        attackX,
-                        sustainHeight,
-                        decayX,
-                        sustainHeight
-                    ),
+                        ctx.curve(
+                            attackX,
+                            yPad,
+                            attackX,
+                            sustainHeight,
+                            decayX,
+                            sustainHeight
+                        ),
                     amp.decayCurve === 1,
                 ],
                 [
                     ctx =>
-                    ctx.curve(
-                        attackX,
-                        yPad,
-                        decayX,
-                        yPad,
-                        decayX,
-                        sustainHeight
-                    ),
+                        ctx.curve(
+                            attackX,
+                            yPad,
+                            decayX,
+                            yPad,
+                            decayX,
+                            sustainHeight
+                        ),
                     amp.decayCurve === 2,
                 ],
                 // sustain
                 [
                     ctx =>
-                    ctx.line(
-                        decayX,
-                        sustainHeight,
-                        sustainWidthX,
-                        sustainHeight
-                    ),
+                        ctx.line(
+                            decayX,
+                            sustainHeight,
+                            sustainWidthX,
+                            sustainHeight
+                        ),
                     true,
                 ],
                 // release
                 [
                     ctx =>
-                    ctx.line(sustainWidthX, sustainHeight, releaseX, floor),
+                        ctx.line(sustainWidthX, sustainHeight, releaseX, floor),
                     amp.releaseCurve === 0,
                 ],
                 [
                     ctx =>
-                    ctx.curve(
-                        sustainWidthX,
-                        sustainHeight,
-                        sustainWidthX,
-                        floor,
-                        releaseX,
-                        floor
-                    ),
+                        ctx.curve(
+                            sustainWidthX,
+                            sustainHeight,
+                            sustainWidthX,
+                            floor,
+                            releaseX,
+                            floor
+                        ),
                     amp.releaseCurve === 1,
                 ],
                 [
                     ctx =>
-                    ctx.curve(
-                        sustainWidthX,
-                        sustainHeight,
-                        releaseX,
-                        sustainHeight,
-                        releaseX,
-                        floor
-                    ),
+                        ctx.curve(
+                            sustainWidthX,
+                            sustainHeight,
+                            releaseX,
+                            sustainHeight,
+                            releaseX,
+                            floor
+                        ),
                     amp.releaseCurve === 2,
                 ],
             ])
@@ -244,7 +251,11 @@ export function Amp() {
             )
             .styleProfile('ampHandle')
             .multiple(
-                (ctx, params) => ctx.circle(...params), [attackX, yPad, 2], [decayX, sustainHeight, 2], [sustainWidthX, sustainHeight, 2], [releaseX, floor, 2]
+                (ctx, params) => ctx.circle(...params),
+                [attackX, yPad, 2],
+                [decayX, sustainHeight, 2],
+                [sustainWidthX, sustainHeight, 2],
+                [releaseX, floor, 2]
             );
     }, [
         amp.attack,
@@ -285,61 +296,57 @@ export function Amp() {
         let [x, y] = utils.current.canvas.getTrueCoordinates(clientX, clientY);
 
         switch (i) {
-            case 0:
-                {
-                    let attack = validateValue(x);
-                    setAmp(state => {
-                        if (widthValid({...state, attack })) {
-                            return {...state, attack };
-                        }
-                        return state;
-                    });
-                    break;
-                }
-            case 1:
-                {
-                    const decay = validateValue(x - amp.attack);
-                    const sustain = validateValue(y, false);
-                    setAmp(state => {
-                        if (widthValid({...state, decay })) {
-                            return {...state, decay };
-                        }
-                        return state;
-                    });
-                    setAmp(state => ({...state, sustain }));
-                    break;
-                }
-            case 2:
-                {
-                    const sustainWidth = validateValue(
-                        x - (amp.attack + amp.decay)
-                    );
-                    const sustain = validateValue(y);
+            case 0: {
+                let attack = validateValue(x);
+                setAmp(state => {
+                    if (widthValid({ ...state, attack })) {
+                        return { ...state, attack };
+                    }
+                    return state;
+                });
+                break;
+            }
+            case 1: {
+                const decay = validateValue(x - amp.attack);
+                const sustain = validateValue(y, false);
+                setAmp(state => {
+                    if (widthValid({ ...state, decay })) {
+                        return { ...state, decay };
+                    }
+                    return state;
+                });
+                setAmp(state => ({ ...state, sustain }));
+                break;
+            }
+            case 2: {
+                const sustainWidth = validateValue(
+                    x - (amp.attack + amp.decay)
+                );
+                const sustain = validateValue(y);
 
-                    setAmp(state => {
-                        if (widthValid({...state, sustainWidth })) {
-                            return {...state, sustainWidth };
-                        }
-                        return state;
-                    });
+                setAmp(state => {
+                    if (widthValid({ ...state, sustainWidth })) {
+                        return { ...state, sustainWidth };
+                    }
+                    return state;
+                });
 
-                    setAmp(state => ({...state, sustain }));
+                setAmp(state => ({ ...state, sustain }));
 
-                    break;
-                }
-            case 3:
-                {
-                    const release = validateValue(
-                        x - (amp.attack + amp.decay + amp.sustainWidth)
-                    );
-                    setAmp(state => {
-                        if (widthValid({...state, release })) {
-                            return {...state, release };
-                        }
-                        return state;
-                    });
-                    break;
-                }
+                break;
+            }
+            case 3: {
+                const release = validateValue(
+                    x - (amp.attack + amp.decay + amp.sustainWidth)
+                );
+                setAmp(state => {
+                    if (widthValid({ ...state, release })) {
+                        return { ...state, release };
+                    }
+                    return state;
+                });
+                break;
+            }
             default:
                 return;
         }
@@ -354,24 +361,21 @@ export function Amp() {
         let currentCurve;
         let set;
         switch (i) {
-            case 0:
-                {
-                    currentCurve = amp.attackCurve;
-                    set = () => setAmp({...amp, attackCurve: currentCurve });
-                    break;
-                }
-            case 1:
-                {
-                    currentCurve = amp.decayCurve;
-                    set = () => setAmp({...amp, decayCurve: currentCurve });
-                    break;
-                }
-            case 3:
-                {
-                    currentCurve = amp.releaseCurve;
-                    set = () => setAmp({...amp, releaseCurve: currentCurve });
-                    break;
-                }
+            case 0: {
+                currentCurve = amp.attackCurve;
+                set = () => setAmp({ ...amp, attackCurve: currentCurve });
+                break;
+            }
+            case 1: {
+                currentCurve = amp.decayCurve;
+                set = () => setAmp({ ...amp, decayCurve: currentCurve });
+                break;
+            }
+            case 3: {
+                currentCurve = amp.releaseCurve;
+                set = () => setAmp({ ...amp, releaseCurve: currentCurve });
+                break;
+            }
             default:
                 break;
         }
@@ -398,7 +402,7 @@ export function Amp() {
         const x =
             xPad +
             all.slice(0, id).reduce((a, b) => a + b, 0) *
-            ampValues.current.totalXTravel;
+                ampValues.current.totalXTravel;
         const width = all[id] * ampValues.current.totalXTravel;
 
         return {
@@ -411,97 +415,81 @@ export function Amp() {
         };
     };
 
-    return ( <
-        div className = "amp-container shadow-4" >
-        <
-        div className = "canvas-layer h-100 d-flex-col styled" >
-        <
-        div className = "flex-1"
-        ref = { container } >
-        <
-        canvas height = "0"
-        width = "0"
-        ref = { canvas } > < /canvas> <
-        svg className = "interaction-layer"
-        height = { ampValues.current.height }
-        width = { ampValues.current.width } >
-        {
-            [0, 1, 2, 3].map(i =>
-                interactionPanel(get(i), i, () => ampClicked(i))
-            )
-        } {
-            [0, 1, 2, 3].map(i =>
-                interactionHandle(get(i), i, e =>
-                    onHandleDrag(e, i)
-                )
-            )
-        } <
-        /svg> <
-        /div> <
-        /div> <
-        div className = "d-flex knob-row space-around w-100" >
-        <
-        div className = "control-container  envelope-knob flex-1" >
-        <
-        div className = "center-child-xy header-item" > Attack < /div>
-
-        <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { amp.attack }
-        /> <
-        /div> <
-        div className = "control-container envelope-knob flex-1" >
-        <
-        div className = "center-child-xy header-item" > Decay < /div> <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { amp.decay }
-        /> <
-        /div> <
-        div className = "control-container  envelope-knob flex-1" >
-        <
-        div className = "center-child-xy header-item" > Sustain < /div> <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { amp.sustain }
-        /> <
-        /div> <
-        div className = "control-container  envelope-knob flex-1" >
-        <
-        div className = "center-child-xy header-item" > Release < /div> <
-        Knob arcWidth = { 3 }
-        isOn = { true }
-        color = { 'white' }
-        size = { 20 }
-        value = { amp.release }
-        /> <
-        /div> <
-        /div> <
-        /div>
+    return (
+        <div className="amp-container shadow-4">
+            <div className="canvas-layer h-100 d-flex-col styled">
+                <div className="flex-1" ref={container}>
+                    <canvas height="0" width="0" ref={canvas}>
+                        {' '}
+                    </canvas>{' '}
+                    <svg
+                        className="interaction-layer"
+                        height={ampValues.current.height}
+                        width={ampValues.current.width}
+                    >
+                        {[0, 1, 2, 3].map(i =>
+                            interactionPanel(get(i), i, () => ampClicked(i))
+                        )}{' '}
+                        {[0, 1, 2, 3].map(i =>
+                            interactionHandle(get(i), i, e =>
+                                onHandleDrag(e, i)
+                            )
+                        )}{' '}
+                    </svg>{' '}
+                </div>{' '}
+            </div>{' '}
+            <div className="d-flex knob-row space-around w-100">
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item"> Attack </div>
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.attack}
+                    />{' '}
+                </div>{' '}
+                <div className="control-container envelope-knob flex-1">
+                    <div className="center-child-xy header-item"> Decay </div>{' '}
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.decay}
+                    />{' '}
+                </div>{' '}
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item"> Sustain </div>{' '}
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.sustain}
+                    />{' '}
+                </div>{' '}
+                <div className="control-container  envelope-knob flex-1">
+                    <div className="center-child-xy header-item"> Release </div>{' '}
+                    <Knob
+                        arcWidth={3}
+                        isOn={true}
+                        color={'white'}
+                        size={20}
+                        value={amp.release}
+                    />{' '}
+                </div>{' '}
+            </div>{' '}
+        </div>
     );
 }
 
-const interactionPanel = ({ x, width }, i, onAmpClick) => ( <
-    rect key = { i }
-    onClick = { onAmpClick }
-    x = { x }
-    width = { width }
-    y = "0" / >
+const interactionPanel = ({ x, width }, i, onAmpClick) => (
+    <rect key={i} onClick={onAmpClick} x={x} width={width} y="0" />
 );
 
-const interactionHandle = ({ handle: { x, y } }, i, onHandleDrag) => ( <
-    circle key = { i }
-    onMouseDown = { onHandleDrag }
-    cx = { x }
-    cy = { y }
-    r = "5" / >
+const interactionHandle = ({ handle: { x, y } }, i, onHandleDrag) => (
+    <circle key={i} onMouseDown={onHandleDrag} cx={x} cy={y} r="5" />
 );
 
 export default Amp;

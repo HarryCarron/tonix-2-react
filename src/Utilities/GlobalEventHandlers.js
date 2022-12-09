@@ -20,9 +20,9 @@ class GlobalEventHandlers {
 
     initiate(onMouseMove, onDrop) {
         window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', _ => {
+        window.addEventListener('mouseup', event => {
             if (onDrop) {
-                onDrop();
+                onDrop(event);
             }
             this.removeGlobalEventListeners(onMouseMove);
         });
