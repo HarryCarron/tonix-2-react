@@ -34,27 +34,27 @@ function App() {
         [setNodePositions]
     );
 
-    const connectionAttempted = useCallback(
-        (id, currentAttemptPosition) => {
-            setConnectionAttempt(() => {
-                if (!currentAttemptPosition) {
-                    debugger;
-                }
+    // const connectionAttempted = useCallback(
+    //     (id, currentAttemptPosition) => {
+    //         setConnectionAttempt(() => {
+    //             if (!currentAttemptPosition) {
+    //                 debugger;
+    //             }
 
-                if (currentAttemptPosition.dropped) {
-                    return {};
-                }
-                const offset = terminalArea.current.getBoundingClientRect().top;
-                currentAttemptPosition.y = currentAttemptPosition.y - offset;
+    //             if (currentAttemptPosition.dropped) {
+    //                 return {};
+    //             }
+    //             const offset = terminalArea.current.getBoundingClientRect().top;
+    //             currentAttemptPosition.y = currentAttemptPosition.y - offset;
 
-                return {
-                    from: nodePositions[id].output,
-                    to: currentAttemptPosition,
-                };
-            });
-        },
-        [setConnectionAttempt, nodePositions]
-    );
+    //             return {
+    //                 from: nodePositions[id].output,
+    //                 to: currentAttemptPosition,
+    //             };
+    //         });
+    //     },
+    //     [setConnectionAttempt, nodePositions]
+    // );
     useEffect(() => {
         setWorkSpaceDims(() => ({
             height: workSpace.current.offsetHeight,
@@ -79,20 +79,28 @@ function App() {
                 left: 700,
             },
         },
-        {
-            label: 'Envelope',
-            component: Amp,
-            position: {
-                top: 40,
-                left: 350,
-            },
-        },
+        // {
+        //     label: 'Envelope',
+        //     component: Amp,
+        //     position: {
+        //         top: 40,
+        //         left: 350,
+        //     },
+        // },
+        // {
+        //     label: 'Ping Pong Delay',
+        //     component: PingPongDelay,
+        //     position: {
+        //         top: 40,
+        //         left: 350,
+        //     },
+        // },
     ];
 
     return (
         <div className="main-container d-flex-col">
             <Header></Header>
-            <div ref={workSpace} className="flex-1 work-area relative">
+            <div ref={workSpace} className="h-100 work-area relative">
                 <svg
                     ref={terminalArea}
                     className="absolute"
@@ -112,7 +120,6 @@ function App() {
                                 label={activeNode.label}
                                 i={i}
                                 component={activeNode.component}
-                                connectionAttempted={connectionAttempted}
                             ></Node>
                         )
                 )}

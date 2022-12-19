@@ -1,0 +1,4 @@
+.connection-attempt {
+    stroke-dasharray: 1, 10;
+    animation-name: attempt;
+}
