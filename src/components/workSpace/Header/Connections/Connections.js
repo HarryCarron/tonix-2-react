@@ -1,4 +1,12 @@
-export function Connections({ connectionAttempt, activeConnectons = [] }) {
+import './Connetions.css';
+import { useSelector, useDispatch } from 'react-redux';
+export function Connections() {
+    const attemptConnection = useSelector(state => {
+        return state.connectorSlice.attempt;
+    });
+    const currentConnections = useSelector(state => {
+        return state.connectorSlice.currentConnections;
+    });
     const prepare = connection => {
         const connectorBB = {
             height: connection.from.y - connection.to.y,
@@ -15,12 +23,15 @@ export function Connections({ connectionAttempt, activeConnectons = [] }) {
         ].join('');
     };
 
-    const Path = connection => {
+    const Path = (connection, isAttempt) => {
         return (
             <path
-                className="connection-attempt"
+                className={
+                    'connector shadow-4-connector ' +
+                    (isAttempt ? 'connection-attempt' : '')
+                }
                 d={prepare(connection)}
-                stroke="rgb(60, 60, 60)"
+                stroke="rgb(60, 60, 60, 0.5)"
                 stroke-width="3"
                 stroke-linecap="round"
                 fill="none"
@@ -28,11 +39,15 @@ export function Connections({ connectionAttempt, activeConnectons = [] }) {
         );
     };
 
+    function test() {
+        currentConnections.map(connecton => Path(connecton, false));
+    }
+
     return (
         // prettier-ignore
         <>
-            {connectionAttempt && Path(connectionAttempt)}
-            {activeConnectons.length && activeConnectons.map(connecton => Path(connecton))}
+            {attemptConnection.from && Path(attemptConnection, true)}
+            {currentConnections.length && test(currentConnections)}
         </>
     );
 }

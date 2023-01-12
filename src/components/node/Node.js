@@ -6,13 +6,14 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Node({
-    nodeMoved,
-    label,
-    i,
-    component,
-    connectionAttempted,
-}) {
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    attemptConnection,
+    updateConnection,
+    connectionSuccess,
+} from './../../store/features/connector/connectorSlice';
+
+export default function Node({ nodeMoved, label, i, component }) {
     const nodeContainer = useRef();
     const rightTerminal = useRef();
     const leftTerminal = useRef();
@@ -22,44 +23,59 @@ export default function Node({
         left: 400,
     });
 
+    const dispatch = useDispatch();
+
     const [moving, setMoving] = useState(false);
 
-    useEffect(() => {
-        const [input, output] = [
-            leftTerminal.current,
-            rightTerminal.current,
-        ].map((terminal, i) => {
-            let { left, width, top, height } = terminal.getBoundingClientRect();
+    // useEffect(() => {
+    //     const [input, output] = [
+    //         leftTerminal.current,
+    //         rightTerminal.current,
+    //     ].map((terminal, i) => {
+    //         let { left, width, top, height } = terminal.getBoundingClientRect();
 
-            return {
-                x: left + (!i ? 0 : width) - 3,
-                y: top + height / 2,
-                terminal,
-            };
-        });
-        nodeMoved(i, {
-            input,
-            output,
-        });
-    }, [nodeMoved, position, i]);
+    //         return {
+    //             x: left + (!i ? 0 : width) - 3,
+    //             y: top + height / 2,
+    //             terminal,
+    //         };
+    //     });
+    //     nodeMoved(i, {
+    //         input,
+    //         output,
+    //     });
+    // }, [nodeMoved, position, i]);
 
     const initiateConnection = useCallback(() => {
         globalMouseMove.current.initiate(
             ({ clientX, clientY }) => {
-                connectionAttempted(i, {
-                    x: clientX,
-                    y: clientY,
-                });
+                let { left, width, top, height } =
+                    rightTerminal.current.getBoundingClientRect();
+
+                const to = {
+                    x: left,
+                    y: top + height / 2,
+                };
+                dispatch(
+                    attemptConnection({
+                        to,
+                        from: {
+                            x: clientX,
+                            y: clientY,
+                        },
+                    })
+                );
             },
             ({ clientX, clientY }) => {
-                connectionAttempted({
-                    dropped: true,
-                    x: clientX,
-                    y: clientY,
-                });
+                dispatch(
+                    connectionSuccess({
+                        x: clientX,
+                        y: clientY,
+                    })
+                );
             }
         );
-    }, [i, connectionAttempted]);
+    }, [dispatch]);
 
     const initiateMove = useCallback(() => {
         setMoving(true);

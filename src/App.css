@@ -66,17 +66,3 @@
     font-weight: bold;
     margin-left: 7px;
 }
-
-.connection-attempt {
-    stroke-dasharray: 1, 10;
-    animation-name: attempt;
-}
-
-@keyframes attempt {
-    to {
-        stroke-dashoffset: 500;
-        animation-direction: reverse;
-        animation-iteration-count: infinite;
-        animation-duration: 100%;
-    }
-}

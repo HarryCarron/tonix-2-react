@@ -50,7 +50,6 @@ canvas {
     cursor: -webkit-grab;
 }
 
-
 /* (Optional) Apply a "closed-hand" cursor during drag operation. */
 
 svg {
@@ -64,7 +63,8 @@ svg {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
 }
 
 * {
@@ -149,15 +149,19 @@ code {
 }
 
 .shadow-1 {
-    box-shadow: rgb(82 82 82 / 64%) 0px 0px 2px 0px inset, rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+    box-shadow: rgb(82 82 82 / 64%) 0px 0px 2px 0px inset,
+        rgb(50 50 93 / 25%) 0px 50px 100px -20px,
+        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
 }
 
 .shadow-2 {
-    box-shadow: rgb(19 19 19 / 61%) 0px 7px 8px 5px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    box-shadow: rgb(19 19 19 / 61%) 0px 7px 8px 5px,
+        rgb(0 0 0 / 30%) 0px 3px 7px -3px;
 }
 
 .shadow-3 {
-    box-shadow: rgb(0 0 0 / 9%) 0px 6px 4px 3px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    box-shadow: rgb(0 0 0 / 9%) 0px 6px 4px 3px,
+        rgb(0 0 0 / 30%) 0px 3px 7px -3px;
 }
 
 .shadow-4-moving {
@@ -166,6 +170,12 @@ code {
 
 .shadow-4 {
     box-shadow: rgb(101 100 100 / 13%) 5px 5px 0px;
+    -webkit-filter: drop-shadow(rgb(101 100 100 / 13%) 5px 5px 0px);
+    filter: drop-shadow(rgb(101 100 100 / 13%) 5px 5px 0px);
+}
+
+.shadow-4-connector {
+    filter: drop-shadow(rgb(101 100 100 / 30%) 5px 5px 0px);
 }
 
 .space-around {
