@@ -18,8 +18,8 @@ export default function Node({
     const leftTerminal = useRef();
     const globalMouseMove = useRef(new GlobalEventHandlers());
     const [position, setPosition] = useState({
-        top: 10,
-        left: 10,
+        top: 400,
+        left: 400,
     });
 
     const [moving, setMoving] = useState(false);

@@ -11,6 +11,7 @@ import Keyboard from './components/keyboard/Keyboard';
 import PingPongDelay from './components/EffectsRack/PingPongDelay/PingPongDelay';
 import Filter from './components/VisualisedFilters/filter/Filter';
 import { Connections } from './components/workSpace/Header/Connections/Connections';
+import { AudioComponentMenu } from './components/workSpace/Header/AudioComponentMenu/AudioComponentMenu';
 function App() {
     const [nodePositions, setNodePositions] = useState([]);
     const [connectionAttempt, setConnectionAttempt] = useState();
@@ -91,7 +92,6 @@ function App() {
 
     return (
         <div className="main-container d-flex-col">
-            <Header></Header>
             <div ref={workSpace} className="flex-1 work-area relative">
                 <svg
                     ref={terminalArea}
@@ -101,6 +101,8 @@ function App() {
                 >
                     <Connections connectionAttempt={connectionAttempt} />
                 </svg>
+
+                <AudioComponentMenu></AudioComponentMenu>
 
                 {activeNodes.map(
                     (activeNode, i) =>
