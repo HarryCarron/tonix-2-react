@@ -6,45 +6,38 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
+import { componentRegistryMap } from '../../registry/componentRegistry';
+
+import { removeFromWorkspace } from '../../store/features/activeComponents/activeComponentSlice';
+
 import { useSelector, useDispatch } from 'react-redux';
 import {
     attemptConnection,
     updateConnection,
     connectionSuccess,
-} from './../../store/features/connector/connectorSlice';
+} from '../../store/features/connector/connectorSlice';
 
-export default function Node({ nodeMoved, label, i, component }) {
+export default function Node({
+    nodeMoved,
+    label,
+    i,
+    component,
+    position: initialPosition,
+}) {
     const nodeContainer = useRef();
     const rightTerminal = useRef();
     const leftTerminal = useRef();
     const globalMouseMove = useRef(new GlobalEventHandlers());
     const [position, setPosition] = useState({
-        top: 400,
-        left: 400,
+        top: initialPosition.top,
+        left: initialPosition.left,
     });
+
+    console.log(componentRegistryMap);
 
     const dispatch = useDispatch();
 
     const [moving, setMoving] = useState(false);
-
-    // useEffect(() => {
-    //     const [input, output] = [
-    //         leftTerminal.current,
-    //         rightTerminal.current,
-    //     ].map((terminal, i) => {
-    //         let { left, width, top, height } = terminal.getBoundingClientRect();
-
-    //         return {
-    //             x: left + (!i ? 0 : width) - 3,
-    //             y: top + height / 2,
-    //             terminal,
-    //         };
-    //     });
-    //     nodeMoved(i, {
-    //         input,
-    //         output,
-    //     });
-    // }, [nodeMoved, position, i]);
 
     const initiateConnection = useCallback(() => {
         globalMouseMove.current.initiate(
@@ -128,11 +121,13 @@ export default function Node({ nodeMoved, label, i, component }) {
                             icon={faGripVertical}
                         ></FontAwesomeIcon>
                     </div>
-                    <div className="d-flex center-child-xy node-action-container pointer">
-                        <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                    <div
+                        className="d-flex center-child-xy node-action-container pointer"
+                        onClick={() => dispatch(removeFromWorkspace(component))}
+                    >
+                        <FontAwesomeIcon icon={faTimes}> </FontAwesomeIcon>
                     </div>
                 </div>
-
                 <div
                     className={
                         (moving ? 'shadow-4-moving' : 'shadow-4') +
@@ -144,10 +139,9 @@ export default function Node({ nodeMoved, label, i, component }) {
                             {label}
                         </div>
                     </div>
-                    {component()}
+                    {componentRegistryMap[component]()}
                 </div>
             </div>
-
             <div className="d-flex center-child-y">
                 <div
                     className={'connector d-flex center-child-xy -right '}

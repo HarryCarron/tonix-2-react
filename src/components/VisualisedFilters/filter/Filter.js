@@ -71,15 +71,16 @@ export default function Filter() {
     }, []);
 
     useEffect(() => {
-        new DragAndDrop(canvas.current, data =>
-            setFilterValues(state => ({
-                gain: data[1],
-                freq: data[0],
-                q: state.q,
-            }))
-        )
-            .setPad(xPad, yPad)
-            .allowOverHang(true);
+        new DragAndDrop(canvas.current, ([freq, gain]) =>
+            setFilterValues(state => {
+                return {
+                    gain,
+                    freq,
+                    q: state.q,
+                };
+            })
+        ).setPad(xPad, yPad);
+        // .allowOverHang(true);
     }, [setFilterValues]);
 
     // useEffect(() => {
@@ -189,16 +190,16 @@ export default function Filter() {
                 ],
             ])
             .stopTrackingShape()
-            .drawShape(true, true)
-            .gradientFill(
-                175,
-                0,
-                175,
-                130,
-                'rgba(255, 255,255, 0.2)',
-                'rgba(255, 255,255, 0.2)'
-            )
-            .fill();
+            .drawShape(true, true);
+        // .gradientFill(
+        //     175,
+        //     0,
+        //     175,
+        //     130,
+        //     'rgba(255, 255,255, 0.2)',
+        //     'rgba(255, 255,255, 0.2)'
+        // );
+        // .fill();
     }, [filterValues]);
 
     return (
@@ -215,10 +216,12 @@ export default function Filter() {
                     <select className="input-container">
                         <option value="LP">LP</option>
                         <option value="HP">HP</option>
-                        <option value="BP">BP</option>
+                        <option selected value="BP">
+                            BP
+                        </option>
                     </select>
                 </div>
-                <div className="flex-1 control-container">
+                <div className="flex-1 control-container rotary-container">
                     <div className="d-flex center-child-xy header-item">
                         Freq
                     </div>
@@ -231,7 +234,7 @@ export default function Filter() {
                         change={setFreq}
                     />
                 </div>
-                <div className="flex-1 control-container">
+                <div className="flex-1 control-container rotary-container">
                     <div className="d-flex center-child-xy header-item">
                         Gain
                     </div>
@@ -244,7 +247,7 @@ export default function Filter() {
                         change={setGain}
                     />
                 </div>
-                <div className="flex-1 control-container">
+                <div className="flex-1 control-container rotary-container">
                     <div className="d-flex center-child-xy header-item">Q</div>
                     <Knob
                         arcWidth={3}

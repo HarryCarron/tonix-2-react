@@ -12,6 +12,9 @@ import PingPongDelay from './components/EffectsRack/PingPongDelay/PingPongDelay'
 import Filter from './components/VisualisedFilters/filter/Filter';
 import { Connections } from './components/workSpace/Header/Connections/Connections';
 import { AudioComponentMenu } from './components/workSpace/Header/AudioComponentMenu/AudioComponentMenu';
+import { useSelector } from 'react-redux';
+import { PatchSearch } from './components/PatchSearch/PatchSearch';
+
 function App() {
     const [nodePositions, setNodePositions] = useState([]);
     const [connectionAttempt, setConnectionAttempt] = useState();
@@ -35,27 +38,10 @@ function App() {
         [setNodePositions]
     );
 
-    // const connectionAttempted = useCallback(
-    //     (id, currentAttemptPosition) => {
-    //         setConnectionAttempt(() => {
-    //             if (!currentAttemptPosition) {
-    //                 debugger;
-    //             }
+    const activeComponents = useSelector(state => {
+        return state.activeComponentSlice.activeComponents;
+    });
 
-    //             if (currentAttemptPosition.dropped) {
-    //                 return {};
-    //             }
-    //             const offset = terminalArea.current.getBoundingClientRect().top;
-    //             currentAttemptPosition.y = currentAttemptPosition.y - offset;
-
-    //             return {
-    //                 from: nodePositions[id].output,
-    //                 to: currentAttemptPosition,
-    //             };
-    //         });
-    //     },
-    //     [setConnectionAttempt, nodePositions]
-    // );
     useEffect(() => {
         setWorkSpaceDims(() => ({
             height: workSpace.current.offsetHeight,
@@ -63,65 +49,37 @@ function App() {
         }));
     }, [workSpace]);
 
-    const activeNodes = [
-        {
-            label: 'Keyboard',
-            component: Keyboard,
-            position: {
-                top: 40,
-                left: 60,
-            },
-        },
-        {
-            label: 'Polysynth',
-            component: OscillatorBus,
-            position: {
-                top: 300,
-                left: 700,
-            },
-        },
-        // {
-        //     label: 'Envelope',
-        //     component: Amp,
-        //     position: {
-        //         top: 40,
-        //         left: 350,
-        //     },
-        // },
-        // {
-        //     label: 'Ping Pong Delay',
-        //     component: PingPongDelay,
-        //     position: {
-        //         top: 40,
-        //         left: 350,
-        //     },
-        // },
-    ];
-
     return (
         <div className="main-container d-flex-col">
+            <div className="app-header d-flex center-child-y">
+                <div>
+                    <span className="logo">Tonix2</span>
+                </div>
+                {/* <div className="patch-search-container">
+                    <PatchSearch></PatchSearch>
+                </div> */}
+            </div>
+            {/* <div className="runner d-flex center-child-y"></div> */}
             <div ref={workSpace} className="flex-1 work-area relative">
-                <svg
+                {/* <svg
                     ref={terminalArea}
                     className="absolute"
                     height={workSpaceDims.height}
                     width={workSpaceDims.width}
                 >
                     <Connections connectionAttempt={connectionAttempt} />
-                </svg>
-
-                <AudioComponentMenu></AudioComponentMenu>
-
-                {activeNodes.map(
-                    (activeNode, i) =>
-                        activeNode && (
+                </svg> */}
+                <AudioComponentMenu> </AudioComponentMenu>
+                {activeComponents.map(
+                    (activeComponent, i) =>
+                        activeComponent && (
                             <Node
                                 key={i}
                                 nodeMoved={nodeMoved}
-                                position={activeNode.position}
-                                label={activeNode.label}
+                                position={{ top: 100, left: 300 }}
+                                label={''}
                                 i={i}
-                                component={activeNode.component}
+                                component={activeComponent}
                             ></Node>
                         )
                 )}

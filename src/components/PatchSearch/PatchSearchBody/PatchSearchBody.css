@@ -14,8 +14,8 @@
 .ps-input {
     background-color: transparent;
     border: none;
-    color: rgb(226, 226, 226);
-    font-size: 1.3em;
+    /* color: rgb(226, 226, 226); */
+    /* font-size: 1.3em; */
 }
 
 .ps-input:focus {
@@ -49,9 +49,9 @@
 }
 
 .ps-search-icon-container {
-    font-size: 1.5em;
+    font-size: 1.2em;
     width: 45px;
-    color: #635eff;
+    /* color: #635eff; */
     min-width: 0;
 }
 

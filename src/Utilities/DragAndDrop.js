@@ -54,12 +54,16 @@ export class DragAndDrop {
     calculate({ clientX, clientY }) {
         const hostTop = this.hostBB.top;
         const hostLeft = this.hostBB.left;
-        const height = this.hostDim.height - this.pad.y;
+        // prettier-ignore
+        const height = this.hostDim.height - (this.pad.y * 2);
+        const width = this.hostDim.width - this.pad.x * 2;
         const relativeY = Math.floor(height - (clientY - hostTop));
         const relativeX = Math.floor(clientX - hostLeft);
 
+        console.log(relativeX, relativeY);
+
         let mappedX = relativeX / this.hostDim.width;
-        let mappedY = relativeY / this.hostDim.height;
+        let mappedY = relativeY / height;
 
         return [mappedX, mappedY].map(v => (v >= 1 ? 1 : v <= 0 ? 0 : v));
     }

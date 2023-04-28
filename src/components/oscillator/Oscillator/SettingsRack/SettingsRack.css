@@ -26,12 +26,11 @@
     border-right: 1px solid #121212;
 }
 
-.tab-seperator>.setting-tab:not(:last-child) {
+.tab-seperator > .setting-tab:not(:last-child) {
     border-bottom: 1px solid #121212;
 }
 
 .header {
-    border-bottom: 1px solid #2e2e2e;
     padding: 5px;
 }
 

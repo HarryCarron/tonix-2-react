@@ -15,9 +15,18 @@ body {
     user-select: none;
     /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-    background: #ebebeb;
-    background-image: radial-gradient(rgb(208 208 208) 1.7px, transparent 0);
+    /* background: #ebebeb; */
+    background-image: radial-gradient(rgb(232, 232, 232) 1.5px, transparent 0);
     background-size: 25px 25px;
+    background-color: #f7fafb;
+    /* font-family: 'HelveticaNeue-Light'; */
+    background-size: 20px 20px;
+    /* background-image: linear-gradient(
+            to right,
+            rgb(232, 232, 232) 1px,
+            transparent 1px
+        ),
+        linear-gradient(to bottom, rgb(232, 232, 232) 1px, transparent 1px); */
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;500;700&display=swap');
@@ -68,8 +77,8 @@ code {
 }
 
 * {
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
+    font-family: Arial;
+    font-size: 12px;
 }
 
 .center-child-xy {

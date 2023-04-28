@@ -10,7 +10,8 @@
     font-size: 0.9em;
 }
 
-.filter-container {}
+.filter-container {
+}
 
 .band-pass {
     background-color: rgb(76 76 76);
@@ -19,4 +20,8 @@
 
 .filter {
     background-color: white;
+}
+
+.rotary-container {
+    margin-bottom: 5px;
 }

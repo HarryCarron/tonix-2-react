@@ -1,6 +1,6 @@
 .patch-search-container {
     position: relative;
-    margin: 0 10px;
+    /* margin: 0 10px; */
 }
 
 .ps-search-container {
@@ -14,14 +14,13 @@
 }
 
 .ps-search {
-    width: 400px;
-    background-color: rgb(245, 245, 245);
-    border: 2px solid #ededed;
-    border-radius: 10px;
-    overflow: hidden;
-    transition-timing-function: ease-in-out;
-    transition-duration: 0.3s;
-    z-index: 100;
+    border: none;
+    background-color: #eff3f6;
+    border-radius: 5px;
+    padding: 7px;
+    color: rgb(130, 130, 130);
+    font-weight: bold;
+    /* margin: 10px 0; */
 }
 
 .ps-search.ps-closed {

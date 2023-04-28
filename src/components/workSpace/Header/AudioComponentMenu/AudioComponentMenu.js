@@ -1,64 +1,46 @@
 import './AudioComponentMenu.css';
 
-export function AudioComponentMenu() {
-    function selectAudioComponent() {}
+import { componentRegistry } from '../../../../registry/componentRegistry';
 
-    const AudioComponentMenu = [
-        {
-            label: 'Sources',
-            items: [
-                {
-                    label: 'keyboard',
-                    id: [0, 0],
-                },
-            ],
-        },
-        {
-            label: 'Synth',
-            items: [
-                {
-                    label: 'Polysynth',
-                    id: [1, 0],
-                },
-            ],
-        },
-        {
-            label: 'Effects',
-            items: [
-                {
-                    label: 'Ping pong delay',
-                    id: [2, 0],
-                },
-            ],
-        },
-    ];
+import { addToWorkspace } from '../../../../store/features/activeComponents/activeComponentSlice';
+
+import { useSelector, useDispatch } from 'react-redux';
+export function AudioComponentMenu() {
+    const dispatch = useDispatch();
 
     return (
-        <div className="audio-component-menu absolute d-flex-col">
+        <div className="audio-component-menu d-flex-col">
+            {/* <div className="tonix-logo">
+                <span className="logo-base logo-part-1"> Tonix </span>
+                <span className="logo-base logo-part-2"> Lab </span>
+            </div> */}
+
+            <input
+                className="search-input"
+                placeholder="Search Nodes"
+                type="text"
+            />
+            <span className="heading">Nodes</span>
             <div className="d-flex-col">
-                {AudioComponentMenu.map(group => {
+                {componentRegistry.map(group => {
                     return (
-                        <>
-                            <div className="row bold">{group.label}</div>
+                        <div>
+                            <div className="menu-item bold label">
+                                {group.label}
+                            </div>
                             {group.items.map(item => {
                                 return (
                                     <div
                                         className="menu-item"
-                                        onClick={selectAudioComponent(item.id)}
+                                        onClick={() =>
+                                            dispatch(addToWorkspace(item.id))
+                                        }
                                     >
                                         {item.label}
                                     </div>
                                 );
-                                // return (
-                                //     <div
-                                //         className="row relative menu-item"
-                                //         onClick={selectAutoComponent(item.id)}
-                                //     >
-                                //         {item.label}
-                                //     </div>
-                                // );
                             })}
-                        </>
+                        </div>
                     );
                 })}
             </div>
