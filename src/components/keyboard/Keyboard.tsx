@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './Keyboard.css';
+import { ElementDimensions } from '../../shared/types/elementDimensions';
 
-export default function Keyboard() {
+export default function Keyboard(): ReactElement {
     const keyPad = 1;
 
-    const keyboardContainer = useRef();
+    const keyboardContainer = useRef<HTMLDivElement | null>(null);
 
-    const [containerDims, setContainerDim] = useState({
+    const [containerDims, setContainerDim] = useState<ElementDimensions>({
         height: 0,
         width: 0,
     });
@@ -21,8 +22,8 @@ export default function Keyboard() {
 
     useEffect(() => {
         setContainerDim({
-            height: keyboardContainer.current.clientHeight,
-            width: keyboardContainer.current.clientWidth,
+            height: keyboardContainer.current!.clientHeight,
+            width: keyboardContainer.current!.clientWidth,
         });
     }, []);
 
