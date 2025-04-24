@@ -3,13 +3,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { DragAndDrop } from '../../Utilities/DragAndDrop';
 import './Knob.css';
 
-function Knob({ value, size, color, arcWidth, change }) {
+function Knob({ value, size, color, arcWidth }) {
     const [_value, setValue] = useState(value);
     const knob = useRef();
 
-    useEffect(() => {
-        change?.(_value);
-    }, [_value, change]);
 
     useEffect(() => {
         new DragAndDrop(knob.current, val => {
