@@ -51,24 +51,12 @@ function App() {
 
     return (
         <div className="main-container d-flex-col">
-            <div className="app-header d-flex center-child-y">
+            {/* <div className="app-header d-flex center-child-y">
                 <div>
                     <span className="logo">Tonix2</span>
                 </div>
-                {/* <div className="patch-search-container">
-                    <PatchSearch></PatchSearch>
-                </div> */}
             </div>
-            {/* <div className="runner d-flex center-child-y"></div> */}
             <div ref={workSpace} className="flex-1 work-area relative">
-                {/* <svg
-                    ref={terminalArea}
-                    className="absolute"
-                    height={workSpaceDims.height}
-                    width={workSpaceDims.width}
-                >
-                    <Connections connectionAttempt={connectionAttempt} />
-                </svg> */}
                 <AudioComponentMenu> </AudioComponentMenu>
                 {activeComponents.map(
                     (activeComponent, i) =>
@@ -83,7 +71,7 @@ function App() {
                             ></Node>
                         )
                 )}
-            </div>
+            </div> */}
         </div>
     );
 }
