@@ -24,30 +24,30 @@ function App() {
     const workSpace = useRef();
     const terminalArea = useRef();
 
-    const nodeMoved = useCallback(
-        (id, terminalPositions) => {
-            const offset = terminalArea.current.getBoundingClientRect().top;
-            const y = terminalPositions.input.y;
-            terminalPositions.output.y = y - offset;
-            terminalPositions.input.y = y - offset;
-            setNodePositions(state => {
-                state[id] = { ...terminalPositions };
-                return [...state];
-            });
-        },
-        [setNodePositions]
-    );
+    // const nodeMoved = useCallback(
+    //     (id, terminalPositions) => {
+    //         const offset = terminalArea.current.getBoundingClientRect().top;
+    //         const y = terminalPositions.input.y;
+    //         terminalPositions.output.y = y - offset;
+    //         terminalPositions.input.y = y - offset;
+    //         setNodePositions(state => {
+    //             state[id] = { ...terminalPositions };
+    //             return [...state];
+    //         });
+    //     },
+    //     [setNodePositions]
+    // );
 
-    const activeComponents = useSelector(state => {
-        return state.activeComponentSlice.activeComponents;
-    });
+    // const activeComponents = useSelector(state => {
+    //     return state.activeComponentSlice.activeComponents;
+    // });
 
-    useEffect(() => {
-        setWorkSpaceDims(() => ({
-            height: workSpace.current.offsetHeight,
-            width: workSpace.current.offsetWidth,
-        }));
-    }, [workSpace]);
+    // useEffect(() => {
+    //     setWorkSpaceDims(() => ({
+    //         height: workSpace.current!.offsetHeight,
+    //         width: workSpace.current!.offsetWidth,
+    //     }));
+    // }, [workSpace]);
 
     return (
         <div className="main-container d-flex-col">

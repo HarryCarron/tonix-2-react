@@ -1,106 +1,95 @@
-import React, { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import './EffectsRack.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Menu, SubMenu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import PingPongDelay from '../PingPongDelay/PingPongDelay';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import '../effect.css';
 import LED from '../../LED/LED';
+import { NestedListOption } from '../../../shared/types/nestedListOption';
 
-export function EffectsRack(props) {
-    const [activeEffects, setActiveEffects] = useState([]);
+type EffectOption = NestedListOption<ReactElement>;
 
-    const effects = [
+export function EffectsRack(): ReactElement {
+    const [activeEffects, setActiveEffects] = useState<EffectOption[]>([]);
+
+    const effects: NestedListOption<ReactElement>[] = [
         {
             label: 'Delay',
             children: [
                 {
                     label: 'Ping Pong Delay',
-                    component: <PingPongDelay />,
+                    data: <PingPongDelay />,
                     id: 0,
                 },
                 {
                     label: 'Feedback Delay',
-                    component: null,
                     id: 1,
                 },
             ],
         },
         {
             label: 'Reverb',
-            component: null,
             id: 2,
         },
         {
             label: 'Chorus',
-            component: null,
             id: 3,
         },
         {
             label: 'Phaser',
-            component: null,
             id: 4,
         },
         {
             label: 'Pitch Shift',
-            component: null,
             id: 5,
         },
         {
             label: 'Bit Crusher',
-            component: null,
             id: 6,
         },
         {
             label: 'Phaser',
-            component: null,
             id: 7,
         },
         {
             label: 'Chebyshev',
-            component: null,
             id: 8,
         },
         {
             label: 'Distortion',
-            component: null,
             id: 9,
         },
         {
             label: 'Auto',
-            component: null,
             children: [
                 {
                     label: 'Panner',
-                    component: null,
                     id: 10,
                 },
                 {
                     label: 'Wah',
-                    component: null,
                     id: 11,
                 },
                 {
                     label: 'Tremelo',
-                    component: null,
                     id: 12,
                 },
                 {
                     label: 'Vibrato',
-                    component: null,
                     id: 13,
                 },
             ],
         },
     ];
 
-    const addEffect = effect => {
+    const addEffect = (effect: EffectOption) => {
         setActiveEffects(() => [...activeEffects, effect]);
     };
 
-    const removeEffect = effect => {
+    const removeEffect = (effect: EffectOption) => {
         setActiveEffects(() => {
             const newActiveEffects = [...activeEffects];
             const effectToRemoveID = newActiveEffects.findIndex(
@@ -148,7 +137,7 @@ export function EffectsRack(props) {
                 </div>
             </div>
             <div className="flex-1 active-error-area">
-                {activeEffects.map((effect, index) => (
+                {activeEffects.map((effect: EffectOption, index: number) => (
                     <div key={'list ' + index} className="effect shadow-1">
                         <div className="d-flex effect-topbar">
                             <div className="d-flex center-child-xy">
@@ -168,7 +157,7 @@ export function EffectsRack(props) {
                                 />
                             </div>
                         </div>
-                        {effect.component}
+                        {effect.data}
                     </div>
                 ))}
             </div>
