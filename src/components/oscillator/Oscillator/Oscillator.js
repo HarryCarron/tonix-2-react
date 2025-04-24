@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import OscillatorSelector from './DetuneSelector/OscillatorSelector/OscillatorSelector';
 import DetuneSelector from './DetuneSelector/DetuneSelector';
-import Knob from '../../Knob/Knob';
+import Knob from '../../RotaryControl/RotaryControl';
 import LED from '../../LED/LED';
 import OscillatorControls from './OscillatorControls/OscillatorControls'
 import SettingsRack from './SettingsRack/SettingsRack';

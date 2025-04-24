@@ -11,7 +11,7 @@ export class DragAndDrop {
         width: 0,
     };
 
-    constructor(host = {}, onDrag = data => {}) {
+    constructor(host, onDrag = data => {}) {
         this.host = host;
         this.onDrag = onDrag;
 

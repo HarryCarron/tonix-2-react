@@ -8,7 +8,7 @@ import React, {
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import './Amp.css';
-import Knob from '../../../../Knob/Knob';
+import Knob from '../../../../RotaryControl/RotaryControl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 

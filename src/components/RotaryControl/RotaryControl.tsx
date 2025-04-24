@@ -1,17 +1,27 @@
-import React, { useRef, useState, useEffect } from 'react';
-
+import React, { useRef, useState, useEffect, ReactElement } from 'react';
 import { DragAndDrop } from '../../Utilities/DragAndDrop';
 import './Knob.css';
 
-function Knob({ value, size, color, arcWidth }) {
-    const [_value, setValue] = useState(value);
-    const knob = useRef();
+interface RotaryControlProps {
+    value: number;
+    size: number;
+    color?: string;
+    arcWidth: number;
+}
 
+function RotaryControl({
+    value,
+    size,
+    color,
+    arcWidth,
+}: RotaryControlProps): ReactElement<RotaryControlProps> {
+    const [_value, setValue] = useState(value);
+    const rotaryControl = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
-        new DragAndDrop(knob.current, val => {
+        new DragAndDrop(rotaryControl.current, val => {
             setValue(val[1]);
-        }).setCustomDimSet(node => {
+        }).setCustomDimSet((node: SVGSVGElement) => {
             const { height, width } = node.getBBox();
             return {
                 height,
@@ -20,7 +30,12 @@ function Knob({ value, size, color, arcWidth }) {
         });
     }, []);
 
-    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+    function polarToCartesian(
+        centerX: number,
+        centerY: number,
+        radius: number,
+        angleInDegrees: number
+    ) {
         const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
         return {
@@ -29,7 +44,13 @@ function Knob({ value, size, color, arcWidth }) {
         };
     }
 
-    function describeArc(x, y, radius, startAngle, endAngle) {
+    function describeArc(
+        x: number,
+        y: number,
+        radius: number,
+        startAngle: number,
+        endAngle: number
+    ) {
         var start = polarToCartesian(x, y, radius, endAngle);
         var end = polarToCartesian(x, y, radius, startAngle);
 
@@ -59,7 +80,7 @@ function Knob({ value, size, color, arcWidth }) {
             </div>
 
             <div className="flex-1 center-child-xy">
-                <svg height={size} width={size} ref={knob}>
+                <svg height={size} width={size} ref={rotaryControl}>
                     <path
                         fill="none"
                         stroke="#969696"
@@ -107,4 +128,4 @@ function Knob({ value, size, color, arcWidth }) {
     );
 }
 
-export default React.memo(Knob);
+export default React.memo(RotaryControl);

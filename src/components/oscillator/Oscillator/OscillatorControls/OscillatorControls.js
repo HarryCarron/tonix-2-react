@@ -1,5 +1,5 @@
 import OscillatorSelector from '../DetuneSelector/OscillatorSelector/OscillatorSelector'
-import Knob from '../../../Knob/Knob'
+import Knob from '../../../RotaryControl/RotaryControl'
 import Signal from './../../../Signal/Signal';
 
 export default function OscillatorControls() {

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
-import Knob from '../../../../Knob/Knob';
+import Knob from '../../../../RotaryControl/RotaryControl';
 
 const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 15;

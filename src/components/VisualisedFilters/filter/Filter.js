@@ -4,7 +4,7 @@ import './Filter.css';
 import { DragAndDrop } from '../../../Utilities/DragAndDrop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import Knob from '../../Knob/Knob';
+import Knob from '../../RotaryControl/RotaryControl';
 
 export default function Filter() {
     const xPad = 12;

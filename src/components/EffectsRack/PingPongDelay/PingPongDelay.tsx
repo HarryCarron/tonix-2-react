@@ -1,7 +1,7 @@
 import { useState, useCallback, ReactElement } from 'react';
 import '../effect.css';
 import './PingPongDelay.css';
-import Knob from '../../Knob/Knob';
+import Knob from '../../RotaryControl/RotaryControl';
 import BandPass from '../../VisualisedFilters/filter/Filter';
 import { FilterValue } from '../../../shared/types/filterValue';
 
