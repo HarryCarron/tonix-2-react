@@ -1,7 +1,12 @@
 import './Signal.css';
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-function Signal({ hasSignal, isOn }) {
+interface SignalProps {
+    hasSignal: boolean;
+    isOn: boolean; // todo persist in context: task #12
+}
+
+function Signal({ hasSignal, isOn }: SignalProps): ReactElement<SignalProps> {
     let style = {};
     let signalClass = 'signal ';
 
