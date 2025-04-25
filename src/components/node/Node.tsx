@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import './Node.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
@@ -16,24 +16,36 @@ import {
     updateConnection,
     connectionSuccess,
 } from '../../store/features/connector/connectorSlice';
+import { ClientPosition } from '../../shared/types/clientPosition';
+
+interface NodePosition {
+    top: number;
+    left: number;
+}
+
+
+
+interface NodeProps {
+    label: string;
+    i: number;
+    component: string;
+    position: NodePosition;
+}
 
 export default function Node({
-    nodeMoved,
     label,
     i,
     component,
     position: initialPosition,
-}) {
-    const nodeContainer = useRef();
-    const rightTerminal = useRef();
-    const leftTerminal = useRef();
+}: NodeProps): ReactElement<NodeProps> {
+    const nodeContainer = useRef<HTMLDivElement | null>(null);
+    const rightTerminal = useRef<HTMLDivElement | null>(null);
+    const leftTerminal = useRef<HTMLDivElement | null>(null);
     const globalMouseMove = useRef(new GlobalEventHandlers());
     const [position, setPosition] = useState({
         top: initialPosition.top,
         left: initialPosition.left,
     });
-
-    console.log(componentRegistryMap);
 
     const dispatch = useDispatch();
 
@@ -41,9 +53,9 @@ export default function Node({
 
     const initiateConnection = useCallback(() => {
         globalMouseMove.current.initiate(
-            ({ clientX, clientY }) => {
+            ({ clientX, clientY }: ClientPosition) => {
                 let { left, width, top, height } =
-                    rightTerminal.current.getBoundingClientRect();
+                    rightTerminal.current!.getBoundingClientRect();
 
                 const to = {
                     x: left,
@@ -59,7 +71,7 @@ export default function Node({
                     })
                 );
             },
-            ({ clientX, clientY }) => {
+            ({ clientX, clientY }: ClientPosition) => {
                 dispatch(
                     connectionSuccess({
                         x: clientX,
@@ -73,7 +85,7 @@ export default function Node({
     const initiateMove = useCallback(() => {
         setMoving(true);
         globalMouseMove.current.initiate(
-            ({ clientX, clientY }) => {
+            ({ clientX, clientY }: ClientPosition) => {
                 setPosition({
                     left: clientX,
                     top: clientY,
@@ -114,7 +126,7 @@ export default function Node({
                         />
                     </div>
                     <div
-                        onMouseDown={$event => initiateMove($event)}
+                        onMouseDown={$event => initiateMove()}
                         className="d-flex center-child-xy node-action-container grabber"
                     >
                         <FontAwesomeIcon
@@ -125,7 +137,7 @@ export default function Node({
                         className="d-flex center-child-xy node-action-container pointer"
                         onClick={() => dispatch(removeFromWorkspace(component))}
                     >
-                        <FontAwesomeIcon icon={faTimes}> </FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faTimes}/>
                     </div>
                 </div>
                 <div
@@ -139,7 +151,7 @@ export default function Node({
                             {label}
                         </div>
                     </div>
-                    {componentRegistryMap[component]()}
+                    {componentRegistryMap[component]({}, null)}
                 </div>
             </div>
             <div className="d-flex center-child-y">
