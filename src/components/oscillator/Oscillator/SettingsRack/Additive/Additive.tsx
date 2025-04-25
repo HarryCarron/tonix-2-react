@@ -1,25 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+    MouseEventHandler,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import './Additive.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
-import Knob from '../../../../RotaryControl/RotaryControl';
+import { ClientPosition } from '../../../../../shared/types/clientPosition';
 
 const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 15;
-export default function Additive(props) {
+
+interface Utilities {
+    globalMouseMove: GlobalEventHandlers;
+    canvas: CanvasUtilities | undefined;
+}
+
+interface CanvasUtilParams {
+    // todo move to canvas utils when migrating
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+}
+
+export default function Additive(): ReactElement {
     const xPad = 8;
     const yPad = 12;
 
-    const canvas = useRef();
-    const container = useRef();
+    const canvas = useRef<HTMLCanvasElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
     const [partials, setPartials] = useState([1]);
 
-    const utils = useRef({
+    const utils = useRef<Utilities>({
         globalMouseMove: new GlobalEventHandlers(),
-        canvas: null,
+        canvas: undefined,
     });
 
     const renderValues = useRef({
@@ -28,7 +49,7 @@ export default function Additive(props) {
         floor: 0,
     });
 
-    const incrementPartial = mode => {
+    const incrementPartial = (mode: boolean) => {
         let newPartials = [...partials];
         if (mode) {
             newPartials.push(1);
@@ -51,28 +72,62 @@ export default function Additive(props) {
     };
 
     const clear = () => {
-        const partials = [];
-        setPartials(() => partials);
+        setPartials(() => []);
     };
 
-    const beginPartialManipulation = e => {
-        manipulatePartial(e);
-        utils.current.globalMouseMove.initiate(e => manipulatePartial(e));
-    };
+    const manipulatePartial = useCallback(
+        ({ clientX, clientY }: ClientPosition) => {
+            if (!(clientX && clientY)) {
+                return;
+            }
+            let [x, y] = utils.current.canvas!.getTrueCoordinates(
+                clientX,
+                clientY,
+                true
+            );
+
+            const hoveredPartial = Math.floor(x * partials.length);
+
+            if (hoveredPartial >= partials.length) {
+                return;
+            }
+
+            partials[hoveredPartial] = y;
+
+            setPartials(state => {
+                const newState = [...state];
+                newState[hoveredPartial] = y;
+                return newState;
+            });
+        },
+        [setPartials, partials]
+    );
+
+    const beginPartialManipulation = useCallback(
+        (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+            if (e instanceof MouseEvent) {
+                manipulatePartial(e);
+                utils.current.globalMouseMove.initiate((e: MouseEvent) =>
+                    manipulatePartial(e)
+                );
+            }
+        },
+        [manipulatePartial]
+    );
 
     useEffect(() => {
         renderValues.current.totalXTravel =
-            container.current.offsetWidth - xPad * 2;
+            container.current!.offsetWidth - xPad * 2;
         renderValues.current.totalYTravel =
-            container.current.offsetHeight - yPad;
-        renderValues.current.floor = container.current.offsetHeight - yPad / 2;
+            container.current!.offsetHeight - yPad;
+        renderValues.current.floor = container.current!.offsetHeight - yPad / 2;
 
         utils.current.canvas = new CanvasUtilities(
             canvas,
             xPad,
             yPad,
-            container.current.offsetWidth,
-            container.current.offsetHeight,
+            container.current!.offsetWidth,
+            container.current!.offsetHeight,
             true
         );
         utils.current.canvas.setStyle({
@@ -83,13 +138,15 @@ export default function Additive(props) {
     }, []);
 
     useEffect(() => {
-        utils.current.canvas.clear();
+        utils.current.canvas!.clear();
         const totalPartialsNumber = partials.length;
         const width = renderValues.current.totalXTravel / totalPartialsNumber;
-        // const partialPad = totalPartialsNumber < 10 ? 6 : 4;
         const partialPad = 3;
-        utils.current.canvas.multiple(
-            (ctx, params) => ctx.rect(...params),
+        utils.current.canvas!.multiple(
+            (ctx: CanvasRenderingContext2D, params: CanvasUtilParams) => {
+                const { h, w, x, y } = params;
+                ctx.rect(x, y, w, h);
+            },
             ...partials.map((partial, i) => {
                 const x = xPad + width * i + partialPad / 2;
                 const y = renderValues.current.floor;
@@ -99,31 +156,6 @@ export default function Additive(props) {
             })
         );
     }, [partials]);
-
-    const manipulatePartial = ({ clientX, clientY }) => {
-        if (!(clientX && clientY)) {
-            return;
-        }
-        let [x, y] = utils.current.canvas.getTrueCoordinates(
-            clientX,
-            clientY,
-            true
-        );
-
-        const hoveredPartial = Math.floor(x * partials.length);
-
-        if (hoveredPartial >= partials.length) {
-            return;
-        }
-
-        partials[hoveredPartial] = y;
-
-        setPartials(state => {
-            const newState = [...state];
-            newState[hoveredPartial] = y;
-            return newState;
-        });
-    };
 
     return (
         <div className="d-flex-col h-100">
