@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { ChangeEvent, ReactElement, useState } from 'react';
 import './OscillatorSelector.css';
 
-function OscillatorSelector({ onChangeWaveForm }) {
+interface OscillatorSelectorProps {
+    onChangeWaveForm: (w: number) => void;
+}
+
+function OscillatorSelector({
+    onChangeWaveForm,
+}: OscillatorSelectorProps): ReactElement<OscillatorSelectorProps> {
     const [tune, setTune] = useState(0.0);
 
-    const waveFormChanged = event => {
+    const waveFormChanged = (event: ChangeEvent<HTMLSelectElement>) => {
         const waveform = parseInt(event.currentTarget.value);
         onChangeWaveForm(waveform);
     };

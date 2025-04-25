@@ -1,8 +1,7 @@
 import './Oscillator.css';
-import React from 'react';
-import Oscillator from './Oscillator';
+import Oscillator, { OscillatorProps } from './Oscillator';
 
-export default function OscillatorContainer(props) {
+export default function OscillatorContainer(props: OscillatorProps) {
     return <Oscillator {...props} />;
 }
 

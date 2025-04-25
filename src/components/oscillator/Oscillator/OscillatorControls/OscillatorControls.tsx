@@ -1,8 +1,9 @@
 import OscillatorSelector from '../DetuneSelector/OscillatorSelector/OscillatorSelector'
 import Knob from '../../../RotaryControl/RotaryControl'
-import Signal from './../../../Signal/Signal';
+import Signal from '../../../Signal/Signal';
+import { ReactElement } from 'react';
 
-export default function OscillatorControls() {
+export default function OscillatorControls(): ReactElement {
 
 
     return (
@@ -29,13 +30,9 @@ export default function OscillatorControls() {
                         <div className="flex-1 knob-container">
                             <Knob
                                 arcWidth={3}
-                                isOn={true}
                                 color={'#DCDCDC'}
                                 size={22}
-                                updateOscData={
-                                    () => null
-                                }
-                                value={true}
+                                value={0}
                             />
                         </div>
                     </div>
@@ -46,13 +43,9 @@ export default function OscillatorControls() {
                         <div className="flex-1 knob-container">
                             <Knob
                                 arcWidth={3}
-                                isOn={true}
                                 color={'#DCDCDC'}
                                 size={22}
-                                updateOscData={() => null
-                                    
-                                }
-                                value={true}
+                                value={0}
                             />
                         </div>
                     </div>
@@ -63,13 +56,9 @@ export default function OscillatorControls() {
                         <div className="flex-1 knob-container">
                             <Knob
                                 arcWidth={3}
-                                isOn={true}
                                 color={'#DCDCDC'}
                                 size={22}
-                                updateOscData={
-                                    () => null
-                                }
-                                value={true}
+                                value={0}
                             />
                         </div>
                     </div>
@@ -81,11 +70,13 @@ export default function OscillatorControls() {
                                 <div className="flex-1 signal-seperator">
                                     <Signal
                                         hasSignal={false}
+                                        isOn={true}
                                     />
                                 </div>
                                 <div className="flex-1 signal-seperator">
                                     <Signal
                                         hasSignal={false}
+                                        isOn={true}
                                     />
                                 </div>
                             </div>
