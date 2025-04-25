@@ -19,15 +19,18 @@ function RotaryControl({
     const rotaryControl = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
-        new DragAndDrop(rotaryControl.current, val => {
-            setValue(val[1]);
-        }).setCustomDimSet((node: SVGSVGElement) => {
-            const { height, width } = node.getBBox();
-            return {
-                height,
-                width,
-            };
-        });
+        new DragAndDrop<SVGSVGElement>(rotaryControl.current!)
+            .getDomRect((node: SVGSVGElement) => {
+                return node!.getBBox();
+            })
+            .onDrag(val => {
+
+                const x = val?.[1];
+
+                if (x) {
+                    setValue(x);
+                }
+            });
     }, []);
 
     function polarToCartesian(
