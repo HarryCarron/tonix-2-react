@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Oscillator from '../oscillator/Oscillator/Oscillator';
 
-export default function OscillatorBus() {
+export default function OscillatorBus(): ReactElement {
     return (
         <div className="synth">
             <div className="d-flex">

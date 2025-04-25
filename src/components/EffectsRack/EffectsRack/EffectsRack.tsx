@@ -143,7 +143,6 @@ export function EffectsRack(): ReactElement {
                             <div className="d-flex center-child-xy">
                                 <LED
                                     isOn={true}
-                                    updateOscData={() => null}
                                 ></LED>
                             </div>
                             <div className="flex-1 bold effect-label">
