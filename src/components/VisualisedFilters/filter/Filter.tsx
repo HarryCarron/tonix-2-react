@@ -10,9 +10,9 @@ export default function Filter() {
     const xPad = 12;
     const yPad = 12;
     const qControl = useRef();
-    const canvas = useRef();
-    const canvasUtils = useRef();
-    const container = useRef();
+    const canvas = useRef<HTMLCanvasElement | null>(null);
+    const canvasUtils = useRef<CanvasUtilities | undefined>();
+    const container = useRef<HTMLDivElement | null>(null);
 
     const [filterValues, setFilterValues] = useState({
         gain: 0.5,
@@ -20,21 +20,21 @@ export default function Filter() {
         q: 0.5,
     });
 
-    const setFreq = useCallback(freq => {
+    const setFreq = useCallback((freq: number) => {
         setFilterValues(state => ({
             ...state,
             freq,
         }));
     }, []);
 
-    const setGain = useCallback(gain => {
+    const setGain = useCallback((gain: number) => {
         setFilterValues(state => ({
             ...state,
             gain,
         }));
     }, []);
 
-    const setQ = useCallback(q => {
+    const setQ = useCallback((q: number) => {
         setFilterValues(state => ({
             ...state,
             q,
@@ -46,8 +46,8 @@ export default function Filter() {
             canvas,
             xPad,
             yPad,
-            container.current.offsetWidth,
-            container.current.offsetHeight,
+            container.current!.offsetWidth,
+            container.current!.offsetHeight,
             true
         )
 
@@ -71,15 +71,23 @@ export default function Filter() {
     }, []);
 
     useEffect(() => {
-        new DragAndDrop(canvas.current, ([freq, gain]) =>
-            setFilterValues(state => {
-                return {
-                    gain,
-                    freq,
-                    q: state.q,
-                };
-            })
-        ).setPad(xPad, yPad);
+        new DragAndDrop(canvas.current!)
+            // .allowOverHang(true)
+            .setPad(xPad, yPad)
+            .onDrag(
+            ([freq, gain]: [number, number]) => {
+                setFilterValues(state => {
+                    return {
+                        gain,
+                        freq,
+                        q: state.q,
+                    };
+                })
+            }
+        );
+            
+            
+            
         // .allowOverHang(true);
     }, [setFilterValues]);
 
@@ -92,8 +100,8 @@ export default function Filter() {
     // }, [setFilter]);
 
     useEffect(() => {
-        const availableWidth = container.current.offsetWidth - xPad * 2;
-        const availableHeight = container.current.offsetHeight - yPad * 2;
+        const availableWidth = container.current!.offsetWidth - xPad * 2;
+        const availableHeight = container.current!.offsetHeight - yPad * 2;
 
         const freqAt = availableWidth * filterValues.freq + xPad;
         const gainAt =
@@ -151,7 +159,7 @@ export default function Filter() {
         const curve4EndX = xPad + availableWidth;
         const curve4EndY = yPad + availableHeight;
 
-        canvasUtils.current
+        canvasUtils.current! // todo #19
             .clear()
             .styleProfile('filterLine')
             .trackShape()
@@ -227,11 +235,9 @@ export default function Filter() {
                     </div>
                     <Knob
                         arcWidth={3}
-                        isOn={true}
                         color={'white'}
                         size={20}
                         value={filterValues.freq}
-                        change={setFreq}
                     />
                 </div>
                 <div className="flex-1 control-container rotary-container">
@@ -240,22 +246,18 @@ export default function Filter() {
                     </div>
                     <Knob
                         arcWidth={3}
-                        isOn={true}
                         color={'white'}
-                        size={20}
                         value={filterValues.gain}
-                        change={setGain}
+                        size={20}
                     />
                 </div>
                 <div className="flex-1 control-container rotary-container">
                     <div className="d-flex center-child-xy header-item">Q</div>
                     <Knob
                         arcWidth={3}
-                        isOn={true}
                         color={'white'}
                         size={20}
                         value={filterValues.q}
-                        change={setQ}
                     />
                 </div>
             </div>

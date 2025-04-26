@@ -10,7 +10,7 @@ export class DragAndDrop<T extends EventTarget> {
 
     // private _allowOverHang: boolean = false; todo #8
 
-    private _onDrag: ((data: Coordinates | void) => void) | undefined;
+    private _onDrag: ((data: Coordinates) => void) | undefined;
 
     private _hostBoundingBox: DOMRect | undefined;
 
@@ -24,7 +24,7 @@ export class DragAndDrop<T extends EventTarget> {
         return this;
     }
 
-    onDrag(onDrag: (data: Coordinates | void) => void): this {
+    onDrag(onDrag: (data: Coordinates) => void): this {
         this._onDrag = onDrag;
 
         return this;
@@ -47,7 +47,7 @@ export class DragAndDrop<T extends EventTarget> {
         return this;
     }
 
-    private _calculate(e: Event): Coordinates | void {
+    private _calculate(e: Event): Coordinates {
 
         if (e instanceof MouseEvent) {
             const {clientX, clientY} = e;
@@ -66,6 +66,8 @@ export class DragAndDrop<T extends EventTarget> {
                 v >= 1 ? 1 : v <= 0 ? 0 : v
             ) as Coordinates;
         }
+
+        throw new Error(`Unexpected Event type "${e.type}" when parsing coordinates`);
 
     }
 
