@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import './App.css';
-import OscillatorContainer from './components/oscillator/Oscillator/OscillatorContainer';
-import GlobalEventHandlers from './Utilities/GlobalEventHandlers';
-import Amp from './components/oscillator/Oscillator/SettingsRack/Amp/Amp';
+import OscillatorContainer from './components/instruments/oscillator/oscillator';
+import GlobalEventHandlers from './utilities/global-event-handlers';
+import Amp from './components/shared/amp/amp';
 import Node from './components/node/Node';
-import OscillatorBus from './components/oscillatorBus/OscillatorBus';
-import Oscillator from './components/oscillator/Oscillator/Oscillator';
-import Keyboard from './components/keyboard/Keyboard';
-import PingPongDelay from './components/EffectsRack/PingPongDelay/PingPongDelay';
-import Filter from './components/VisualisedFilters/filter/Filter';
-import { Connections } from './components/workSpace/Header/Connections/Connections';
-import { AudioComponentMenu } from './components/workSpace/Header/AudioComponentMenu/AudioComponentMenu';
+import Oscillator from './components/instruments/oscillator/oscillator';
+import Keyboard from './components/midi-devices/keyboard/keyboard';
+import PingPongDelay from './components/effects/ping-pong-delay/ping-pong-delay';
+import Filter from './components/effects/filter/filter';
+import { Connections } from './components/work-space/connections/connections';
+import { AudioComponentMenu } from './components/work-space/menu/menu';
 import { useSelector } from 'react-redux';
 
 function App() {

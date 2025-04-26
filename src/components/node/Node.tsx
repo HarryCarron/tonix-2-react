@@ -3,19 +3,19 @@ import './Node.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import GlobalEventHandlers from '../../Utilities/GlobalEventHandlers';
+import GlobalEventHandlers from '../../utilities/global-event-handlers';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { componentRegistryMap } from '../../registry/componentRegistry';
+import { componentRegistryMap } from '../../registry/component-registry';
 
-import { removeFromWorkspace } from '../../store/features/activeComponents/activeComponentSlice';
+import { removeFromWorkspace } from '../../store/features/active-components/active-component-slice';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
     attemptConnection,
     updateConnection,
     connectionSuccess,
-} from '../../store/features/connector/connectorSlice';
+} from '../../store/features/connector/connector-slice';
 import { ClientPosition } from '../../shared/types/client-position.types';
 
 interface NodePosition {
