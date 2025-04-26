@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import './App.css';
 import OscillatorContainer from './components/oscillator/Oscillator/OscillatorContainer';
 import GlobalEventHandlers from './Utilities/GlobalEventHandlers';
-import Header from './components/workSpace/Header/Header';
 import Amp from './components/oscillator/Oscillator/SettingsRack/Amp/Amp';
 import Node from './components/node/Node';
 import OscillatorBus from './components/oscillatorBus/OscillatorBus';
@@ -13,7 +12,6 @@ import Filter from './components/VisualisedFilters/filter/Filter';
 import { Connections } from './components/workSpace/Header/Connections/Connections';
 import { AudioComponentMenu } from './components/workSpace/Header/AudioComponentMenu/AudioComponentMenu';
 import { useSelector } from 'react-redux';
-import { PatchSearch } from './components/PatchSearch/PatchSearch';
 
 function App() {
     const [nodePositions, setNodePositions] = useState([]);
