@@ -1,13 +1,42 @@
+import { ReactElement } from 'react';
 import './Connetions.css';
 import { useSelector, useDispatch } from 'react-redux';
-export function Connections() {
-    const attemptConnection = useSelector(state => {
+
+interface Connection {
+    from: {
+        x: number; // todo move to Coordinate type
+        y: number;
+    },
+    to: {
+        x: number;
+        y: number;
+    },
+}
+
+interface ConntectionItem {
+    connection: Connection;
+}
+
+interface ConnectorSlice {
+    attempt: Connection
+    currentConnections: Connection[]
+}
+
+interface State {
+    connectorSlice: ConnectorSlice
+}
+
+export function Connections(): ReactElement {
+
+    const attemptConnection = useSelector<State, Connection>(state => {
         return state.connectorSlice.attempt;
     });
-    const currentConnections = useSelector(state => {
+
+    const currentConnections = useSelector<State, Connection[]>(state => {
         return state.connectorSlice.currentConnections;
     });
-    const prepare = connection => {
+
+    const prepare = (connection: Connection) => {
         const connectorBB = {
             height: connection.from.y - connection.to.y,
             width: connection.from.x - connection.to.x,
@@ -23,7 +52,7 @@ export function Connections() {
         ].join('');
     };
 
-    const Path = (connection, isAttempt) => {
+    const Path = (connection: Connection, isAttempt: boolean) => {
         return (
             <path
                 className={
@@ -40,14 +69,13 @@ export function Connections() {
     };
 
     function test() {
-        currentConnections.map(connecton => Path(connecton, false));
+        currentConnections.map(connection => Path(connection, false));
     }
 
     return (
-        // prettier-ignore
         <>
             {attemptConnection.from && Path(attemptConnection, true)}
-            {currentConnections.length && test(currentConnections)}
+            {currentConnections.length && test()}
         </>
     );
 }
