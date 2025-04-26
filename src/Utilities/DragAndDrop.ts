@@ -1,4 +1,4 @@
-import { Coordinates } from "../shared/types/coordinates";
+import { Coordinates } from "../shared/types/coordinates.types";
 
 export class DragAndDrop<T extends EventTarget> {
 

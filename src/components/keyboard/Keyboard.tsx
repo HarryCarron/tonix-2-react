@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './Keyboard.css';
-import { ElementDimensions } from '../../shared/types/elementDimensions';
+import { ElementDimensions } from '../../shared/types/element-dimensions.types';
 
 export default function Keyboard(): ReactElement {
     const keyPad = 1;

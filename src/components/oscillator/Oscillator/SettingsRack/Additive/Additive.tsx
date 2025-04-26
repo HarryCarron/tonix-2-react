@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import GlobalEventHandlers from '../../../../../Utilities/GlobalEventHandlers';
 import CanvasUtilities from '../../../../../Utilities/CanvasUtilities';
-import { ClientPosition } from '../../../../../shared/types/clientPosition';
+import { ClientPosition } from '../../../../../shared/types/client-position.types';
 
 const PARTIALS_UPPER_LIMIT = 32;
 const TOOL_BAR_HEIGHT = 15;

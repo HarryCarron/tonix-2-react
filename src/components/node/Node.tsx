@@ -16,7 +16,7 @@ import {
     updateConnection,
     connectionSuccess,
 } from '../../store/features/connector/connectorSlice';
-import { ClientPosition } from '../../shared/types/clientPosition';
+import { ClientPosition } from '../../shared/types/client-position.types';
 
 interface NodePosition {
     top: number;

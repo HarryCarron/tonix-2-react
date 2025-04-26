@@ -8,7 +8,7 @@ import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import '../effect.css';
 import LED from '../../LED/LED';
-import { NestedListOption } from '../../../shared/types/nestedListOption';
+import { NestedListOption } from '../../../shared/types/nested-list-option.types';
 
 type EffectOption = NestedListOption<ReactElement>;
 

@@ -12,7 +12,7 @@ import './Amp.css';
 import Knob from '../../../../RotaryControl/RotaryControl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { ClientPosition } from '../../../../../shared/types/clientPosition';
+import { ClientPosition } from '../../../../../shared/types/client-position.types';
 
 interface Line {
     // todo move to dedicated file

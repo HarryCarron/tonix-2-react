@@ -3,7 +3,7 @@ import '../effect.css';
 import './PingPongDelay.css';
 import Knob from '../../RotaryControl/RotaryControl';
 import BandPass from '../../VisualisedFilters/filter/Filter';
-import { FilterValue } from '../../../shared/types/filterValue';
+import { FilterValue } from '../../../shared/types/filter-value.types';
 
 export default function PingPongDelay(): ReactElement {
     const [pingPong, setPingPong] = useState<FilterValue>({
