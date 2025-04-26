@@ -1,11 +1,9 @@
 import './AudioComponentMenu.css';
-
 import { componentRegistry } from '../../../../registry/componentRegistry';
-
 import { addToWorkspace } from '../../../../store/features/activeComponents/activeComponentSlice';
-
 import { useSelector, useDispatch } from 'react-redux';
-export function AudioComponentMenu() {
+import { ReactElement } from 'react';
+export function AudioComponentMenu(): ReactElement {
     const dispatch = useDispatch();
 
     return (
