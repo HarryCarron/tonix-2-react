@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import './App.css';
+import './app.css';
 import OscillatorContainer from './components/instruments/oscillator/oscillator';
 import GlobalEventHandlers from './utilities/global-event-handlers';
 import Amp from './components/shared/amp/amp';
