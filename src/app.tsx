@@ -3,7 +3,7 @@ import './App.css';
 import OscillatorContainer from './components/instruments/oscillator/oscillator';
 import GlobalEventHandlers from './utilities/global-event-handlers';
 import Amp from './components/shared/amp/amp';
-import Node from './components/node/Node';
+import Node from './components/node/node';
 import Oscillator from './components/instruments/oscillator/oscillator';
 import Keyboard from './components/midi-devices/keyboard/keyboard';
 import PingPongDelay from './components/effects/ping-pong-delay/ping-pong-delay';

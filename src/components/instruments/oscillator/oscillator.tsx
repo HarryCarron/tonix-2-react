@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import OscillatorSelector from './../../shared/oscillator-selector/oscillator-selector';
 import DetuneSelector from '../../shared/detune-selector/detune-selector';
 import Knob from '../../shared/rotary-control/rotary-control';
-import LED from '../../shared/LED/LED';
+import LED from '../../shared/led/led';
 import OscillatorControls from './oscillator-controls/oscillator-controls'
 import SettingsRack from './settings-rack/settings-rack';
 import { OscillatorWaveform } from './oscillator-waveforms.enums';

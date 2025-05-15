@@ -7,7 +7,7 @@ import PingPongDelay from '../../effects/ping-pong-delay/ping-pong-delay';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import '../effect.css';
-import LED from '../../shared/LED/LED';
+import LED from '../../shared/led/led';
 import { NestedListOption } from '../../../shared/types/nested-list-option.types';
 
 type EffectOption = NestedListOption<ReactElement>;
